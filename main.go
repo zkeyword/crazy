@@ -3,12 +3,13 @@ package main
 import (
 	"CRAZY/config"
 	"CRAZY/router"
-	"log"
-	"net/http"
-	"time"
+	"CRAZY/utils"
 	"flag"
 	"fmt"
+	"log"
+	"net/http"
 	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
@@ -16,6 +17,9 @@ import (
 )
 
 func main() {
+	utils.WriteFile()
+	utils.ReadFile()
+
 	flag.Parse()
 
 	// 创建文件日志，按天分割，日志文件仅保留一周
@@ -30,7 +34,7 @@ func main() {
 	// 设置gin
 	gin.SetMode(config.ServerMode)
 	r := router.Routers()
-	
+
 	server := &http.Server{
 		Addr:           config.ServerPort,
 		Handler:        r,
