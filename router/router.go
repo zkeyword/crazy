@@ -15,7 +15,17 @@ func Routers() *gin.Engine {
 	// 设置静态目录
 	r.Static("/public", "./public")
 
-	r.GET("/ping", api.GetTags)
+	// 设置模板
+	r.LoadHTMLGlob("views/**/*")
+
+
+	// api 部分
+	apiRouter := r.Group("/api")
+	{
+		apiRouter.GET("/ping", api.GetTags)
+		apiRouter.GET("/html", api.GetHTML)
+	}
+	
 
 	return r
 }

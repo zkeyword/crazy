@@ -15,3 +15,8 @@ func GetTags(c *gin.Context) {
 	// 	"message": "pong",
 	// })
 }
+
+// GetHTML
+func GetHTML(c *gin.Context) {
+	c.HTML(200, "home.html", "xxx")
+}

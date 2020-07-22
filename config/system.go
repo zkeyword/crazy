@@ -3,7 +3,7 @@ package config
 import "time"
 
 // ServerPort web服务端口
-var ServerPort = ":8080"
+var ServerPort = ":8000"
 
 // ServerMode gin开发模式
 var ServerMode = "debug" // release
