@@ -3,12 +3,13 @@ package main
 import (
 	"CRAZY/config"
 	"CRAZY/router"
-	"CRAZY/utils"
+	"CRAZY/utils/xor"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -17,8 +18,15 @@ import (
 )
 
 func main() {
-	utils.WriteFile()
-	utils.ReadFile()
+	// utils.WriteFile()
+	// utils.ReadFile()
+
+	startTime := time.Now()
+	d, _ := time.ParseDuration(strconv.Itoa(7*24) + "h")
+	endTime := startTime.Add(d)
+	fmt.Println(xor.Enc(endTime.Format(config.SysTimeform)))
+	x := xor.Dec("80398965be5d736a81399b67a157747688398a")
+	fmt.Println(x)
 
 	flag.Parse()
 

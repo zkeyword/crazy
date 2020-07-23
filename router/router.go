@@ -1,6 +1,7 @@
 package router
 
 import (
+	"CRAZY/middleware"
 	"CRAZY/router/api"
 
 	"github.com/gin-gonic/gin"
@@ -18,14 +19,20 @@ func Routers() *gin.Engine {
 	// 设置模板
 	r.LoadHTMLGlob("views/**/*")
 
+	// 首页
+	r.GET("/", api.GetHTML)
+
+	//登陆
+	r.GET("/login", api.Login)
 
 	// api 部分
 	apiRouter := r.Group("/api")
+	apiRouter.Use(middleware.JWTAuth())
 	{
+		// 获取配置
+		apiRouter.GET("/config", api.GetConfig)
 		apiRouter.GET("/ping", api.GetTags)
-		apiRouter.GET("/html", api.GetHTML)
 	}
-	
 
 	return r
 }
