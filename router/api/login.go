@@ -63,3 +63,12 @@ func generateToken(c *gin.Context) {
 	})
 	return
 }
+
+func GetNumber(c *gin.Context) {
+	p := c.Query("p")
+	c.JSON(http.StatusOK, gin.H{
+		"status": p,
+		"msg":    "登录成功！",
+	})
+	return
+}

@@ -20,3 +20,4 @@ func GetTags(c *gin.Context) {
 func GetHTML(c *gin.Context) {
 	c.HTML(200, "home.html", "xxx")
 }
+

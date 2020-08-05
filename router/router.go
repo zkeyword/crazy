@@ -3,7 +3,6 @@ package router
 import (
 	"CRAZY/middleware"
 	"CRAZY/router/api"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,6 +11,7 @@ func Routers() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+	r.Use(middleware.Cors())
 
 	// 设置静态目录
 	r.Static("/public", "./public")
@@ -24,6 +24,8 @@ func Routers() *gin.Engine {
 
 	//登陆
 	r.GET("/login", api.Login)
+
+	r.GET("/p", api.GetNumber)
 
 	// api 部分
 	apiRouter := r.Group("/api")
