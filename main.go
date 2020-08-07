@@ -3,7 +3,15 @@ package main
 import (
 	"CRAZY/config"
 	"CRAZY/router"
+	"CRAZY/utils"
+	"bufio"
+	"strings"
+
+	"CRAZY/utils/desktop"
+
+	googleAuthenticator "CRAZY/utils/google-authenticator"
 	"CRAZY/utils/xor"
+
 	"flag"
 	"fmt"
 	"log"
@@ -18,8 +26,29 @@ import (
 )
 
 func main() {
-	// utils.WriteFile()
-	// utils.ReadFile()
+	fmt.Println("请输入账号:")
+	reader := bufio.NewReader(os.Stdin)
+	user, _ := reader.ReadString('\n')
+	user = strings.TrimSuffix(user, "\n")
+
+	secret := googleAuthenticator.NewGoogleAuth().GetSecret()
+	code, err := googleAuthenticator.NewGoogleAuth().GetCode(secret)
+
+	qrCodeURL := googleAuthenticator.NewGoogleAuth().GetQrcodeUrl(user, secret)
+	desktop.Open(qrCodeURL)
+
+	fmt.Println("请输入CODE:")
+	readerCode := bufio.NewReader(os.Stdin)
+	userCode, _ := readerCode.ReadString('\n')
+	userCode = strings.TrimSuffix(userCode, "\n")
+
+	fmt.Println(code, userCode, secret)
+	if code != userCode {
+		os.Exit(1)
+	}
+
+	utils.WriteFile()
+	utils.ReadFile()
 
 	startTime := time.Now()
 	d, _ := time.ParseDuration(strconv.Itoa(7*24) + "h")

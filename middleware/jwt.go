@@ -83,7 +83,7 @@ func GetSignKey() string {
 	return SignKey
 }
 
-// 这是SignKey
+// SetSignKey 这是SignKey
 func SetSignKey(key string) string {
 	SignKey = key
 	return SignKey
@@ -95,7 +95,7 @@ func (j *JWT) CreateToken(claims CustomClaims) (string, error) {
 	return token.SignedString(j.SigningKey)
 }
 
-// 解析Tokne
+// ParseToken 解析Tokne
 func (j *JWT) ParseToken(tokenString string) (*CustomClaims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return j.SigningKey, nil
@@ -120,7 +120,7 @@ func (j *JWT) ParseToken(tokenString string) (*CustomClaims, error) {
 	return nil, TokenInvalid
 }
 
-// 更新token
+// RefreshToken 更新token
 func (j *JWT) RefreshToken(tokenString string) (string, error) {
 	jwt.TimeFunc = func() time.Time {
 		return time.Unix(0, 0)
