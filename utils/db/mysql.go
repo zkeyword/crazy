@@ -1,10 +1,11 @@
 package db
 
 import (
-	"BLOG/model"
+	"CRAZY/model"
+	"time"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"time"
 )
 
 var mysqlDB *gorm.DB

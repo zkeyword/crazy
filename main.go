@@ -3,21 +3,12 @@ package main
 import (
 	"CRAZY/config"
 	"CRAZY/router"
-	"CRAZY/utils"
-	"bufio"
-	"strings"
+	"CRAZY/utils/db"
 
-	"CRAZY/utils/desktop"
-
-	googleAuthenticator "CRAZY/utils/google-authenticator"
-	"CRAZY/utils/xor"
-
-	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -26,38 +17,44 @@ import (
 )
 
 func main() {
-	fmt.Println("请输入账号:")
-	reader := bufio.NewReader(os.Stdin)
-	user, _ := reader.ReadString('\n')
-	user = strings.TrimSuffix(user, "\n")
+	// fmt.Println("请输入账号:")
+	// reader := bufio.NewReader(os.Stdin)
+	// user, _ := reader.ReadString('\n')
+	// user = strings.TrimSuffix(user, "\n")
 
-	secret := googleAuthenticator.NewGoogleAuth().GetSecret()
-	code, err := googleAuthenticator.NewGoogleAuth().GetCode(secret)
+	// secret := googleAuthenticator.NewGoogleAuth().GetSecret()
+	// code, err := googleAuthenticator.NewGoogleAuth().GetCode(secret)
 
-	qrCodeURL := googleAuthenticator.NewGoogleAuth().GetQrcodeUrl(user, secret)
-	desktop.Open(qrCodeURL)
+	// qrCodeURL := googleAuthenticator.NewGoogleAuth().GetQrcodeUrl(user, secret)
+	// desktop.Open(qrCodeURL)
 
-	fmt.Println("请输入CODE:")
-	readerCode := bufio.NewReader(os.Stdin)
-	userCode, _ := readerCode.ReadString('\n')
-	userCode = strings.TrimSuffix(userCode, "\n")
+	// fmt.Println("请输入CODE:")
+	// readerCode := bufio.NewReader(os.Stdin)
+	// userCode, _ := readerCode.ReadString('\n')
+	// userCode = strings.TrimSuffix(userCode, "\n")
 
-	fmt.Println(code, userCode, secret)
-	if code != userCode {
-		os.Exit(1)
-	}
+	// fmt.Println(code, userCode, secret)
+	// if code != userCode {
+	// 	os.Exit(1)
+	// }
 
-	utils.WriteFile()
-	utils.ReadFile()
+	// utils.WriteFile()
+	// utils.ReadFile()
 
-	startTime := time.Now()
-	d, _ := time.ParseDuration(strconv.Itoa(7*24) + "h")
-	endTime := startTime.Add(d)
-	fmt.Println(xor.Enc(endTime.Format(config.SysTimeform)))
-	x := xor.Dec("80398965be5d736a81399b67a157747688398a")
-	fmt.Println(x)
+	// startTime := time.Now()
+	// d, _ := time.ParseDuration(strconv.Itoa(7*24) + "h")
+	// endTime := startTime.Add(d)
+	// fmt.Println(xor.Enc(endTime.Format(config.SysTimeform)))
+	// x := xor.Dec("80398965be5d736a81399b67a157747688398a")
+	// fmt.Println(x)
 
-	flag.Parse()
+	// flag.Parse()
+
+	// 启动mysql
+	defer db.CloseMysql()
+	fmt.Print("Start Mysql...\r")
+	checkErr("Start Mysql", db.StartMysql(config.DbConfig.Dsn, config.DbConfig.MaxIdle, config.DbConfig.MaxOpen))
+	fmt.Print("Start Mysql Success!!!\n")
 
 	// 创建文件日志，按天分割，日志文件仅保留一周
 	w, err := rotatelogs.New(config.LogPath)

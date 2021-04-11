@@ -3,6 +3,7 @@ package router
 import (
 	"CRAZY/middleware"
 	"CRAZY/router/api"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,10 +23,12 @@ func Routers() *gin.Engine {
 	// 首页
 	r.GET("/", api.GetHTML)
 
-	//登陆
+	// 登陆
 	r.GET("/login", api.Login)
 
 	r.GET("/p", api.GetNumber)
+
+	// 用户
 
 	// api 部分
 	apiRouter := r.Group("/api")

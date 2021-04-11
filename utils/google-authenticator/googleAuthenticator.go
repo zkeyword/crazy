@@ -1,17 +1,13 @@
 package googleAuthenticator
 
 import (
-	"CRAZY/utils/folder"
 	"bytes"
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/base32"
 	"encoding/binary"
 	"fmt"
-	"io"
 	"net/url"
-	"os"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -24,15 +20,15 @@ func NewGoogleAuth() *GoogleAuth {
 }
 
 func (this *GoogleAuth) un() int64 {
-	var filename = "./tmp/output.txt"
-	if folder.IsExist(filename) {
-		buffer, _ := folder.ReadAllIntoMemory(filename)
-		i, _ := strconv.ParseInt(string(buffer), 10, 64)
-		return i
-	}
+	// var filename = "./tmp/output.txt"
+	// if folder.IsExist(filename) {
+	// 	buffer, _ := folder.ReadAllIntoMemory(filename)
+	// 	i, _ := strconv.ParseInt(string(buffer), 10, 64)
+	// 	return i
+	// }
 	t := time.Now().UnixNano() / 1000 / 30
-	f, _ := os.Create(filename)
-	io.WriteString(f, strconv.FormatInt(t, 10))
+	// f, _ := os.Create(filename)
+	// io.WriteString(f, strconv.FormatInt(t, 10))
 	return t
 }
 
