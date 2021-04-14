@@ -9,7 +9,7 @@ type DbConf struct {
 
 // DbConfig  Mysql主库配置
 var DbConfig DbConf = DbConf{
-	Dsn:     "root:secret@tcp(127.0.0.1:13306)/b?charset=utf8mb4&parseTime=true",
+	Dsn:     "root:123456@tcp(127.0.0.1:3306)/b?charset=utf8mb4&parseTime=true",
 	MaxIdle: 10,
 	MaxOpen: 100,
 }

@@ -2,7 +2,6 @@ package db
 
 import (
 	"CRAZY/model"
-	"fmt"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -37,7 +36,6 @@ func GetMysql() *gorm.DB {
 			&model.Role{},
 			&model.RolePermission{},
 		)
-	fmt.Println(mysqlDB)
 	return mysqlDB
 }
 

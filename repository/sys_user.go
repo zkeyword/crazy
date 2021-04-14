@@ -34,7 +34,7 @@ func NewUserRepository() *UserRepository {
 }
 
 // Get 获取用户
-func (r *UserRepository) Get(id int) *User {
+func (r *UserRepository) Get(id int64) *User {
 	ret := &User{}
 
 	if err := db.GetMysql().First(ret, "id = ?", id).Error; err != nil {
@@ -44,21 +44,21 @@ func (r *UserRepository) Get(id int) *User {
 	return ret
 }
 
-func (r *UserRepository) FindByID(id int) (*model.User, error) {
+func (r *UserRepository) FindByID(id int64) (*model.User, error) {
 	var user = new(model.User)
-	result := db.GetMysql().Where("id=?", id).First(user)
+	result := db.GetMysql().Where("id=?", id).Find(user)
 	err := result.Error
 	return user, err
 }
 
-// func (r *UserRepository) FindByIDs(ids []uint) ([]model.User, error) {
-// 	var users = make([]model.User, 0)
-// 	err := db.GetMysql().Where("id in (?)", ids).Find(&users).Error
-// 	for idx := range users {
-// 		users[idx].Password = ""
-// 	}
-// 	return users, err
-// }
+func (r *UserRepository) FindByIDs(ids []uint) ([]model.User, error) {
+	var users = make([]model.User, 0)
+	err := db.GetMysql().Where("id in (?)", ids).Find(&users).Error
+	for idx := range users {
+		users[idx].Password = ""
+	}
+	return users, err
+}
 
 // Create 创建用户
 func (r *UserRepository) Create(t *model.User) (uint, error) {

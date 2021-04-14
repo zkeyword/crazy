@@ -8,37 +8,37 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// PostUser 新增用户
-func PostUser(c *gin.Context) {
+// PostPermission 新增权限
+func PostPermission(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	user := services.NewUserService.Get(id)
+	user := services.NewPermissionService.Get(id)
 	utils.OkDetailed(gin.H{
 		"user": user,
 	}, "success", c)
 }
 
-// DelUserById 删除用户
-func DelUserById(c *gin.Context) {
+// DelPermissionById 删除权限
+func DelPermissionById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	user := services.NewUserService.Get(id)
+	user := services.NewPermissionService.Get(id)
 	utils.OkDetailed(gin.H{
 		"user": user,
 	}, "success", c)
 }
 
-// PutUserById 修改用户
-func PutUserById(c *gin.Context) {
+// PutPermissionById 修改权限
+func PutPermissionById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	user := services.NewUserService.Get(id)
+	user := services.NewPermissionService.Get(id)
 	utils.OkDetailed(gin.H{
 		"user": user,
 	}, "success", c)
 }
 
-// GetUserById 获取用户
-func GetUserById(c *gin.Context) {
+// GetPermissionById 获取权限
+func GetPermissionById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	user := services.NewUserService.Get(id)
+	user := services.NewPermissionService.Get(id)
 	utils.OkDetailed(gin.H{
 		"user": user,
 	}, "success", c)

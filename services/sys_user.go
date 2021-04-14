@@ -7,9 +7,9 @@ import (
 
 // UserService user服务
 type UserService interface {
-	Get(id int) *repository.User
-	FindByID(userID int) (*model.User, error)
-	// FindByIDs(ids []uint) []model.User
+	Get(id int64) *repository.User
+	FindByID(userID int64) (*model.User, error)
+	FindByIDs(ids []uint) []model.User
 	Create(Article *model.User) (uint, error)
 }
 
@@ -26,19 +26,19 @@ func newUserService() UserService {
 	}
 }
 
-func (s *userService) Get(id int) *repository.User {
+func (s *userService) Get(id int64) *repository.User {
 	return s.repo.Get(id)
 }
 
-func (s *userService) FindByID(userID int) (*model.User, error) {
+func (s *userService) FindByID(userID int64) (*model.User, error) {
 	user, err := s.repo.FindByID(userID)
 	return user, err
 }
 
-// func (s *userService) FindByIDs(ids []uint) []model.User {
-// 	users, _ := s.repo.FindByIDs(ids)
-// 	return users
-// }
+func (s *userService) FindByIDs(ids []uint) []model.User {
+	users, _ := s.repo.FindByIDs(ids)
+	return users
+}
 
 func (s *userService) Create(User *model.User) (uint, error) {
 	ID, err := s.repo.Create(User)
