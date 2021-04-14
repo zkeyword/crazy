@@ -2,6 +2,7 @@ package db
 
 import (
 	"CRAZY/model"
+	"fmt"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -28,10 +29,15 @@ func GetMysql() *gorm.DB {
 	mysqlDB.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
 		AutoMigrate(
 			&model.Article{},
-			&model.User{},
 			&model.Tag{},
 			&model.ArticleTag{},
+			&model.User{},
+			&model.UserRole{},
+			&model.Permission{},
+			&model.Role{},
+			&model.RolePermission{},
 		)
+	fmt.Println(mysqlDB)
 	return mysqlDB
 }
 

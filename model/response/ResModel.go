@@ -1,14 +1,14 @@
-package model
+package response
 
-// ResModel response model
-type ResModel struct {
+// Response response model
+type Response struct {
 	Code string      `json:"code"`
 	Msg  string      `json:"msg"`
 	Data interface{} `json:"data"`
 }
 
 // WithData set model success and data
-func (res *ResModel) WithData(data interface{}) *ResModel {
+func (res *Response) WithData(data interface{}) *Response {
 	res.Code = "200"
 	res.Msg = "success"
 	res.Data = data
@@ -16,7 +16,7 @@ func (res *ResModel) WithData(data interface{}) *ResModel {
 }
 
 // WithError set error message
-func (res *ResModel) WithError(errCode string, Message string) *ResModel {
+func (res *Response) WithError(errCode string, Message string) *Response {
 	res.Code = errCode
 	res.Msg = Message
 	return res

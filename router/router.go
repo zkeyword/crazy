@@ -29,6 +29,7 @@ func Routers() *gin.Engine {
 	r.GET("/p", api.GetNumber)
 
 	// 用户
+	r.GET("/user/:id", api.GetUser)
 
 	// api 部分
 	apiRouter := r.Group("/api")
