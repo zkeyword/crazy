@@ -30,6 +30,9 @@ func Routers() *gin.Engine {
 
 	// 用户
 	r.GET("/user/:id", api.GetUserById)
+	r.POST("/user/", api.PostUser)
+	r.DELETE("/user/:id", api.DelUserById)
+	r.PUT("/user/:id", api.PutUserById)
 
 	// api 部分
 	apiRouter := r.Group("/api")

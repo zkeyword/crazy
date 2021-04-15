@@ -65,3 +65,17 @@ func (r *UserRepository) Create(t *model.User) (uint, error) {
 	err := db.GetMysql().Create(t).Error
 	return t.ID, err
 }
+
+// DeleteById 删除用户
+func (r *UserRepository) DeleteById(id int64) (*User, error) {
+	ret := &User{}
+	err := db.GetMysql().Where("id=?", id).Delete(ret).Error
+	return ret, err
+}
+
+// UpdateById 修改用户
+func (r *UserRepository) UpdateById(id int64, t *model.User) (*model.User, error) {
+	var user = new(model.User)
+	err := db.GetMysql().Model(&user).Where("id=?", id).Updates(t).Error
+	return user, err
+}
