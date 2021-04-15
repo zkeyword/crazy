@@ -8,6 +8,8 @@ import (
 type PermissionService interface {
 	Get(id int64) *repository.Permission
 	Create(Article *model.Permission) (uint, error)
+	UpdateById(id int64, Permission *model.Permission) (*model.Permission, error)
+	DeleteById(id int64) error
 }
 
 type permissionService struct {
@@ -29,4 +31,14 @@ func (s *permissionService) Get(id int64) *repository.Permission {
 func (s *permissionService) Create(Permission *model.Permission) (uint, error) {
 	ID, err := s.repo.Create(Permission)
 	return ID, err
+}
+
+func (s *permissionService) UpdateById(id int64, Permission *model.Permission) (*model.Permission, error) {
+	ret, err := s.repo.UpdateById(id, Permission)
+	return ret, err
+}
+
+func (s *permissionService) DeleteById(id int64) error {
+	err := s.repo.DeleteById(id)
+	return err
 }

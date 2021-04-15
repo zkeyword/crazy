@@ -32,6 +32,18 @@ func Routers() *gin.Engine {
 	r.DELETE("/user/:id", api.DelUserById)
 	r.PUT("/user/:id", api.PutUserById)
 
+	// 角色
+	r.GET("/role/:id", api.GetRoleById)
+	r.POST("/role/", api.PostRole)
+	r.DELETE("/role/:id", api.DelRoleById)
+	r.PUT("/role/:id", api.PutRoleById)
+
+	// 权限
+	r.GET("/permission/:id", api.GetPermissionById)
+	r.POST("/permission/", api.PostPermission)
+	r.DELETE("/permission/:id", api.DelPermissionById)
+	r.PUT("/permission/:id", api.PutPermissionById)
+
 	// api 部分
 	apiRouter := r.Group("/api")
 	apiRouter.Use(middleware.JWTAuth())

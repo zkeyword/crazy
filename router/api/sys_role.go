@@ -23,9 +23,7 @@ func PostRole(c *gin.Context) {
 		}
 		res, resErr := services.NewRoleService.Create(Model)
 		if resErr == nil {
-			utils.OkDetailed(gin.H{
-				"user": res,
-			}, "success", c)
+			utils.OkDetailed(res, "success", c)
 		} else {
 			utils.FailWithMessage(resErr.Error(), c)
 		}
@@ -56,9 +54,7 @@ func PutRoleById(c *gin.Context) {
 		}
 		res, resErr := services.NewRoleService.UpdateById(id, Model)
 		if resErr == nil {
-			utils.OkDetailed(gin.H{
-				"user": res,
-			}, "success", c)
+			utils.OkDetailed(res, "success", c)
 		} else {
 			utils.FailWithMessage(resErr.Error(), c)
 		}
@@ -70,8 +66,6 @@ func PutRoleById(c *gin.Context) {
 // GetRoleById 获取角色
 func GetRoleById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	user := services.NewRoleService.Get(id)
-	utils.OkDetailed(gin.H{
-		"user": user,
-	}, "success", c)
+	res := services.NewRoleService.Get(id)
+	utils.OkDetailed(res, "success", c)
 }

@@ -27,9 +27,6 @@ func StartMysql(dsn string, maxIdle, maxOpen int) (err error) {
 func GetMysql() *gorm.DB {
 	db.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
 		AutoMigrate(
-			&model.Article{},
-			&model.Tag{},
-			&model.ArticleTag{},
 			&model.User{},
 			&model.UserRole{},
 			&model.Permission{},

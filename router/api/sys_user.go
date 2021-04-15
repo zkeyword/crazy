@@ -29,9 +29,7 @@ func PostUser(c *gin.Context) {
 		}
 		res, resErr := services.NewUserService.Create(Model)
 		if resErr == nil {
-			utils.OkDetailed(gin.H{
-				"user": res,
-			}, "success", c)
+			utils.OkDetailed(res, "success", c)
 		} else {
 			utils.FailWithMessage(resErr.Error(), c)
 		}
@@ -70,9 +68,7 @@ func PutUserById(c *gin.Context) {
 		}
 		res, resErr := services.NewUserService.PutUserById(id, Model)
 		if resErr == nil {
-			utils.OkDetailed(gin.H{
-				"user": res,
-			}, "success", c)
+			utils.OkDetailed(res, "success", c)
 		} else {
 			utils.FailWithMessage(resErr.Error(), c)
 		}
@@ -85,7 +81,5 @@ func PutUserById(c *gin.Context) {
 func GetUserById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
 	res := services.NewUserService.Get(id)
-	utils.OkDetailed(gin.H{
-		"user": res,
-	}, "success", c)
+	utils.OkDetailed(res, "success", c)
 }

@@ -9,21 +9,10 @@ import (
 type PermissionRepository struct {
 }
 
-type PermissionList struct {
-	Data     []model.Permission
-	Total    int
-	PageSize int
-	Page     int
-}
-
 type Permission struct {
 	ID        uint
-	Title     string
-	Content   string
-	AuthorID  uint
+	Name      string
 	UpdatedAt time.Time
-	TagID     int
-	TagName   string
 }
 
 func NewPermissionRepository() *PermissionRepository {
