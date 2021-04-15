@@ -11,7 +11,7 @@ type UserService interface {
 	FindByID(userID int64) (*model.User, error)
 	FindByIDs(ids []uint) []model.User
 	Create(User *model.User) (uint, error)
-	DeleteById(id int64) (*repository.User, error)
+	DeleteById(id int64) error
 	PutUserById(id int64, User *model.User) (*model.User, error)
 }
 
@@ -52,7 +52,7 @@ func (s *userService) PutUserById(id int64, User *model.User) (*model.User, erro
 	return ID, err
 }
 
-func (s *userService) DeleteById(id int64) (*repository.User, error) {
-	ID, err := s.repo.DeleteById(id)
-	return ID, err
+func (s *userService) DeleteById(id int64) error {
+	err := s.repo.DeleteById(id)
+	return err
 }

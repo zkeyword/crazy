@@ -5,6 +5,7 @@ import (
 	"CRAZY/services"
 	"CRAZY/utils"
 	"CRAZY/utils/xor"
+	"fmt"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -21,18 +22,18 @@ func PostUser(c *gin.Context) {
 	var form UserForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		User := &model.User{
+		Model := &model.User{
 			Username: form.Username,
 			Password: xor.Enc(form.Password),
 			Status:   form.Status,
 		}
-		user, createErr := services.NewUserService.Create(User)
-		if createErr == nil {
+		res, resErr := services.NewUserService.Create(Model)
+		if resErr == nil {
 			utils.OkDetailed(gin.H{
-				"user": user,
+				"user": res,
 			}, "success", c)
 		} else {
-			utils.FailWithMessage(createErr.Error(), c)
+			utils.FailWithMessage(resErr.Error(), c)
 		}
 	} else {
 		utils.FailWithMessage(err.Error(), c)
@@ -42,10 +43,13 @@ func PostUser(c *gin.Context) {
 // DelUserById 删除用户
 func DelUserById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	user, _ := services.NewUserService.DeleteById(id)
-	utils.OkDetailed(gin.H{
-		"user": user,
-	}, "success", c)
+	resErr := services.NewUserService.DeleteById(id)
+	fmt.Println(resErr, id)
+	if resErr == nil {
+		utils.Ok(c)
+	} else {
+		utils.FailWithMessage(resErr.Error(), c)
+	}
 }
 
 type PutUserForm struct {
@@ -60,23 +64,28 @@ func PutUserById(c *gin.Context) {
 	var form PutUserForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		User := &model.User{
+		Model := &model.User{
 			Username: form.Username,
 			Password: xor.Enc(form.Password),
 		}
-		user, _ := services.NewUserService.PutUserById(id, User)
-		utils.OkDetailed(gin.H{
-			"user": user,
-		}, "success", c)
+		res, resErr := services.NewUserService.PutUserById(id, Model)
+		if resErr == nil {
+			utils.OkDetailed(gin.H{
+				"user": res,
+			}, "success", c)
+		} else {
+			utils.FailWithMessage(resErr.Error(), c)
+		}
+	} else {
+		utils.FailWithMessage(err.Error(), c)
 	}
-
 }
 
 // GetUserById 获取用户
 func GetUserById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	user := services.NewUserService.Get(id)
+	res := services.NewUserService.Get(id)
 	utils.OkDetailed(gin.H{
-		"user": user,
+		"user": res,
 	}, "success", c)
 }

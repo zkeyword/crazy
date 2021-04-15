@@ -8,16 +8,16 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-var mysqlDB *gorm.DB
+var db *gorm.DB
 
 // StartMysql 初始化mysql
 func StartMysql(dsn string, maxIdle, maxOpen int) (err error) {
-	mysqlDB, err = gorm.Open("mysql", dsn)
+	db, err = gorm.Open("mysql", dsn)
 
 	if err == nil {
-		mysqlDB.DB().SetMaxIdleConns(maxIdle)
-		mysqlDB.DB().SetMaxOpenConns(maxOpen)
-		mysqlDB.DB().SetConnMaxLifetime(time.Duration(30) * time.Minute)
+		db.DB().SetMaxIdleConns(maxIdle)
+		db.DB().SetMaxOpenConns(maxOpen)
+		db.DB().SetConnMaxLifetime(time.Duration(30) * time.Minute)
 	}
 
 	return
@@ -25,7 +25,7 @@ func StartMysql(dsn string, maxIdle, maxOpen int) (err error) {
 
 // GetMysql 获取mysql连接
 func GetMysql() *gorm.DB {
-	mysqlDB.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
+	db.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
 		AutoMigrate(
 			&model.Article{},
 			&model.Tag{},
@@ -36,12 +36,12 @@ func GetMysql() *gorm.DB {
 			&model.Role{},
 			&model.RolePermission{},
 		)
-	return mysqlDB
+	return db
 }
 
 // CloseMysql 关闭mysql
 func CloseMysql() {
-	if mysqlDB != nil {
-		mysqlDB.Close()
+	if db != nil {
+		db.Close()
 	}
 }

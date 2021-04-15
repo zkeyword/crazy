@@ -26,8 +26,6 @@ func Routers() *gin.Engine {
 	// 登陆
 	r.GET("/login", api.Login)
 
-	r.GET("/p", api.GetNumber)
-
 	// 用户
 	r.GET("/user/:id", api.GetUserById)
 	r.POST("/user/", api.PostUser)
@@ -40,7 +38,6 @@ func Routers() *gin.Engine {
 	{
 		// 获取配置
 		apiRouter.GET("/config", api.GetConfig)
-		apiRouter.GET("/ping", api.GetTags)
 	}
 
 	return r

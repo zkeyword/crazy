@@ -67,10 +67,12 @@ func (r *UserRepository) Create(t *model.User) (uint, error) {
 }
 
 // DeleteById 删除用户
-func (r *UserRepository) DeleteById(id int64) (*User, error) {
-	ret := &User{}
-	err := db.GetMysql().Where("id=?", id).Delete(ret).Error
-	return ret, err
+func (r *UserRepository) DeleteById(id int64) error {
+	if err := db.GetMysql().Where("id = ?", id).Delete(User{}).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // UpdateById 修改用户
