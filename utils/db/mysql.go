@@ -18,6 +18,14 @@ func StartMysql(dsn string, maxIdle, maxOpen int) (err error) {
 		db.DB().SetMaxIdleConns(maxIdle)
 		db.DB().SetMaxOpenConns(maxOpen)
 		db.DB().SetConnMaxLifetime(time.Duration(30) * time.Minute)
+		db.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
+			AutoMigrate(
+				&model.User{},
+				&model.UserRole{},
+				&model.Permission{},
+				&model.Role{},
+				&model.RolePermission{},
+			)
 	}
 
 	return
@@ -25,14 +33,6 @@ func StartMysql(dsn string, maxIdle, maxOpen int) (err error) {
 
 // GetMysql 获取mysql连接
 func GetMysql() *gorm.DB {
-	db.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
-		AutoMigrate(
-			&model.User{},
-			&model.UserRole{},
-			&model.Permission{},
-			&model.Role{},
-			&model.RolePermission{},
-		)
 	return db
 }
 

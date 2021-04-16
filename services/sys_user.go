@@ -3,7 +3,6 @@ package services
 import (
 	"CRAZY/model"
 	"CRAZY/repository"
-	"strconv"
 )
 
 // UserService user服务
@@ -32,9 +31,14 @@ func (s *userService) Get(id int64) *repository.User {
 	return s.repo.Get(id)
 }
 
+// func (s *userService) Create(User *model.User, RoleId uint) (*model.User, error) {
+// 	ret, err := s.repo.Create(User, RoleId)
+// 	// s.repo2.Create(ret.ID, RoleId)
+// 	return ret, err
+// }
 func (s *userService) Create(User *model.User, RoleId uint) (*model.User, error) {
 	ret, err := s.repo.Create(User)
-	s.repo2.Create(strconv.Itoa(int(ret.ID)), strconv.Itoa(int(RoleId)))
+	s.repo2.Create(ret.ID, RoleId)
 	return ret, err
 }
 

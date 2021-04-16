@@ -21,6 +21,23 @@ func NewUserRepository() *UserRepository {
 }
 
 // Create 创建用户
+// func (r *UserRepository) Create(t *model.User, RoleId uint) (*model.User, error) {
+// 	tx := db.GetMysql().Begin()
+// 	c := tx.Create(t)
+// 	rowsAffected := c.RowsAffected
+// 	if rowsAffected == 0 {
+// 		tx.Rollback()
+// 		return t, c.Error
+// 	}
+// 	var ur *UserRoleRepository
+// 	_, err := ur.Create(t.ID, RoleId)
+// 	if err != nil {
+// 		tx.Rollback()
+// 	} else {
+// 		tx.Commit()
+// 	}
+// 	return t, err
+// }
 func (r *UserRepository) Create(t *model.User) (*model.User, error) {
 	err := db.GetMysql().Create(t).Error
 	return t, err

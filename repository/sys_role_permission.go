@@ -11,7 +11,7 @@ type RolePermissionRepository struct {
 // RolePermission 类型
 type RolePermission struct {
 	ID           uint
-	PermissionId string
+	PermissionID string
 	RoleId       string
 }
 

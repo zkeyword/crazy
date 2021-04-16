@@ -9,9 +9,9 @@ type User struct {
 	ID        uint   `gorm:"primary_key;AUTO_INCREMENT"`
 	Username  string `gorm:"unique;not null;varchar(50)"`
 	Password  string `gorm:"not null;varchar(128)"`
-	Status    int    `gorm:"-"`
-	Level     int    `gorm:"-;comment:'等级'"`
-	ParentId  uint   `gorm:"-"`
+	Status    int    `gorm:"not null"`
+	Level     int    `gorm:"not null"`
+	ParentID  uint   `gorm:"not null"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
