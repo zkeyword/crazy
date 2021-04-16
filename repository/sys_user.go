@@ -21,9 +21,9 @@ func NewUserRepository() *UserRepository {
 }
 
 // Create 创建用户
-func (r *UserRepository) Create(t *model.User) (uint, error) {
+func (r *UserRepository) Create(t *model.User) (*model.User, error) {
 	err := db.GetMysql().Create(t).Error
-	return t.ID, err
+	return t, err
 }
 
 // DeleteById 删除用户

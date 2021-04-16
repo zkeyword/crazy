@@ -7,7 +7,8 @@ import (
 // UserRole 用户角色表
 type UserRole struct {
 	ID        uint `gorm:"primary_key;AUTO_INCREMENT"`
-	RoleId    int  `gorm:"-"`
+	UserId    uint `gorm:"-"`
+	RoleId    uint `gorm:"-"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

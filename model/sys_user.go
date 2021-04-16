@@ -10,6 +10,8 @@ type User struct {
 	Username  string `gorm:"unique;not null;varchar(50)"`
 	Password  string `gorm:"not null;varchar(128)"`
 	Status    int    `gorm:"-"`
+	Level     int    `gorm:"-;comment:'等级'"`
+	ParentId  uint   `gorm:"-"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

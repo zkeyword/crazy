@@ -15,6 +15,7 @@ type UserForm struct {
 	Username string `form:"username" binding:"required"`
 	Password string `form:"password" binding:"required"`
 	Status   int    `form:"status" binding:"required"`
+	Role     uint   `form:"status"`
 }
 
 // PostUser 新增用户
@@ -27,7 +28,8 @@ func PostUser(c *gin.Context) {
 			Password: xor.Enc(form.Password),
 			Status:   form.Status,
 		}
-		res, resErr := services.NewUserService.Create(Model)
+		fmt.Println(form.Role)
+		res, resErr := services.NewUserService.Create(Model, form.Role)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {
@@ -42,7 +44,6 @@ func PostUser(c *gin.Context) {
 func DelUserById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
 	resErr := services.NewUserService.DeleteById(id)
-	fmt.Println(resErr, id)
 	if resErr == nil {
 		utils.Ok(c)
 	} else {
