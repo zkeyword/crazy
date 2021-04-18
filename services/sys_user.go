@@ -10,7 +10,7 @@ type UserService interface {
 	Get(id int64) *repository.User
 	Create(User *model.User, RoleId uint) (*model.User, error)
 	DeleteById(id int64) error
-	PutUserById(id int64, User *model.User) (*model.User, error)
+	PutUserById(id int64, User *model.User, RoleId uint) (*model.User, error)
 }
 
 type userService struct {
@@ -38,16 +38,24 @@ func (s *userService) Get(id int64) *repository.User {
 // }
 func (s *userService) Create(User *model.User, RoleId uint) (*model.User, error) {
 	ret, err := s.repo.Create(User)
-	s.repo2.Create(ret.ID, RoleId)
+	if err == nil {
+		s.repo2.Create(ret.ID, RoleId)
+	}
 	return ret, err
 }
 
-func (s *userService) PutUserById(id int64, User *model.User) (*model.User, error) {
+func (s *userService) PutUserById(id int64, User *model.User, RoleId uint) (*model.User, error) {
 	ret, err := s.repo.UpdateById(id, User)
+	if err == nil {
+		s.repo2.UpdateById(id, RoleId)
+	}
 	return ret, err
 }
 
 func (s *userService) DeleteById(id int64) error {
 	err := s.repo.DeleteById(id)
+	if err == nil {
+		s.repo2.DeleteById(id)
+	}
 	return err
 }

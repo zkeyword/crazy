@@ -58,6 +58,7 @@ type PutUserForm struct {
 	Username string `form:"username"`
 	Password string `form:"password"`
 	Status   int    `form:"status"`
+	Role     uint   `form:"role"`
 }
 
 // PutUserById 修改用户
@@ -70,7 +71,7 @@ func PutUserById(c *gin.Context) {
 			Username: form.Username,
 			Password: xor.Enc(form.Password),
 		}
-		res, resErr := services.NewUserService.PutUserById(id, Model)
+		res, resErr := services.NewUserService.PutUserById(id, Model, form.Role)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {

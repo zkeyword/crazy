@@ -18,6 +18,7 @@ func StartMysql(dsn string, maxIdle, maxOpen int) (err error) {
 		db.DB().SetMaxIdleConns(maxIdle)
 		db.DB().SetMaxOpenConns(maxOpen)
 		db.DB().SetConnMaxLifetime(time.Duration(30) * time.Minute)
+		db.LogMode(true)
 		db.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
 			AutoMigrate(
 				&model.User{},
