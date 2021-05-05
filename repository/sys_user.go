@@ -63,7 +63,17 @@ func (r *UserRepository) UpdateById(id int64, t *model.User) (*model.User, error
 func (r *UserRepository) Get(id int64) *User {
 	ret := &User{}
 
-	if err := db.GetMysql().First(ret, "id = ?", id).Error; err != nil {
+	err := db.GetMysql().
+		// Debug().
+		Table("users a").
+		Select("a.id, a.username, a.password, a.level, a.updated_at, t.id role_id, t.name role_name").
+		Joins("left join user_roles r on a.id = r.user_id").
+		Joins("left join roles t on t.id = r.role_id").
+		Where("a.id = ?", id).
+		Find(&ret).
+		Error
+
+	if err != nil {
 		return nil
 	}
 

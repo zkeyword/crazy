@@ -7,13 +7,14 @@ import (
 
 type RoleService interface {
 	Get(id int64) *repository.Role
-	Create(Role *model.Role) (uint, error)
+	Create(Role *model.Role, PermissionID uint) (uint, error)
 	UpdateById(id int64, Role *model.Role) (*model.Role, error)
 	DeleteById(id int64) error
 }
 
 type roleService struct {
-	repo *repository.RoleRepository
+	repo           *repository.RoleRepository
+	rolePermission *repository.RolePermissionRepository
 }
 
 var NewRoleService = newRoleService()
@@ -28,8 +29,11 @@ func (s *roleService) Get(id int64) *repository.Role {
 	return s.repo.Get(id)
 }
 
-func (s *roleService) Create(Role *model.Role) (uint, error) {
+func (s *roleService) Create(Role *model.Role, PermissionID uint) (uint, error) {
 	ID, err := s.repo.Create(Role)
+	if err == nil {
+		s.rolePermission.Create(ID, PermissionID)
+	}
 	return ID, err
 }
 

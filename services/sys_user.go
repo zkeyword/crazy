@@ -14,8 +14,8 @@ type UserService interface {
 }
 
 type userService struct {
-	repo  *repository.UserRepository
-	repo2 *repository.UserRoleRepository
+	repo     *repository.UserRepository
+	userRole *repository.UserRoleRepository
 }
 
 // NewArticleService 实例化ArticleService
@@ -33,13 +33,13 @@ func (s *userService) Get(id int64) *repository.User {
 
 // func (s *userService) Create(User *model.User, RoleId uint) (*model.User, error) {
 // 	ret, err := s.repo.Create(User, RoleId)
-// 	// s.repo2.Create(ret.ID, RoleId)
+// 	// s.userRole.Create(ret.ID, RoleId)
 // 	return ret, err
 // }
 func (s *userService) Create(User *model.User, RoleId uint) (*model.User, error) {
 	ret, err := s.repo.Create(User)
 	if err == nil {
-		s.repo2.Create(ret.ID, RoleId)
+		s.userRole.Create(ret.ID, RoleId)
 	}
 	return ret, err
 }
@@ -47,7 +47,7 @@ func (s *userService) Create(User *model.User, RoleId uint) (*model.User, error)
 func (s *userService) PutUserById(id int64, User *model.User, RoleId uint) (*model.User, error) {
 	ret, err := s.repo.UpdateById(id, User)
 	if err == nil {
-		s.repo2.UpdateById(id, RoleId)
+		s.userRole.UpdateById(id, RoleId)
 	}
 	return ret, err
 }
@@ -55,7 +55,7 @@ func (s *userService) PutUserById(id int64, User *model.User, RoleId uint) (*mod
 func (s *userService) DeleteById(id int64) error {
 	err := s.repo.DeleteById(id)
 	if err == nil {
-		s.repo2.DeleteById(id)
+		s.userRole.DeleteById(id)
 	}
 	return err
 }

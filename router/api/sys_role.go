@@ -10,7 +10,8 @@ import (
 )
 
 type RoleForm struct {
-	Name string `form:"name" binding:"required"`
+	Name       string `form:"name" binding:"required"`
+	Permission uint   `form:"permission"`
 }
 
 // PostRole 新增角色
@@ -21,7 +22,7 @@ func PostRole(c *gin.Context) {
 		Model := &model.Role{
 			Name: form.Name,
 		}
-		res, resErr := services.NewRoleService.Create(Model)
+		res, resErr := services.NewRoleService.Create(Model, form.Permission)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {
