@@ -3,18 +3,27 @@ package services
 import (
 	"CRAZY/model"
 	"CRAZY/repository"
+	"time"
 )
 
 type RoleService interface {
-	Get(id int64) *repository.Role
-	Create(Role *model.Role, PermissionKeys string) (*model.Role, error)
-	UpdateById(id int64, Role *model.Role, PermissionKeys string) (*model.Role, error)
-	DeleteById(id int64) error
+	Get(id uint) *repository.Role
+	Create(Role *model.Role, PermissionKeys string) (*ReturnPolePermission, error)
+	UpdateById(id uint, Role *model.Role, PermissionKeys string) (*ReturnPolePermission, error)
+	DeleteById(id uint) error
 }
 
 type roleService struct {
 	repo           *repository.RoleRepository
 	rolePermission *repository.RolePermissionRepository
+}
+
+type ReturnPolePermission struct {
+	ID             uint      `json:"id"`
+	Name           string    `json:"name"`
+	PermissionKeys string    `json:"permissionKeys"`
+	CreatedAt      time.Time `json:"createdAt"`
+	UpdatedAt      time.Time `json:"updatedAt"`
 }
 
 var NewRoleService = newRoleService()
@@ -25,27 +34,43 @@ func newRoleService() RoleService {
 	}
 }
 
-func (s *roleService) Get(id int64) *repository.Role {
+func (s *roleService) Get(id uint) *repository.Role {
 	return s.repo.Get(id)
 }
 
-func (s *roleService) Create(Role *model.Role, PermissionKeys string) (*model.Role, error) {
+func (s *roleService) Create(Role *model.Role, PermissionKeys string) (*ReturnPolePermission, error) {
 	ret, err := s.repo.Create(Role)
 	if err == nil {
 		s.rolePermission.Create(ret.ID, PermissionKeys)
 	}
-	return ret, err
+	returnValue := &ReturnPolePermission{
+		ID:             ret.ID,
+		Name:           ret.Name,
+		PermissionKeys: PermissionKeys,
+		CreatedAt:      ret.CreatedAt,
+		UpdatedAt:      ret.UpdatedAt,
+	}
+	return returnValue, err
 }
 
-func (s *roleService) UpdateById(id int64, Role *model.Role, PermissionKeys string) (*model.Role, error) {
+func (s *roleService) UpdateById(id uint, Role *model.Role, PermissionKeys string) (*ReturnPolePermission, error) {
 	ret, err := s.repo.UpdateById(id, Role)
 	if err == nil {
 		s.rolePermission.UpdateById(id, PermissionKeys)
+	} else {
+		PermissionKeys = ""
 	}
-	return ret, err
+	returnValue := &ReturnPolePermission{
+		ID:             ret.ID,
+		Name:           ret.Name,
+		PermissionKeys: PermissionKeys,
+		CreatedAt:      ret.CreatedAt,
+		UpdatedAt:      ret.UpdatedAt,
+	}
+	return returnValue, err
 }
 
-func (s *roleService) DeleteById(id int64) error {
+func (s *roleService) DeleteById(id uint) error {
 	err := s.repo.DeleteById(id)
 	return err
 }

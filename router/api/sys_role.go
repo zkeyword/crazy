@@ -4,7 +4,6 @@ import (
 	"CRAZY/model"
 	"CRAZY/services"
 	"CRAZY/utils"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -35,7 +34,7 @@ func PostRole(c *gin.Context) {
 
 // DelRoleById 删除角色
 func DelRoleById(c *gin.Context) {
-	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	id := utils.StrToUInt(c.Param("id"))
 	resErr := services.NewRoleService.DeleteById(id)
 	if resErr == nil {
 		utils.Ok(c)
@@ -44,14 +43,9 @@ func DelRoleById(c *gin.Context) {
 	}
 }
 
-// type PutRoleForm struct {
-// 	Name           string `form:"name" binding:"required"`
-// 	PermissionKeys string `form:"permission"`
-// }
-
 // PutRoleById 修改角色
 func PutRoleById(c *gin.Context) {
-	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	id := utils.StrToUInt(c.Param("id"))
 	var form RoleForm
 	err := c.ShouldBind(&form)
 	if err == nil {
@@ -71,7 +65,7 @@ func PutRoleById(c *gin.Context) {
 
 // GetRoleById 获取角色
 func GetRoleById(c *gin.Context) {
-	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	id := utils.StrToUInt(c.Param("id"))
 	res := services.NewRoleService.Get(id)
 	utils.OkDetailed(res, "success", c)
 }
