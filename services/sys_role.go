@@ -19,11 +19,11 @@ type roleService struct {
 }
 
 type ReturnPolePermission struct {
-	ID             uint      `json:"id"`
-	Name           string    `json:"name"`
-	PermissionKeys string    `json:"permissionKeys"`
-	CreatedAt      time.Time `json:"createdAt"`
-	UpdatedAt      time.Time `json:"updatedAt"`
+	ID             uint
+	Name           string
+	PermissionKeys string
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
 }
 
 var NewRoleService = newRoleService()

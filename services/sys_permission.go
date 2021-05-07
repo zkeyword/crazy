@@ -3,11 +3,10 @@ package services
 import (
 	"CRAZY/model"
 	"CRAZY/repository"
-	"time"
 )
 
 type PermissionService interface {
-	Get(id int64) *ReturnPermission
+	Get(id int64) *repository.Permission
 	Create(Article *model.Permission) (*model.Permission, error)
 	UpdateById(id int64, Permission *model.Permission) (*model.Permission, error)
 	DeleteById(id int64) error
@@ -15,15 +14,6 @@ type PermissionService interface {
 
 type permissionService struct {
 	repo *repository.PermissionRepository
-}
-
-type ReturnPermission struct {
-	ID        uint      `json:"id"`
-	Name      string    `json:"name"`
-	Key       string    `json:"key"`
-	Status    int       `json:"status"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 var NewPermissionService = newPermissionService()
@@ -34,17 +24,8 @@ func newPermissionService() PermissionService {
 	}
 }
 
-func (s *permissionService) Get(id int64) *ReturnPermission {
-	ret := s.repo.Get(id)
-	returnValue := &ReturnPermission{
-		ID:        ret.ID,
-		Name:      ret.Name,
-		Key:       ret.Key,
-		Status:    ret.Status,
-		CreatedAt: ret.CreatedAt,
-		UpdatedAt: ret.UpdatedAt,
-	}
-	return returnValue
+func (s *permissionService) Get(id int64) *repository.Permission {
+	return s.repo.Get(id)
 }
 
 func (s *permissionService) Create(Permission *model.Permission) (*model.Permission, error) {

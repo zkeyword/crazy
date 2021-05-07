@@ -6,12 +6,12 @@ import (
 
 // User 用户表
 type User struct {
-	ID        uint   `gorm:"primary_key;AUTO_INCREMENT"`
-	Username  string `gorm:"unique;not null;varchar(50)"`
-	Password  string `gorm:"not null;varchar(128)"`
-	Status    int    `gorm:"not null"`
-	Level     int    `gorm:"not null"`
-	ParentID  uint   `gorm:"not null"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        uint      `json:"id" gorm:"primary_key;AUTO_INCREMENT"`
+	Username  string    `json:"userName" gorm:"unique;not null;varchar(50)"`
+	Password  string    `json:"password" gorm:"not null;varchar(128)"`
+	Status    int       `json:"status" gorm:"not null"`
+	Level     int       `json:"level" gorm:"not null"`
+	ParentID  uint      `gorm:"not null"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
