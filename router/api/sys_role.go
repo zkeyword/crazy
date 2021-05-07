@@ -10,8 +10,8 @@ import (
 )
 
 type RoleForm struct {
-	Name       string `form:"name" binding:"required"`
-	Permission uint   `form:"permission"`
+	Name           string `form:"name" binding:"required"`
+	PermissionKeys string `form:"permission" binding:"required"`
 }
 
 // PostRole 新增角色
@@ -22,7 +22,7 @@ func PostRole(c *gin.Context) {
 		Model := &model.Role{
 			Name: form.Name,
 		}
-		res, resErr := services.NewRoleService.Create(Model, form.Permission)
+		res, resErr := services.NewRoleService.Create(Model, form.PermissionKeys)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {
@@ -44,6 +44,11 @@ func DelRoleById(c *gin.Context) {
 	}
 }
 
+// type PutRoleForm struct {
+// 	Name           string `form:"name" binding:"required"`
+// 	PermissionKeys string `form:"permission"`
+// }
+
 // PutRoleById 修改角色
 func PutRoleById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
@@ -53,7 +58,7 @@ func PutRoleById(c *gin.Context) {
 		Model := &model.Role{
 			Name: form.Name,
 		}
-		res, resErr := services.NewRoleService.UpdateById(id, Model)
+		res, resErr := services.NewRoleService.UpdateById(id, Model, form.PermissionKeys)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {

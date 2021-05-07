@@ -18,9 +18,9 @@ func NewRoleRepository() *RoleRepository {
 }
 
 // Create 创建角色
-func (r *RoleRepository) Create(t *model.Role) (uint, error) {
+func (r *RoleRepository) Create(t *model.Role) (*model.Role, error) {
 	err := db.GetMysql().Create(t).Error
-	return t.ID, err
+	return t, err
 }
 
 // DeleteById 删除角色

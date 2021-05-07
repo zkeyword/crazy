@@ -12,6 +12,7 @@ type PermissionRepository struct {
 type Permission struct {
 	ID        uint
 	Name      string
+	Key       string
 	UpdatedAt time.Time
 }
 
@@ -20,9 +21,9 @@ func NewPermissionRepository() *PermissionRepository {
 }
 
 // Create 创建权限
-func (r *PermissionRepository) Create(t *model.Permission) (uint, error) {
+func (r *PermissionRepository) Create(t *model.Permission) (*model.Permission, error) {
 	err := db.GetMysql().Create(t).Error
-	return t.ID, err
+	return t, err
 }
 
 // DeleteById 删除权限

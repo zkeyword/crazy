@@ -10,7 +10,9 @@ import (
 )
 
 type PermissionForm struct {
-	Name string `form:"name" binding:"required"`
+	Name   string `form:"name" binding:"required"`
+	Key    string `form:"key" binding:"required"`
+	Status int    `form:"status" binding:"required"`
 }
 
 // PostPermission 新增权限
@@ -19,7 +21,9 @@ func PostPermission(c *gin.Context) {
 	err := c.ShouldBind(&form)
 	if err == nil {
 		Model := &model.Permission{
-			Name: form.Name,
+			Name:   form.Name,
+			Key:    form.Key,
+			Status: form.Status,
 		}
 		res, resErr := services.NewPermissionService.Create(Model)
 		if resErr == nil {
@@ -50,7 +54,9 @@ func PutPermissionById(c *gin.Context) {
 	err := c.ShouldBind(&form)
 	if err == nil {
 		Model := &model.Permission{
-			Name: form.Name,
+			Name:   form.Name,
+			Key:    form.Key,
+			Status: form.Status,
 		}
 		res, resErr := services.NewPermissionService.UpdateById(id, Model)
 		if resErr == nil {

@@ -7,7 +7,7 @@ import (
 
 type PermissionService interface {
 	Get(id int64) *repository.Permission
-	Create(Article *model.Permission) (uint, error)
+	Create(Article *model.Permission) (*model.Permission, error)
 	UpdateById(id int64, Permission *model.Permission) (*model.Permission, error)
 	DeleteById(id int64) error
 }
@@ -28,9 +28,9 @@ func (s *permissionService) Get(id int64) *repository.Permission {
 	return s.repo.Get(id)
 }
 
-func (s *permissionService) Create(Permission *model.Permission) (uint, error) {
-	ID, err := s.repo.Create(Permission)
-	return ID, err
+func (s *permissionService) Create(Permission *model.Permission) (*model.Permission, error) {
+	ret, err := s.repo.Create(Permission)
+	return ret, err
 }
 
 func (s *permissionService) UpdateById(id int64, Permission *model.Permission) (*model.Permission, error) {

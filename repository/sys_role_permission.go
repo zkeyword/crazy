@@ -10,9 +10,9 @@ type RolePermissionRepository struct {
 
 // RolePermission 类型
 type RolePermission struct {
-	ID           uint
-	PermissionID uint
-	RoleId       uint
+	ID             int64
+	PermissionKeys string
+	RoleId         int64
 }
 
 // NewRolePermissionRepository 实例化 DAO
@@ -20,15 +20,15 @@ func NewRolePermissionRepository() *RolePermissionRepository {
 	return &RolePermissionRepository{}
 }
 
-func (r *RolePermissionRepository) Create(RoleId uint, PermissionID uint) (*model.RolePermission, error) {
+func (r *RolePermissionRepository) Create(RoleId uint, PermissionKeys string) (*model.RolePermission, error) {
 	var ret = new(model.RolePermission)
 	ret.RoleID = RoleId
-	ret.PermissionID = PermissionID
+	ret.PermissionKeys = PermissionKeys
 	err := db.GetMysql().Create(ret).Error
 	return ret, err
 }
 
-func (r *RolePermissionRepository) DeleteById(id int64) error {
+func (r *RolePermissionRepository) DeleteById(id uint) error {
 	if err := db.GetMysql().Where("id = ?", id).Delete(RolePermission{}).Error; err != nil {
 		return err
 	}
@@ -36,9 +36,11 @@ func (r *RolePermissionRepository) DeleteById(id int64) error {
 	return nil
 }
 
-func (r *RolePermissionRepository) UpdateById(id int64, t *model.RolePermission) (*model.RolePermission, error) {
+func (r *RolePermissionRepository) UpdateById(id int64, PermissionKeys string) (*model.RolePermission, error) {
 	var ret = new(model.RolePermission)
-	err := db.GetMysql().Model(&ret).Where("id=?", id).Updates(t).Error
+	data := &RolePermission{}
+	data.PermissionKeys = PermissionKeys
+	err := db.GetMysql().Model(&ret).Where("role_id=?", id).Updates(data).Error
 	return ret, err
 }
 

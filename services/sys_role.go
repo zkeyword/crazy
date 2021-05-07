@@ -7,8 +7,8 @@ import (
 
 type RoleService interface {
 	Get(id int64) *repository.Role
-	Create(Role *model.Role, PermissionID uint) (uint, error)
-	UpdateById(id int64, Role *model.Role) (*model.Role, error)
+	Create(Role *model.Role, PermissionKeys string) (*model.Role, error)
+	UpdateById(id int64, Role *model.Role, PermissionKeys string) (*model.Role, error)
 	DeleteById(id int64) error
 }
 
@@ -29,16 +29,19 @@ func (s *roleService) Get(id int64) *repository.Role {
 	return s.repo.Get(id)
 }
 
-func (s *roleService) Create(Role *model.Role, PermissionID uint) (uint, error) {
-	ID, err := s.repo.Create(Role)
+func (s *roleService) Create(Role *model.Role, PermissionKeys string) (*model.Role, error) {
+	ret, err := s.repo.Create(Role)
 	if err == nil {
-		s.rolePermission.Create(ID, PermissionID)
+		s.rolePermission.Create(ret.ID, PermissionKeys)
 	}
-	return ID, err
+	return ret, err
 }
 
-func (s *roleService) UpdateById(id int64, Role *model.Role) (*model.Role, error) {
+func (s *roleService) UpdateById(id int64, Role *model.Role, PermissionKeys string) (*model.Role, error) {
 	ret, err := s.repo.UpdateById(id, Role)
+	if err == nil {
+		s.rolePermission.UpdateById(id, PermissionKeys)
+	}
 	return ret, err
 }
 
