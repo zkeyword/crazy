@@ -20,10 +20,10 @@ func NewRolePermissionRepository() *RolePermissionRepository {
 	return &RolePermissionRepository{}
 }
 
-func (r *RolePermissionRepository) Create(RoleId uint, PermissionKeys string) (*model.RolePermission, error) {
+func (r *RolePermissionRepository) Create(roleID uint, permissionKeys string) (*model.RolePermission, error) {
 	var ret = new(model.RolePermission)
-	ret.RoleID = RoleId
-	ret.PermissionKeys = PermissionKeys
+	ret.RoleID = roleID
+	ret.PermissionKeys = permissionKeys
 	err := db.GetMysql().Create(ret).Error
 	return ret, err
 }
@@ -36,10 +36,10 @@ func (r *RolePermissionRepository) DeleteById(id uint) error {
 	return nil
 }
 
-func (r *RolePermissionRepository) UpdateById(id uint, PermissionKeys string) (*model.RolePermission, error) {
+func (r *RolePermissionRepository) UpdateById(id uint, permissionKeys string) (*model.RolePermission, error) {
 	var ret = new(model.RolePermission)
 	data := &RolePermission{}
-	data.PermissionKeys = PermissionKeys
+	data.PermissionKeys = permissionKeys
 	err := db.GetMysql().Model(&ret).Where("role_id=?", id).Updates(data).Error
 	return ret, err
 }

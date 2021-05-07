@@ -13,6 +13,8 @@ type Permission struct {
 	ID        uint
 	Name      string
 	Key       string
+	Status    int
+	CreatedAt time.Time
 	UpdatedAt time.Time
 }
 

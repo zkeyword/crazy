@@ -20,27 +20,27 @@ func NewUserRoleRepository() *UserRoleRepository {
 	return &UserRoleRepository{}
 }
 
-func (r *UserRoleRepository) Create(UserId uint, RoleId uint) (*model.UserRole, error) {
+func (r *UserRoleRepository) Create(userId uint, roleId uint) (*model.UserRole, error) {
 	var ret = new(model.UserRole)
-	ret.RoleID = RoleId
-	ret.UserID = UserId
+	ret.RoleID = roleId
+	ret.UserID = userId
 	err := db.GetMysql().Create(ret).Error
 	return ret, err
 }
 
-func (r *UserRoleRepository) DeleteById(UserID int64) error {
-	if err := db.GetMysql().Where("user_id = ?", UserID).Delete(UserRole{}).Error; err != nil {
+func (r *UserRoleRepository) DeleteById(userID int64) error {
+	if err := db.GetMysql().Where("user_id = ?", userID).Delete(UserRole{}).Error; err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (r *UserRoleRepository) UpdateById(UserID int64, RoleID uint) (*model.UserRole, error) {
+func (r *UserRoleRepository) UpdateById(userID int64, roleID uint) (*model.UserRole, error) {
 	var ret = new(model.UserRole)
 	data := &UserRole{}
-	data.RoleID = RoleID
-	err := db.GetMysql().Model(&ret).Where("user_id=?", UserID).Updates(data).Error
+	data.RoleID = roleID
+	err := db.GetMysql().Model(&ret).Where("user_id=?", userID).Updates(data).Error
 	return ret, err
 }
 
