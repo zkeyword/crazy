@@ -27,6 +27,40 @@ func StartMysql(dsn string, maxIdle, maxOpen int) (err error) {
 				&model.Role{},
 				&model.RolePermission{},
 			)
+
+		// user := &model.User{
+		// 	Username: "admin2",
+		// 	Password: "d36dd63cfd",
+		// 	Status:   1,
+		// 	Level:    0,
+		// 	ParentID: 0,
+		// }
+
+		// userRole := &model.UserRole{
+		// 	UserID:  1,
+		// 	RoleIDs: "1,2",
+		// }
+
+		// permission := &model.Permission{
+		// 	Name:   "全部2",
+		// 	Key:    "all2",
+		// 	Status: 1,
+		// }
+
+		// role := &model.Role{
+		// 	Name: "管理员2",
+		// }
+
+		// rolePermission := &model.RolePermission{
+		// 	RoleID:         2,
+		// 	PermissionKeys: "all,all2",
+		// }
+
+		// db.Create(user)
+		// db.Create(userRole)
+		// db.Create(permission)
+		// db.Create(role)
+		// db.Create(rolePermission)
 	}
 
 	return

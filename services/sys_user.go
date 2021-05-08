@@ -7,10 +7,10 @@ import (
 
 // UserService user服务
 type UserService interface {
-	Get(id int64) *repository.User
-	Create(User *model.User, RoleId uint) (*model.User, error)
+	Get(id int64) *repository.ReturnUser
+	Create(User *model.User, roleIds string) (*model.User, error)
 	DeleteById(id int64) error
-	PutUserById(id int64, User *model.User, RoleId uint) (*model.User, error)
+	PutUserById(id int64, User *model.User, roleIds string) (*model.User, error)
 }
 
 type userService struct {
@@ -27,7 +27,7 @@ func newUserService() UserService {
 	}
 }
 
-func (s *userService) Get(id int64) *repository.User {
+func (s *userService) Get(id int64) *repository.ReturnUser {
 	return s.repo.Get(id)
 }
 
@@ -36,18 +36,18 @@ func (s *userService) Get(id int64) *repository.User {
 // 	// s.userRole.Create(ret.ID, RoleId)
 // 	return ret, err
 // }
-func (s *userService) Create(User *model.User, RoleId uint) (*model.User, error) {
+func (s *userService) Create(User *model.User, roleIds string) (*model.User, error) {
 	ret, err := s.repo.Create(User)
 	if err == nil {
-		s.userRole.Create(ret.ID, RoleId)
+		s.userRole.Create(ret.ID, roleIds)
 	}
 	return ret, err
 }
 
-func (s *userService) PutUserById(id int64, User *model.User, RoleId uint) (*model.User, error) {
+func (s *userService) PutUserById(id int64, User *model.User, roleIds string) (*model.User, error) {
 	ret, err := s.repo.UpdateById(id, User)
 	if err == nil {
-		s.userRole.UpdateById(id, RoleId)
+		s.userRole.UpdateById(id, roleIds)
 	}
 	return ret, err
 }

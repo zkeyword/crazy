@@ -2,7 +2,9 @@ package repository
 
 import (
 	"CRAZY/model"
+	"CRAZY/utils"
 	"CRAZY/utils/db"
+	"strings"
 )
 
 type UserRepository struct {
@@ -59,19 +61,43 @@ func (r *UserRepository) UpdateById(id int64, t *model.User) (*model.User, error
 	return ret, err
 }
 
+type ReturnUser struct {
+	ID             uint   `json:"id"`
+	Username       string `json:"username"`
+	Password       string `json:"password"`
+	RoleIDs        string `json:"roleIDs"`
+	PermissionKeys string `json:"permissionKeys"`
+}
+
 // Get 获取用户
-func (r *UserRepository) Get(id int64) *User {
-	ret := &User{}
+func (r *UserRepository) Get(id int64) *ReturnUser {
+	ret := &ReturnUser{}
 
 	err := db.GetMysql().
 		// Debug().
-		Table("users a").
-		Select("a.id, a.username, a.password, a.level, a.updated_at, t.id role_id, t.name role_name").
-		Joins("left join user_roles r on a.id = r.user_id").
-		Joins("left join roles t on t.id = r.role_id").
-		Where("a.id = ?", id).
+		Table("users").
+		Select("users.id, users.username, users.password, users.level, users.updated_at, user_roles.role_ids").
+		Joins("left join user_roles on users.id = user_roles.user_id").
+		// Joins("left join roles on roles.id = user_roles.role_ids").
+		Where("users.id = ?", id).
 		Find(&ret).
 		Error
+
+	roleIDs := strings.Split(ret.RoleIDs, ",")
+
+	// var role []Role
+	// db.GetMysql().Table("roles").Where("id IN (?)", roleIDs).Find(&role)
+
+	var permission []RolePermission
+	db.GetMysql().Table("role_permissions").Where("id IN (?)", roleIDs).Find(&permission)
+
+	result := make([]string, 0)
+	for _, v := range permission {
+		result = append(result, v.PermissionKeys)
+	}
+
+	tmp := strings.Split(strings.Join(result, ","), ",")
+	ret.PermissionKeys = strings.Join(utils.RemoveRepeated(tmp), ",")
 
 	if err != nil {
 		return nil

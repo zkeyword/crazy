@@ -10,9 +10,9 @@ type UserRoleRepository struct {
 
 // User 类型
 type UserRole struct {
-	ID     uint
-	UserID uint
-	RoleID uint
+	ID      uint
+	UserID  uint
+	RoleIDs string
 }
 
 // NewUserRoleRepository 实例化 DAO
@@ -20,9 +20,9 @@ func NewUserRoleRepository() *UserRoleRepository {
 	return &UserRoleRepository{}
 }
 
-func (r *UserRoleRepository) Create(userId uint, roleId uint) (*model.UserRole, error) {
+func (r *UserRoleRepository) Create(userId uint, roleIds string) (*model.UserRole, error) {
 	var ret = new(model.UserRole)
-	ret.RoleID = roleId
+	ret.RoleIDs = roleIds
 	ret.UserID = userId
 	err := db.GetMysql().Create(ret).Error
 	return ret, err
@@ -36,10 +36,10 @@ func (r *UserRoleRepository) DeleteById(userID int64) error {
 	return nil
 }
 
-func (r *UserRoleRepository) UpdateById(userID int64, roleID uint) (*model.UserRole, error) {
+func (r *UserRoleRepository) UpdateById(userID int64, roleIDs string) (*model.UserRole, error) {
 	var ret = new(model.UserRole)
 	data := &UserRole{}
-	data.RoleID = roleID
+	data.RoleIDs = roleIDs
 	err := db.GetMysql().Model(&ret).Where("user_id=?", userID).Updates(data).Error
 	return ret, err
 }
