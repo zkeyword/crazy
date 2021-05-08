@@ -96,7 +96,7 @@ func (r *UserRepository) Get(id int64) *ReturnUser {
 		result = append(result, v.PermissionKeys)
 	}
 
-	tmp := strings.Split(strings.Join(result, ","), ",")
+	tmp := strings.Split(strings.Join(result, ","), ",") // 获取总集
 	ret.PermissionKeys = strings.Join(utils.RemoveRepeated(tmp), ",")
 
 	if err != nil {
