@@ -5,6 +5,11 @@ import (
 	"CRAZY/router/api"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/gin-contrib/sessions"
+	// session存储引擎
+	"github.com/gin-contrib/sessions/cookie"
+	// "github.com/gin-contrib/sessions/redis" 基于redis存储引擎的session
 )
 
 // Routers 总路由
@@ -14,6 +19,10 @@ func Routers() *gin.Engine {
 	r.Use(gin.Recovery())
 	r.Use(middleware.Cors())
 
+	// 设置 session
+	store := cookie.NewStore([]byte("crazy"))
+	r.Use(sessions.Sessions("session", store))
+
 	// 设置静态目录
 	r.Static("/public", "./public")
 
@@ -22,6 +31,10 @@ func Routers() *gin.Engine {
 
 	// 首页
 	r.GET("/", api.GetHTML)
+
+	// 验证码
+	r.GET("/captcha", api.GetCaptcha)
+	r.POST("/captcha", api.PostCaptcha)
 
 	// 登陆
 	r.GET("/login", api.Login)

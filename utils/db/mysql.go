@@ -14,19 +14,22 @@ var db *gorm.DB
 func StartMysql(dsn string, maxIdle, maxOpen int) (err error) {
 	db, err = gorm.Open("mysql", dsn)
 
-	if err == nil {
-		db.DB().SetMaxIdleConns(maxIdle)
-		db.DB().SetMaxOpenConns(maxOpen)
-		db.DB().SetConnMaxLifetime(time.Duration(30) * time.Minute)
-		db.LogMode(true)
-		db.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
-			AutoMigrate(
-				&model.User{},
-				&model.UserRole{},
-				&model.Permission{},
-				&model.Role{},
-				&model.RolePermission{},
-			)
+	if err != nil {
+		panic("mysql connect error: %v" + err.Error())
+	}
+
+	db.DB().SetMaxIdleConns(maxIdle)
+	db.DB().SetMaxOpenConns(maxOpen)
+	db.DB().SetConnMaxLifetime(time.Duration(30) * time.Minute)
+	db.LogMode(true)
+	db.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
+		AutoMigrate(
+			&model.User{},
+			&model.UserRole{},
+			&model.Permission{},
+			&model.Role{},
+			&model.RolePermission{},
+		)
 
 		// user := &model.User{
 		// 	Username: "admin2",
@@ -61,7 +64,6 @@ func StartMysql(dsn string, maxIdle, maxOpen int) (err error) {
 		// db.Create(permission)
 		// db.Create(role)
 		// db.Create(rolePermission)
-	}
 
 	return
 }

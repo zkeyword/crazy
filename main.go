@@ -53,7 +53,7 @@ func main() {
 	// 启动mysql
 	defer db.CloseMysql()
 	fmt.Print("Start Mysql...\r")
-	checkErr("Start Mysql", db.StartMysql(config.DbConfig.Dsn, config.DbConfig.MaxIdle, config.DbConfig.MaxOpen))
+	db.StartMysql(config.DbConfig.Dsn, config.DbConfig.MaxIdle, config.DbConfig.MaxOpen)
 	fmt.Print("Start Mysql Success!!!\n")
 
 	// 创建文件日志，按天分割，日志文件仅保留一周
