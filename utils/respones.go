@@ -14,7 +14,7 @@ type Response struct {
 }
 
 const SUCCESS = 0
-const ERROR = 7
+const ERROR = -1
 
 // Result 基本封装
 func Result(code int, data interface{}, msg string, c *gin.Context) {

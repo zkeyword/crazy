@@ -2,64 +2,47 @@ package api
 
 import (
 	"CRAZY/middleware"
-	"log"
-	"net/http"
+	"CRAZY/services"
+	"CRAZY/utils"
+	"CRAZY/utils/xor"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
-// Login 登录
-func Login(c *gin.Context) {
-	generateToken(c)
-	// var loginReq model.LoginReq
-	// if c.BindJSON(&loginReq) == nil {
-	// 	isPass, user, err := model.LoginCheck(loginReq)
-	// 	if isPass {
-	// 		generateToken(c, user)
-	// 	} else {
-	// 		c.JSON(http.StatusOK, gin.H{
-	// 			"status": -1,
-	// 			"msg":    "验证失败," + err.Error(),
-	// 		})
-	// 	}
-	// } else {
-	// 	c.JSON(http.StatusOK, gin.H{
-	// 		"status": -1,
-	// 		"msg":    "json 解析失败",
-	// 	})
-	// }
+type LoginUserForm struct {
+	Username string `form:"username" binding:"required"`
+	Password string `form:"password" binding:"required"`
 }
 
-// 生成令牌
-func generateToken(c *gin.Context) {
-	j := &middleware.JWT{
-		SigningKey: []byte("crazy"),
+// Login 登录
+func Login(c *gin.Context) {
+	var form LoginUserForm
+	err := c.ShouldBind(&form)
+	if err == nil {
+		res, resErr := services.NewUserService.GetByUserName(form.Username)
+		if resErr == nil {
+			if xor.Enc(form.Password) == res.Password {
+				j := &middleware.JWT{
+					SigningKey: []byte("crazy"),
+				}
+				claims := middleware.CustomClaims{
+					Name: form.Username,
+				}
+
+				claims.IssuedAt = time.Now().Unix()                // 签名生效时间
+				claims.ExpiresAt = int64(time.Now().Unix() + 3600) // 过期时间 一小时
+				token, jwtErr := j.CreateToken(claims)
+				if jwtErr == nil {
+					utils.OkDetailed(token, "success", c)
+				}
+			} else {
+				utils.FailWithMessage("密码错误", c)
+			}
+		} else {
+			utils.FailWithMessage(resErr.Error(), c)
+		}
+	} else {
+		utils.FailWithMessage(err.Error(), c)
 	}
-	claims := middleware.CustomClaims{
-		ID:    "xxx",
-		Name:  "xxx",
-		Phone: "xxxx",
-	}
-
-	claims.IssuedAt = time.Now().Unix()                // 签名生效时间
-	claims.ExpiresAt = int64(time.Now().Unix() + 3600) // 过期时间 一小时
-
-	token, err := j.CreateToken(claims)
-
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": -1,
-			"msg":    err.Error(),
-		})
-		return
-	}
-
-	log.Println(token)
-	c.JSON(http.StatusOK, gin.H{
-		"status": 0,
-		"msg":    "登录成功！",
-		"data":   token,
-	})
-	return
 }

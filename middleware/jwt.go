@@ -1,9 +1,9 @@
 package middleware
 
 import (
+	"CRAZY/utils"
 	"errors"
 	"log"
-	"net/http"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -15,10 +15,7 @@ func JWTAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("token")
 		if token == "" {
-			c.JSON(http.StatusOK, gin.H{
-				"status": -1,
-				"msg":    "请求未携带token，无权限访问",
-			})
+			utils.FailWithMessage("请求未携带token，无权限访问", c)
 			c.Abort()
 			return
 		}
@@ -30,17 +27,11 @@ func JWTAuth() gin.HandlerFunc {
 		claims, err := j.ParseToken(token)
 		if err != nil {
 			if err == TokenExpired {
-				c.JSON(http.StatusOK, gin.H{
-					"status": -1,
-					"msg":    "授权已过期",
-				})
+				utils.FailWithMessage("授权已过期", c)
 				c.Abort()
 				return
 			}
-			c.JSON(http.StatusOK, gin.H{
-				"status": -1,
-				"msg":    err.Error(),
-			})
+			utils.FailWithMessage(err.Error(), c)
 			c.Abort()
 			return
 		}
@@ -65,9 +56,7 @@ var (
 
 // 载荷，可以加一些自己需要的信息
 type CustomClaims struct {
-	ID    string `json:"userId"`
-	Name  string `json:"name"`
-	Phone string `json:"phone"`
+	Name string `json:"name"`
 	jwt.StandardClaims
 }
 

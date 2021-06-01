@@ -37,7 +37,7 @@ func Routers() *gin.Engine {
 	r.POST("/captcha", api.PostCaptcha)
 
 	// 登陆
-	r.GET("/login", api.Login)
+	r.POST("/login", api.Login)
 
 	// 用户
 	r.GET("/user/:id", api.GetUserById)

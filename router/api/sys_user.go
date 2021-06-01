@@ -85,6 +85,6 @@ func PutUserById(c *gin.Context) {
 // GetUserById 获取用户
 func GetUserById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	res := services.NewUserService.Get(id)
+	res := services.NewUserService.GetById(id)
 	utils.OkDetailed(res, "success", c)
 }

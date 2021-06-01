@@ -7,7 +7,8 @@ import (
 
 // UserService user服务
 type UserService interface {
-	Get(id int64) *repository.ReturnUser
+	GetById(id int64) *repository.ReturnUser
+	GetByUserName(username string) (*model.User, error)
 	Create(User *model.User, roleIds string) (*model.User, error)
 	DeleteById(id int64) error
 	PutUserById(id int64, User *model.User, roleIds string) (*model.User, error)
@@ -27,8 +28,8 @@ func newUserService() UserService {
 	}
 }
 
-func (s *userService) Get(id int64) *repository.ReturnUser {
-	return s.repo.Get(id)
+func (s *userService) GetById(id int64) *repository.ReturnUser {
+	return s.repo.GetById(id)
 }
 
 // func (s *userService) Create(User *model.User, RoleId uint) (*model.User, error) {
@@ -58,4 +59,8 @@ func (s *userService) DeleteById(id int64) error {
 		s.userRole.DeleteById(id)
 	}
 	return err
+}
+
+func (s *userService) GetByUserName(username string) (*model.User, error) {
+	return s.repo.GetByUserName(username)
 }

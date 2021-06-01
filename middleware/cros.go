@@ -1,8 +1,9 @@
 package middleware
 
 import (
-	"regexp"
 	"net/http"
+	"regexp"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,12 +13,12 @@ func Cors() gin.HandlerFunc {
 
 		origin := c.Request.Header.Get("Origin")
 
-		reg := regexp.MustCompile(`localhost*|192.168*`)
+		reg := regexp.MustCompile(`localhost*|127.0.0.1*|0.0.0.0*`)
 		if len(reg.FindAllString(origin, -1)) > 0 {
 			c.Header("Access-Control-Allow-Origin", origin)
 		}
 
-		c.Header("Access-Control-Allow-Headers", "Content-Type, AccessToken, X-CSRF-Token, Authorization, Token")
+		c.Header("Access-Control-Allow-Headers", "Content-Type, AccessToken, X-CSRF-Token, Authorization, Token, authKey")
 		c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, PATCH, DELETE")
 		c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type")
 		c.Header("Access-Control-Allow-Credentials", "true")
@@ -27,7 +28,7 @@ func Cors() gin.HandlerFunc {
 		if method == "OPTIONS" {
 			c.AbortWithStatus(http.StatusNoContent)
 		}
-		
+
 		// 处理请求
 		c.Next()
 	}

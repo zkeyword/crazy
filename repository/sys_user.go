@@ -69,8 +69,8 @@ type ReturnUser struct {
 	PermissionKeys string `json:"permissionKeys"`
 }
 
-// Get 获取用户
-func (r *UserRepository) Get(id int64) *ReturnUser {
+// GetById 获取用户
+func (r *UserRepository) GetById(id int64) *ReturnUser {
 	ret := &ReturnUser{}
 
 	err := db.GetMysql().
@@ -104,4 +104,11 @@ func (r *UserRepository) Get(id int64) *ReturnUser {
 	}
 
 	return ret
+}
+
+// GetByName
+func (r *UserRepository) GetByUserName(username string) (*model.User, error) {
+	var ret = &model.User{}
+	err := db.GetMysql().First(ret, "username = ?", username).Error
+	return ret, err
 }
