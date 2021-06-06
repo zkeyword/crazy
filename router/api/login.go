@@ -6,6 +6,7 @@ import (
 	"CRAZY/services"
 	"CRAZY/utils"
 	"CRAZY/utils/xor"
+	"html"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -46,7 +47,7 @@ func Login(c *gin.Context) {
 	var form LoginUserForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		res, resErr := services.NewUserService.GetByUserName(form.Username)
+		res, resErr := services.NewUserService.GetByUserName(html.EscapeString(form.Username))
 		if resErr == nil {
 			if xor.Enc(form.Password) == res.Password {
 				user := &ReturnLoginUser{
@@ -76,7 +77,7 @@ func Register(c *gin.Context) {
 	err := c.ShouldBind(&form)
 	if err == nil {
 		Model := &model.User{
-			Username: form.Username,
+			Username: html.EscapeString(form.Username),
 			Password: xor.Enc(form.Password),
 			Status:   1,
 		}

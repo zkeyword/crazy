@@ -5,6 +5,7 @@ import (
 	"CRAZY/services"
 	"CRAZY/utils"
 	"CRAZY/utils/xor"
+	"html"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -28,7 +29,7 @@ func PostUser(c *gin.Context) {
 	}
 	if err == nil {
 		Model := &model.User{
-			Username: form.Username,
+			Username: html.EscapeString(form.Username),
 			Password: xor.Enc(form.Password),
 			Status:   form.Status,
 		}

@@ -20,6 +20,9 @@ const SysTimeformShort string = "2006-01-02"
 // SysTimeLocation 中国时区
 var SysTimeLocation, _ = time.LoadLocation("Asia/Chongqing")
 
+// 设置文件上传大小
+var MaxMultipartMemory int64 = 100 << 20 // 设置最大上传大小为100M
+
 // System web系统配置结构体
 type System struct {
 	AppTitle      string

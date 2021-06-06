@@ -34,7 +34,10 @@ func Routers() *gin.Engine {
 
 	// 验证码
 	r.GET("/captcha", api.GetCaptcha)
-	r.POST("/captcha", api.PostCaptcha)
+	r.POST("/captcha", api.PostCaptcha) // TODO: 支持redis
+
+	// 上传
+	r.POST("/upload", api.Upload)
 
 	// 登陆/注册
 	r.POST("/login", api.Login)

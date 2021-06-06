@@ -68,6 +68,7 @@ func main() {
 	// 设置gin
 	gin.SetMode(config.ServerMode)
 	r := router.Routers()
+	r.MaxMultipartMemory = config.MaxMultipartMemory
 
 	server := &http.Server{
 		Addr:           config.ServerPort,
