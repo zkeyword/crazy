@@ -4,6 +4,7 @@ import (
 	"CRAZY/model"
 	"CRAZY/utils"
 	"CRAZY/utils/db"
+	"fmt"
 	"strings"
 )
 
@@ -70,10 +71,11 @@ type ReturnUser struct {
 }
 
 // GetById 获取用户
-func (r *UserRepository) Get(page int64) (*model.User, error) {
-	var ret = &model.User{}
-	err := db.GetMysql().Model(ret).Offset((page - 1) * 10).Error
-	return ret, err
+func (r *UserRepository) Get(page int, pageSize int) ([]model.User, error) {
+	var users []model.User
+	fmt.Println((page - 1) * 10)
+	err := db.GetMysql().Limit(pageSize).Offset((page - 1) * 10).Find(&users).Error
+	return users, err
 }
 
 // GetById 获取用户
