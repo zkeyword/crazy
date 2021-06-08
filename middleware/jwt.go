@@ -13,7 +13,7 @@ import (
 // JWTAuth 中间件，检查token
 func JWTAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.Request.Header.Get("token")
+		token := c.Request.Header.Get("Authorization")
 		if token == "" {
 			utils.FailWithMessage("请求未携带token，无权限访问", c)
 			c.Abort()

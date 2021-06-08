@@ -7,6 +7,7 @@ import (
 
 // UserService user服务
 type UserService interface {
+	Get(page int64) (*model.User, error)
 	GetById(id int64) *repository.ReturnUser
 	GetByUserName(username string) (*model.User, error)
 	Create(User *model.User, roleIds string) (*model.User, error)
@@ -26,6 +27,10 @@ func newUserService() UserService {
 	return &userService{
 		repo: repository.NewUserRepository(),
 	}
+}
+
+func (s *userService) Get(page int64) (*model.User, error) {
+	return s.repo.Get(page)
 }
 
 func (s *userService) GetById(id int64) *repository.ReturnUser {

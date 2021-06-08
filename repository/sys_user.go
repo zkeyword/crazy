@@ -70,6 +70,13 @@ type ReturnUser struct {
 }
 
 // GetById 获取用户
+func (r *UserRepository) Get(page int64) (*model.User, error) {
+	var ret = &model.User{}
+	err := db.GetMysql().Model(ret).Offset((page - 1) * 10).Error
+	return ret, err
+}
+
+// GetById 获取用户
 func (r *UserRepository) GetById(id int64) *ReturnUser {
 	ret := &ReturnUser{}
 

@@ -89,3 +89,10 @@ func GetUserById(c *gin.Context) {
 	res := services.NewUserService.GetById(id)
 	utils.OkDetailed(res, "success", c)
 }
+
+// GetUser 获取用户列表
+func GetUser(c *gin.Context) {
+	page, _ := strconv.ParseInt(c.Param("page"), 10, 64)
+	res, _ := services.NewUserService.Get(page)
+	utils.OkDetailed(res, "success", c)
+}

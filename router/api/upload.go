@@ -6,11 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Upload 文件上传
+// Upload 文件上传 // TODO: 添加OSS方式上传
 func Upload(c *gin.Context) {
 	header, formErr := c.FormFile("file")
 	if formErr == nil {
-		err := c.SaveUploadedFile(header, "./tmp/"+header.Filename)
+		err := c.SaveUploadedFile(header, "./public/tmp/"+header.Filename) // TODO:确保文件名唯一
 		if err == nil {
 			utils.OkDetailed(gin.H{
 				"fileName": header.Filename,
