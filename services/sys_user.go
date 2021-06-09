@@ -7,7 +7,7 @@ import (
 
 // UserService user服务
 type UserService interface {
-	Get(page int, pageSize int) ([]model.User, error)
+	Get(page int, pageSize int) (*ReturnUserList, error)
 	GetById(id int64) *repository.ReturnUser
 	GetByUserName(username string) (*model.User, error)
 	Create(User *model.User, roleIds string) (*model.User, error)
@@ -20,6 +20,13 @@ type userService struct {
 	userRole *repository.UserRoleRepository
 }
 
+type ReturnUserList struct {
+	Page     int          `json:"page"`
+	PageSize int          `json:"pageSize"`
+	Total    int          `json:"total"`
+	List     []model.User `json:"list"`
+}
+
 // NewArticleService 实例化ArticleService
 var NewUserService = newUserService()
 
@@ -29,8 +36,16 @@ func newUserService() UserService {
 	}
 }
 
-func (s *userService) Get(page int, pageSize int) ([]model.User, error) {
-	return s.repo.Get(page, pageSize)
+func (s *userService) Get(page int, pageSize int) (*ReturnUserList, error) {
+	ret, err := s.repo.Get(page, pageSize)
+	count := s.repo.GetUserCount()
+	returnValue := &ReturnUserList{
+		Page:     page,
+		PageSize: pageSize,
+		Total:    count,
+		List:     ret,
+	}
+	return returnValue, err
 }
 
 func (s *userService) GetById(id int64) *repository.ReturnUser {

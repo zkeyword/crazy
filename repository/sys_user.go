@@ -78,6 +78,13 @@ func (r *UserRepository) Get(page int, pageSize int) ([]model.User, error) {
 	return users, err
 }
 
+func (r *UserRepository) GetUserCount() int {
+	var users []model.User
+	var count int
+	db.GetMysql().Find(&users).Select("count(id)").Count(&count)
+	return count
+}
+
 // GetById 获取用户
 func (r *UserRepository) GetById(id int64) *ReturnUser {
 	ret := &ReturnUser{}
