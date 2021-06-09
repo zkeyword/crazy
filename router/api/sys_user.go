@@ -93,7 +93,8 @@ func GetUserById(c *gin.Context) {
 // GetUser 获取用户列表
 func GetUser(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
-	// pageSize, _ := strconv.Atoi(c.Query("pageSize"))
-	res, _ := services.NewUserService.Get(page, 10)
+	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
+	username := html.EscapeString(c.Query("username"))
+	res, _ := services.NewUserService.Get(page, pageSize, username)
 	utils.OkDetailed(res, "success", c)
 }

@@ -4,7 +4,6 @@ import (
 	"CRAZY/model"
 	"CRAZY/utils"
 	"CRAZY/utils/db"
-	"fmt"
 	"strings"
 )
 
@@ -71,17 +70,25 @@ type ReturnUser struct {
 }
 
 // GetById 获取用户
-func (r *UserRepository) Get(page int, pageSize int) ([]model.User, error) {
+func (r *UserRepository) Get(page int, pageSize int, username string) ([]model.User, error) {
 	var users []model.User
-	fmt.Println((page - 1) * 10)
-	err := db.GetMysql().Limit(pageSize).Offset((page - 1) * 10).Find(&users).Error
+	var err error
+	if username != "" {
+		err = db.GetMysql().Where("username like ?", "%"+username+"%").Limit(pageSize).Offset((page - 1) * 10).Find(&users).Error
+	} else {
+		err = db.GetMysql().Limit(pageSize).Offset((page - 1) * 10).Find(&users).Error
+	}
 	return users, err
 }
 
-func (r *UserRepository) GetUserCount() int {
+func (r *UserRepository) GetUserCount(username string) int {
 	var users []model.User
 	var count int
-	db.GetMysql().Find(&users).Select("count(id)").Count(&count)
+	if username != "" {
+		db.GetMysql().Where("username like ?", "%"+username+"%").Find(&users).Select("count(id)").Count(&count)
+	} else {
+		db.GetMysql().Find(&users).Select("count(id)").Count(&count)
+	}
 	return count
 }
 
