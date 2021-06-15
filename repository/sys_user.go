@@ -69,7 +69,7 @@ type ReturnUser struct {
 	PermissionKeys string `json:"permissionKeys"`
 }
 
-// GetById 获取用户
+// Get 获取用户
 func (r *UserRepository) Get(page int, pageSize int, username string) ([]model.User, error) {
 	var users []model.User
 	var err error

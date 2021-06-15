@@ -51,6 +51,7 @@ func Routers() *gin.Engine {
 	r.PUT("/user/:id", api.PutUserById)
 
 	// 角色
+	r.GET("/role/", api.GetRole)
 	r.GET("/role/:id", api.GetRoleById)
 	r.POST("/role/", api.PostRole)
 	r.DELETE("/role/:id", api.DelRoleById)

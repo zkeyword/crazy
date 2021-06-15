@@ -7,7 +7,8 @@ import (
 )
 
 type RoleService interface {
-	Get(id uint) *repository.Role
+	Get(page int, pageSize int, name string) (*ReturnRoleList, error)
+	GetById(id uint) *repository.Role
 	Create(Role *model.Role, PermissionKeys string) (*ReturnPolePermission, error)
 	UpdateById(id uint, Role *model.Role, PermissionKeys string) (*ReturnPolePermission, error)
 	DeleteById(id uint) error
@@ -16,6 +17,13 @@ type RoleService interface {
 type roleService struct {
 	repo           *repository.RoleRepository
 	rolePermission *repository.RolePermissionRepository
+}
+
+type ReturnRoleList struct {
+	Page     int          `json:"page"`
+	PageSize int          `json:"pageSize"`
+	Total    int          `json:"total"`
+	List     []model.Role `json:"list"`
 }
 
 type ReturnPolePermission struct {
@@ -34,8 +42,20 @@ func newRoleService() RoleService {
 	}
 }
 
-func (s *roleService) Get(id uint) *repository.Role {
-	return s.repo.Get(id)
+func (s *roleService) Get(page int, pageSize int, name string) (*ReturnRoleList, error) {
+	ret, err := s.repo.Get(page, pageSize, name)
+	count := s.repo.GetRoleCount(name)
+	returnValue := &ReturnRoleList{
+		Page:     page,
+		PageSize: pageSize,
+		Total:    count,
+		List:     ret,
+	}
+	return returnValue, err
+}
+
+func (s *roleService) GetById(id uint) *repository.Role {
+	return s.repo.GetById(id)
 }
 
 func (s *roleService) Create(Role *model.Role, PermissionKeys string) (*ReturnPolePermission, error) {

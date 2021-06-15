@@ -4,6 +4,8 @@ import (
 	"CRAZY/model"
 	"CRAZY/services"
 	"CRAZY/utils"
+	"html"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -66,6 +68,15 @@ func PutRoleById(c *gin.Context) {
 // GetRoleById 获取角色
 func GetRoleById(c *gin.Context) {
 	id := utils.StrToUInt(c.Param("id"))
-	res := services.NewRoleService.Get(id)
+	res := services.NewRoleService.GetById(id)
+	utils.OkDetailed(res, "success", c)
+}
+
+// GetRole 获取角色
+func GetRole(c *gin.Context) {
+	page, _ := strconv.Atoi(c.Query("page"))
+	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
+	name := html.EscapeString(c.Query("name"))
+	res, _ := services.NewRoleService.Get(page, pageSize, name)
 	utils.OkDetailed(res, "success", c)
 }

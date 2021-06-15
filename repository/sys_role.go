@@ -41,7 +41,7 @@ func (r *RoleRepository) UpdateById(id uint, t *model.Role) (*model.Role, error)
 }
 
 // Get 获取角色
-func (r *RoleRepository) Get(id uint) *Role {
+func (r *RoleRepository) GetById(id uint) *Role {
 	ret := &Role{}
 
 	if err := db.GetMysql().First(ret, "id = ?", id).Error; err != nil {
@@ -49,4 +49,27 @@ func (r *RoleRepository) Get(id uint) *Role {
 	}
 
 	return ret
+}
+
+// Get 获取角色列表
+func (r *RoleRepository) Get(page int, pageSize int, name string) ([]model.Role, error) {
+	var roles []model.Role
+	var err error
+	if name != "" {
+		err = db.GetMysql().Where("name like ?", "%"+name+"%").Limit(pageSize).Offset((page - 1) * 10).Find(&roles).Error
+	} else {
+		err = db.GetMysql().Limit(pageSize).Offset((page - 1) * 10).Find(&roles).Error
+	}
+	return roles, err
+}
+
+func (r *RoleRepository) GetRoleCount(name string) int {
+	var roles []model.Role
+	var count int
+	if name != "" {
+		db.GetMysql().Where("name like ?", "%"+name+"%").Find(&roles).Select("count(id)").Count(&count)
+	} else {
+		db.GetMysql().Find(&roles).Select("count(id)").Count(&count)
+	}
+	return count
 }
