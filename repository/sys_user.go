@@ -74,9 +74,9 @@ func (r *UserRepository) Get(page int, pageSize int, username string) ([]model.U
 	var users []model.User
 	var err error
 	if username != "" {
-		err = db.GetMysql().Where("username like ?", "%"+username+"%").Limit(pageSize).Offset((page - 1) * 10).Find(&users).Error
+		err = db.GetMysql().Where("username like ?", "%"+username+"%").Limit(pageSize).Offset((page - 1) * pageSize).Find(&users).Error
 	} else {
-		err = db.GetMysql().Limit(pageSize).Offset((page - 1) * 10).Find(&users).Error
+		err = db.GetMysql().Limit(pageSize).Offset((page - 1) * pageSize).Find(&users).Error
 	}
 	return users, err
 }

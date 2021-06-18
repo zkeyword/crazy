@@ -56,9 +56,9 @@ func (r *RoleRepository) Get(page int, pageSize int, name string) ([]model.Role,
 	var roles []model.Role
 	var err error
 	if name != "" {
-		err = db.GetMysql().Where("name like ?", "%"+name+"%").Limit(pageSize).Offset((page - 1) * 10).Find(&roles).Error
+		err = db.GetMysql().Where("name like ?", "%"+name+"%").Limit(pageSize).Offset((page - 1) * pageSize).Find(&roles).Error
 	} else {
-		err = db.GetMysql().Limit(pageSize).Offset((page - 1) * 10).Find(&roles).Error
+		err = db.GetMysql().Limit(pageSize).Offset((page - 1) * pageSize).Find(&roles).Error
 	}
 	return roles, err
 }
