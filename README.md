@@ -13,3 +13,6 @@ https://zhuanlan.zhihu.com/p/26733683
 
 // 打包静态文件
 go-bindata
+
+// 部署
+nohup ./main &1>2 &
