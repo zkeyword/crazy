@@ -16,3 +16,7 @@ go-bindata
 
 // 部署
 nohup ./main &1>2 &
+
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" main.go
+
+nohup 部署 日志 https://www.cnblogs.com/zhangmingcheng/p/11577967.html

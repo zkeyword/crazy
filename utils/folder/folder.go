@@ -1,6 +1,9 @@
 package folder
 
-import "os"
+import (
+	"log"
+	"os"
+)
 
 // IsExist 判断所给路径文件/文件夹是否存在
 func IsExist(path string) bool {
@@ -21,6 +24,16 @@ func IsDir(path string) bool {
 		return false
 	}
 	return s.IsDir()
+}
+
+// 创建文件夹
+func CreateDir(dirName string) bool {
+	err := os.Mkdir(dirName, 0755)
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	return true
 }
 
 // IsFile 判断所给路径是否为文件

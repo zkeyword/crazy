@@ -14,7 +14,7 @@ type RoleService interface {
 	DeleteById(id uint) error
 }
 
-type roleService struct {
+type roleRepository struct {
 	repo           *repository.RoleRepository
 	rolePermission *repository.RolePermissionRepository
 }
@@ -37,12 +37,12 @@ type ReturnPolePermission struct {
 var NewRoleService = newRoleService()
 
 func newRoleService() RoleService {
-	return &roleService{
+	return &roleRepository{
 		repo: repository.NewRoleRepository(),
 	}
 }
 
-func (s *roleService) Get(page int, pageSize int, name string) (*ReturnRoleList, error) {
+func (s *roleRepository) Get(page int, pageSize int, name string) (*ReturnRoleList, error) {
 	ret, err := s.repo.Get(page, pageSize, name)
 	count := s.repo.GetRoleCount(name)
 	returnValue := &ReturnRoleList{
@@ -54,11 +54,11 @@ func (s *roleService) Get(page int, pageSize int, name string) (*ReturnRoleList,
 	return returnValue, err
 }
 
-func (s *roleService) GetById(id uint) *repository.Role {
+func (s *roleRepository) GetById(id uint) *repository.Role {
 	return s.repo.GetById(id)
 }
 
-func (s *roleService) Create(Role *model.Role, PermissionKeys string) (*ReturnPolePermission, error) {
+func (s *roleRepository) Create(Role *model.Role, PermissionKeys string) (*ReturnPolePermission, error) {
 	ret, err := s.repo.Create(Role)
 	if err == nil {
 		s.rolePermission.Create(ret.ID, PermissionKeys)
@@ -73,7 +73,7 @@ func (s *roleService) Create(Role *model.Role, PermissionKeys string) (*ReturnPo
 	return returnValue, err
 }
 
-func (s *roleService) UpdateById(id uint, Role *model.Role, PermissionKeys string) (*ReturnPolePermission, error) {
+func (s *roleRepository) UpdateById(id uint, Role *model.Role, PermissionKeys string) (*ReturnPolePermission, error) {
 	ret, err := s.repo.UpdateById(id, Role)
 	if err == nil {
 		s.rolePermission.UpdateById(id, PermissionKeys)
@@ -90,7 +90,7 @@ func (s *roleService) UpdateById(id uint, Role *model.Role, PermissionKeys strin
 	return returnValue, err
 }
 
-func (s *roleService) DeleteById(id uint) error {
+func (s *roleRepository) DeleteById(id uint) error {
 	err := s.repo.DeleteById(id)
 	return err
 }

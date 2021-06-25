@@ -12,33 +12,33 @@ type PermissionService interface {
 	DeleteById(id int64) error
 }
 
-type permissionService struct {
+type permissionRepository struct {
 	repo *repository.PermissionRepository
 }
 
 var NewPermissionService = newPermissionService()
 
 func newPermissionService() PermissionService {
-	return &permissionService{
+	return &permissionRepository{
 		repo: repository.NewPermissionRepository(),
 	}
 }
 
-func (s *permissionService) Get(id int64) *repository.Permission {
+func (s *permissionRepository) Get(id int64) *repository.Permission {
 	return s.repo.Get(id)
 }
 
-func (s *permissionService) Create(Permission *model.Permission) (*model.Permission, error) {
+func (s *permissionRepository) Create(Permission *model.Permission) (*model.Permission, error) {
 	ret, err := s.repo.Create(Permission)
 	return ret, err
 }
 
-func (s *permissionService) UpdateById(id int64, Permission *model.Permission) (*model.Permission, error) {
+func (s *permissionRepository) UpdateById(id int64, Permission *model.Permission) (*model.Permission, error) {
 	ret, err := s.repo.UpdateById(id, Permission)
 	return ret, err
 }
 
-func (s *permissionService) DeleteById(id int64) error {
+func (s *permissionRepository) DeleteById(id int64) error {
 	err := s.repo.DeleteById(id)
 	return err
 }
