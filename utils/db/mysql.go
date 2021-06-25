@@ -29,6 +29,7 @@ func StartMysql(dsn string, maxIdle, maxOpen int) (err error) {
 			&model.Permission{},
 			&model.Role{},
 			&model.RolePermission{},
+			&model.Other{},
 		)
 
 		// user := &model.User{
