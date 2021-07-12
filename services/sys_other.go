@@ -14,7 +14,7 @@ type OtherService interface {
 	PutById(id int64, Other *model.Other) (*model.Other, error)
 }
 
-type otherRepository struct {
+type otherService struct {
 	repo *repository.OtherRepository
 }
 
@@ -22,32 +22,32 @@ type otherRepository struct {
 var NewOtherService = newOtherService()
 
 func newOtherService() OtherService {
-	return &otherRepository{
+	return &otherService{
 		repo: repository.NewOtherRepository(),
 	}
 }
 
-func (s *otherRepository) Get() ([]model.Other, error) {
+func (s *otherService) Get() ([]model.Other, error) {
 	ret, err := s.repo.Get()
 	return ret, err
 }
 
-func (s *otherRepository) Create(Other *model.Other) (*model.Other, error) {
+func (s *otherService) Create(Other *model.Other) (*model.Other, error) {
 	ret, err := s.repo.Create(Other)
 	return ret, err
 }
 
-func (s *otherRepository) PutById(id int64, Other *model.Other) (*model.Other, error) {
+func (s *otherService) PutById(id int64, Other *model.Other) (*model.Other, error) {
 	ret, err := s.repo.UpdateById(id, Other)
 	return ret, err
 }
 
-func (s *otherRepository) DeleteById(id int64) error {
+func (s *otherService) DeleteById(id int64) error {
 	err := s.repo.DeleteById(id)
 	return err
 }
 
-func (s *otherRepository) GetById(id int64) (*model.Other, error) {
+func (s *otherService) GetById(id int64) (*model.Other, error) {
 	ret, err := s.repo.GetById(id)
 	return ret, err
 }
