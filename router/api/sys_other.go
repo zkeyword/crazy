@@ -2,7 +2,7 @@ package api
 
 import (
 	"CRAZY/model"
-	"CRAZY/services"
+	otherService "CRAZY/services/sys_other"
 	"CRAZY/utils"
 	"html"
 	"strconv"
@@ -24,7 +24,7 @@ func PostOther(c *gin.Context) {
 			Key:   html.EscapeString(form.Key),
 			Value: html.EscapeString(form.Value),
 		}
-		res, resErr := services.NewOtherService.Create(Model)
+		res, resErr := otherService.Create(Model)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {
@@ -37,7 +37,7 @@ func PostOther(c *gin.Context) {
 
 func DelOtherById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	resErr := services.NewOtherService.DeleteById(id)
+	resErr := otherService.DeleteById(id)
 	if resErr == nil {
 		utils.Ok(c)
 	} else {
@@ -54,7 +54,7 @@ func PutOtherById(c *gin.Context) {
 			Key:   html.EscapeString(form.Key),
 			Value: html.EscapeString(form.Value),
 		}
-		res, resErr := services.NewOtherService.PutById(id, Model)
+		res, resErr := otherService.PutById(id, Model)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {
@@ -66,12 +66,12 @@ func PutOtherById(c *gin.Context) {
 }
 
 func GetOther(c *gin.Context) {
-	res, _ := services.NewOtherService.Get()
+	res, _ := otherService.Get()
 	utils.OkDetailed(res, "success", c)
 }
 
 func GetOtherById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	res, _ := services.NewOtherService.GetById(id)
+	res, _ := otherService.GetById(id)
 	utils.OkDetailed(res, "success", c)
 }

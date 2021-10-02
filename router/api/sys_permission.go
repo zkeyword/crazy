@@ -2,7 +2,7 @@ package api
 
 import (
 	"CRAZY/model"
-	"CRAZY/services"
+	sysPermissionService "CRAZY/services/sys_permission"
 	"CRAZY/utils"
 	"strconv"
 
@@ -25,7 +25,7 @@ func PostPermission(c *gin.Context) {
 			Key:    form.Key,
 			Status: form.Status,
 		}
-		res, resErr := services.NewPermissionService.Create(Model)
+		res, resErr := sysPermissionService.Create(Model)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {
@@ -39,7 +39,7 @@ func PostPermission(c *gin.Context) {
 // DelPermissionById 删除权限
 func DelPermissionById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	resErr := services.NewPermissionService.DeleteById(id)
+	resErr := sysPermissionService.DeleteById(id)
 	if resErr == nil {
 		utils.Ok(c)
 	} else {
@@ -58,7 +58,7 @@ func PutPermissionById(c *gin.Context) {
 			Key:    form.Key,
 			Status: form.Status,
 		}
-		res, resErr := services.NewPermissionService.UpdateById(id, Model)
+		res, resErr := sysPermissionService.UpdateById(id, Model)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {
@@ -72,6 +72,6 @@ func PutPermissionById(c *gin.Context) {
 // GetPermissionById 获取权限
 func GetPermissionById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	res := services.NewPermissionService.Get(id)
+	res := sysPermissionService.Get(id)
 	utils.OkDetailed(res, "success", c)
 }
