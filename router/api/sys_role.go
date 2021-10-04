@@ -2,7 +2,7 @@ package api
 
 import (
 	"CRAZY/model"
-	"CRAZY/services"
+	sysRoleService "CRAZY/services/sys_role"
 	"CRAZY/utils"
 	"html"
 	"strconv"
@@ -23,7 +23,7 @@ func PostRole(c *gin.Context) {
 		Model := &model.Role{
 			Name: form.Name,
 		}
-		res, resErr := services.NewRoleService.Create(Model, form.PermissionKeys)
+		res, resErr := sysRoleService.Create(Model, form.PermissionKeys)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {
@@ -37,7 +37,7 @@ func PostRole(c *gin.Context) {
 // DelRoleById 删除角色
 func DelRoleById(c *gin.Context) {
 	id := utils.StrToUInt(c.Param("id"))
-	resErr := services.NewRoleService.DeleteById(id)
+	resErr := sysRoleService.DeleteById(id)
 	if resErr == nil {
 		utils.Ok(c)
 	} else {
@@ -54,7 +54,7 @@ func PutRoleById(c *gin.Context) {
 		Model := &model.Role{
 			Name: form.Name,
 		}
-		res, resErr := services.NewRoleService.UpdateById(id, Model, form.PermissionKeys)
+		res, resErr := sysRoleService.UpdateById(id, Model, form.PermissionKeys)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {
@@ -68,7 +68,7 @@ func PutRoleById(c *gin.Context) {
 // GetRoleById 获取角色
 func GetRoleById(c *gin.Context) {
 	id := utils.StrToUInt(c.Param("id"))
-	res := services.NewRoleService.GetById(id)
+	res := sysRoleService.GetById(id)
 	utils.OkDetailed(res, "success", c)
 }
 
@@ -77,6 +77,6 @@ func GetRole(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	name := html.EscapeString(c.Query("name"))
-	res, _ := services.NewRoleService.Get(page, pageSize, name)
+	res, _ := sysRoleService.Get(page, pageSize, name)
 	utils.OkDetailed(res, "success", c)
 }

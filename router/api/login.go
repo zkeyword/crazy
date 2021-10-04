@@ -3,7 +3,7 @@ package api
 import (
 	"CRAZY/middleware"
 	"CRAZY/model"
-	"CRAZY/services"
+	sysUserService "CRAZY/services/sys_user"
 	"CRAZY/utils"
 	"CRAZY/utils/xor"
 	"html"
@@ -47,7 +47,7 @@ func Login(c *gin.Context) {
 	var form LoginUserForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		res, resErr := services.NewUserService.GetByUserName(html.EscapeString(form.Username))
+		res, resErr := sysUserService.GetByUserName(html.EscapeString(form.Username))
 		if resErr == nil {
 			if xor.Enc(form.Password) == res.Password {
 				user := &ReturnLoginUser{
@@ -81,7 +81,7 @@ func Register(c *gin.Context) {
 			Password: xor.Enc(form.Password),
 			Status:   1,
 		}
-		res, resErr := services.NewUserService.Create(Model, "999")
+		res, resErr := sysUserService.Create(Model, "999")
 		if resErr == nil {
 			user := &ReturnLoginUser{
 				ID:        res.ID,

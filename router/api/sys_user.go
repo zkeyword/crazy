@@ -2,7 +2,7 @@ package api
 
 import (
 	"CRAZY/model"
-	"CRAZY/services"
+	sysUserService "CRAZY/services/sys_user"
 	"CRAZY/utils"
 	"CRAZY/utils/xor"
 	"html"
@@ -33,7 +33,7 @@ func PostUser(c *gin.Context) {
 			Password: xor.Enc(form.Password),
 			Status:   form.Status,
 		}
-		res, resErr := services.NewUserService.Create(Model, form.Role)
+		res, resErr := sysUserService.Create(Model, form.Role)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {
@@ -47,7 +47,7 @@ func PostUser(c *gin.Context) {
 // DelUserById 删除用户
 func DelUserById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	resErr := services.NewUserService.DeleteById(id)
+	resErr := sysUserService.DeleteById(id)
 	if resErr == nil {
 		utils.Ok(c)
 	} else {
@@ -72,7 +72,7 @@ func PutUserById(c *gin.Context) {
 			Username: form.Username,
 			Password: xor.Enc(form.Password),
 		}
-		res, resErr := services.NewUserService.PutUserById(id, Model, form.Role)
+		res, resErr := sysUserService.PutUserById(id, Model, form.Role)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {
@@ -86,7 +86,7 @@ func PutUserById(c *gin.Context) {
 // GetUserById 获取用户
 func GetUserById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	res := services.NewUserService.GetById(id)
+	res := sysUserService.GetById(id)
 	utils.OkDetailed(res, "success", c)
 }
 
@@ -95,6 +95,6 @@ func GetUser(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	username := html.EscapeString(c.Query("username"))
-	res, _ := services.NewUserService.Get(page, pageSize, username)
+	res, _ := sysUserService.Get(page, pageSize, username)
 	utils.OkDetailed(res, "success", c)
 }

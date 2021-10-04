@@ -22,6 +22,7 @@ func GetCaptcha(c *gin.Context) {
 
 	session := sessions.Default(c)
 	session.Set("captcha", captchaID)
+	session.Save()
 
 	var content bytes.Buffer
 	captcha.WriteImage(&content, captchaID, 100, 50)
