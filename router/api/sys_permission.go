@@ -13,6 +13,7 @@ type PermissionForm struct {
 	Name   string `form:"name" binding:"required"`
 	Key    string `form:"key" binding:"required"`
 	Status int    `form:"status" binding:"required"`
+	PID    int    `form:"pid" binding:"required"`
 }
 
 // PostPermission 新增权限
@@ -24,6 +25,7 @@ func PostPermission(c *gin.Context) {
 			Name:   form.Name,
 			Key:    form.Key,
 			Status: form.Status,
+			PID:    uint(form.PID),
 		}
 		res, resErr := sysPermissionService.Create(Model)
 		if resErr == nil {
@@ -72,6 +74,13 @@ func PutPermissionById(c *gin.Context) {
 // GetPermissionById 获取权限
 func GetPermissionById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	res := sysPermissionService.Get(id)
+	res := sysPermissionService.GetById(id)
+	utils.OkDetailed(res, "success", c)
+}
+
+// GetPermission 获取权限列表树
+func GetPermissionTreeById(c *gin.Context) {
+	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	res := sysPermissionService.GetTree(uint(id))
 	utils.OkDetailed(res, "success", c)
 }

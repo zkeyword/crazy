@@ -10,12 +10,13 @@ type PermissionRepository struct {
 }
 
 type Permission struct {
-	ID        uint
-	Name      string
-	Key       string
-	Status    int
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        uint      `json:"id"`
+	Name      string    `json:"name"`
+	Key       string    `json:"key"`
+	Status    int       `json:"status"`
+	PID       int       `json:"pid"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 func NewPermissionRepository() *PermissionRepository {
@@ -44,11 +45,21 @@ func (r *PermissionRepository) UpdateById(id int64, t *model.Permission) (*model
 	return ret, err
 }
 
-// Get 获取权限
-func (r *PermissionRepository) Get(id int64) *Permission {
+// GetById 获取权限
+func (r *PermissionRepository) GetById(id int64) *Permission {
 	ret := &Permission{}
-
 	if err := db.GetMysql().First(ret, "id = ?", id).Error; err != nil {
+		return nil
+	}
+
+	return ret
+}
+
+// Get 获取权限列表
+func (r *PermissionRepository) Get() []model.Permission {
+	var ret []model.Permission
+
+	if err := db.GetMysql().Find(&ret).Error; err != nil {
 		return nil
 	}
 

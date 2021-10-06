@@ -59,6 +59,7 @@ func Routers() *gin.Engine {
 
 	// 权限
 	r.GET("/permission/:id", api.GetPermissionById)
+	r.GET("/permission/:id/tree", api.GetPermissionTreeById)
 	r.POST("/permission/", api.PostPermission)
 	r.DELETE("/permission/:id", api.DelPermissionById)
 	r.PUT("/permission/:id", api.PutPermissionById)

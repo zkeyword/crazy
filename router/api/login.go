@@ -18,13 +18,14 @@ type LoginUserForm struct {
 }
 
 type ReturnLoginUser struct {
-	ID        uint      `json:"id"`
-	Username  string    `json:"username"`
-	Status    int       `json:"status"`
-	Level     int       `json:"level"`
-	ParentID  uint      `json:"parentID"`
-	UpdatedAt time.Time `json:"updatedAt"`
-	Token     string    `json:"token"`
+	ID             uint      `json:"id"`
+	Username       string    `json:"username"`
+	Status         int       `json:"status"`
+	Level          int       `json:"level"`
+	ParentID       uint      `json:"parentID"`
+	UpdatedAt      time.Time `json:"updatedAt"`
+	Token          string    `json:"token"`
+	PermissionKeys string    `json:"permissions"`
 }
 
 // getToken 获取 JWT token
@@ -50,14 +51,16 @@ func Login(c *gin.Context) {
 		res, resErr := sysUserService.GetByUserName(html.EscapeString(form.Username))
 		if resErr == nil {
 			if xor.Enc(form.Password) == res.Password {
+				userDetailRes := sysUserService.GetById(int64(res.ID))
 				user := &ReturnLoginUser{
-					ID:        res.ID,
-					Username:  res.Username,
-					Status:    res.Status,
-					Level:     res.Level,
-					ParentID:  res.ParentID,
-					UpdatedAt: res.UpdatedAt,
-					Token:     getToken(form.Username),
+					ID:             res.ID,
+					Username:       res.Username,
+					Status:         res.Status,
+					Level:          res.Level,
+					ParentID:       res.ParentID,
+					UpdatedAt:      res.UpdatedAt,
+					Token:          getToken(form.Username),
+					PermissionKeys: userDetailRes.PermissionKeys,
 				}
 				utils.OkDetailed(user, "success", c)
 			} else {

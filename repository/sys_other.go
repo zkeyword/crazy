@@ -11,10 +11,10 @@ type OtherRepository struct {
 
 // Other 类型
 type Other struct {
-	ID    uint
-	Key   string
-	Value string
-	Type  uint
+	ID    uint   `json:"id"`
+	Key   string `json:"key"`
+	Value string `json:"value"`
+	Type  uint   `json:"type"`
 }
 
 func NewOtherRepository() *OtherRepository {

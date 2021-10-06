@@ -12,9 +12,9 @@ type UserRepository struct {
 
 // User 类型
 type User struct {
-	ID       uint
-	Username string
-	Password string
+	ID       uint   `json:"id"`
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 // NewUserRepository 实例化 DAO
@@ -62,11 +62,12 @@ func (r *UserRepository) UpdateById(id int64, t *model.User) (*model.User, error
 }
 
 type ReturnUser struct {
-	ID             uint   `json:"id"`
-	Username       string `json:"username"`
-	Password       string `json:"password"`
-	RoleIDs        string `json:"roleIDs"`
-	PermissionKeys string `json:"permissionKeys"`
+	ID             uint     `json:"id"`
+	Username       string   `json:"username"`
+	Password       string   `json:"password"`
+	RoleIDs        string   `json:"roleIDs"`
+	PermissionKeys string   `json:"permissionKeys"`
+	RoleName       []string `json:"roles"`
 }
 
 // Get 获取用户
@@ -108,19 +109,27 @@ func (r *UserRepository) GetById(id int64) *ReturnUser {
 
 	roleIDs := strings.Split(ret.RoleIDs, ",")
 
-	// var role []Role
-	// db.GetMysql().Table("roles").Where("id IN (?)", roleIDs).Find(&role)
+	// 获取关联角色
+	var role []Role
+	db.GetMysql().Table("roles").Where("id IN (?)", roleIDs).Find(&role)
 
+	roleName := make([]string, 0)
+	for _, v := range role {
+		roleName = append(roleName, v.Name)
+	}
+	ret.RoleName = roleName
+
+	// 获取关联权限
 	var permission []RolePermission
 	db.GetMysql().Table("role_permissions").Where("id IN (?)", roleIDs).Find(&permission)
 
-	result := make([]string, 0)
+	permissionKey := make([]string, 0)
 	for _, v := range permission {
-		result = append(result, v.PermissionKeys)
+		permissionKey = append(permissionKey, v.PermissionKeys)
 	}
 
-	tmp := strings.Split(strings.Join(result, ","), ",") // 获取总集
-	ret.PermissionKeys = strings.Join(utils.RemoveRepeated(tmp), ",")
+	permissionKeys := strings.Split(strings.Join(permissionKey, ","), ",") // 获取权限总集
+	ret.PermissionKeys = strings.Join(utils.RemoveRepeated(permissionKeys), ",")
 
 	if err != nil {
 		return nil

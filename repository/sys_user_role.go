@@ -10,9 +10,9 @@ type UserRoleRepository struct {
 
 // User 类型
 type UserRole struct {
-	ID      uint
-	UserID  uint
-	RoleIDs string
+	ID      uint   `json:"id"`
+	UserID  uint   `json:"userID"`
+	RoleIDs string `json:"roleIDs"`
 }
 
 // NewUserRoleRepository 实例化 DAO

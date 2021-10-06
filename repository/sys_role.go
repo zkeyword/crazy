@@ -9,8 +9,8 @@ type RoleRepository struct {
 }
 
 type Role struct {
-	ID   uint
-	Name string
+	ID   uint   `json:"id"`
+	Name string `json:"name"`
 }
 
 func NewRoleRepository() *RoleRepository {
