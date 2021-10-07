@@ -36,7 +36,7 @@ func (r *RolePermissionRepository) DeleteById(id uint) error {
 	return nil
 }
 
-func (r *RolePermissionRepository) UpdateById(id uint, permissionKeys string) (*model.RolePermission, error) {
+func (r *RolePermissionRepository) UpdateByRoleId(id uint, permissionKeys string) (*model.RolePermission, error) {
 	var ret = new(model.RolePermission)
 	data := &RolePermission{}
 	data.PermissionKeys = permissionKeys

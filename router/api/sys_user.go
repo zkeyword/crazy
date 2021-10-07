@@ -76,18 +76,25 @@ func PutUserById(c *gin.Context) {
 	}
 }
 
-// GetUserById 获取用户
-func GetUserById(c *gin.Context) {
-	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	res := sysUserService.GetById(id)
-	utils.OkDetailed(res, "success", c)
-}
-
 // GetUser 获取用户列表
 func GetUser(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	username := html.EscapeString(c.Query("username"))
 	res, _ := sysUserService.Get(page, pageSize, username)
+	utils.OkDetailed(res, "success", c)
+}
+
+// GetUserById 获取用户
+func GetUserById(c *gin.Context) {
+	id := utils.StrToUInt(c.Param("id"))
+	res, _ := sysUserService.GetById(id)
+	utils.OkDetailed(res, "success", c)
+}
+
+// GetUserRolePermissionByUserId 获取用户角色权限
+func GetUserRolePermissionByUserId(c *gin.Context) {
+	id := utils.StrToUInt(c.Param("id"))
+	res := sysUserService.GetUserRolePermissionByUserId(id)
 	utils.OkDetailed(res, "success", c)
 }

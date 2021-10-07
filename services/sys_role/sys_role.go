@@ -73,7 +73,7 @@ func Create(Role *model.Role, PermissionKeys string) (*ReturnPolePermission, err
 func UpdateById(id uint, Role *model.Role, PermissionKeys string) (*ReturnPolePermission, error) {
 	ret, err := roleRepo.UpdateById(id, Role)
 	if err == nil {
-		rolePermissionRepo.UpdateById(id, PermissionKeys)
+		rolePermissionRepo.UpdateByRoleId(id, PermissionKeys)
 	} else {
 		PermissionKeys = ""
 	}
@@ -97,7 +97,7 @@ func GetRolePermissionByRoleID(id uint) *repository.RolePermission {
 }
 
 func PostRolePermissionByRoleID(id uint, permissionKeys string) (*model.RolePermission, error) {
-	ret, err := rolePermissionRepo.UpdateById(id, permissionKeys)
+	ret, err := rolePermissionRepo.UpdateByRoleId(id, permissionKeys)
 	return ret, err
 }
 

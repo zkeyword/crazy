@@ -38,8 +38,12 @@ func Get(page int, pageSize int, username string) (*ReturnUserList, error) {
 	return returnValue, err
 }
 
-func GetById(id int64) *repository.ReturnUser {
+func GetById(id uint) (*model.User, error) {
 	return userRepo.GetById(id)
+}
+
+func GetUserRolePermissionByUserId(id uint) *repository.ReturnUser {
+	return userRepo.GetUserRolePermissionByUserId(id)
 }
 
 func Create(User *model.User, roleIds string) (*model.User, error) {

@@ -61,16 +61,7 @@ func (r *UserRepository) UpdateById(id int64, t *model.User) (*model.User, error
 	return ret, err
 }
 
-type ReturnUser struct {
-	ID             uint     `json:"id"`
-	Username       string   `json:"username"`
-	Password       string   `json:"password"`
-	RoleIDs        string   `json:"roleIDs"`
-	PermissionKeys string   `json:"permissionKeys"`
-	RoleName       []string `json:"roles"`
-}
-
-// Get 获取用户
+// Get 获取用户列表
 func (r *UserRepository) Get(page int, pageSize int, username string) ([]model.User, error) {
 	var users []model.User
 	var err error
@@ -97,20 +88,32 @@ func (r *UserRepository) GetUserCount(username string) int {
 }
 
 // GetById 获取用户
-func (r *UserRepository) GetById(id int64) *ReturnUser {
+func (r *UserRepository) GetById(id uint) (*model.User, error) {
+	var ret = &model.User{}
+	err := db.GetMysql().First(ret, "id = ?", id).Error
+	return ret, err
+}
+
+type ReturnUser struct {
+	ID             uint     `json:"id"`
+	RoleID         uint     `json:"roleIDs"`
+	PermissionKeys string   `json:"permissionKeys"`
+	RoleName       []string `json:"roles"`
+}
+
+// GetUserRolePermissionByUserId 获取用户角色关联权限
+func (r *UserRepository) GetUserRolePermissionByUserId(id uint) *ReturnUser {
 	ret := &ReturnUser{}
+	var ret2 []ReturnUser
 
-	err := db.GetMysql().
-		// Debug().
-		Table("users").
-		Select("users.id, users.username, users.password, users.level, users.updated_at, user_roles.role_ids").
-		Joins("left join user_roles on users.id = user_roles.user_id").
-		// Joins("left join roles on roles.id = user_roles.role_ids").
-		Where("users.id = ?", id).
-		Find(&ret).
-		Error
+	err := db.GetMysql().Table("user_roles").Where("user_id = ?", id).Find(&ret2).Error
 
-	roleIDs := strings.Split(ret.RoleIDs, ",")
+	ret.RoleID = id
+
+	var roleIDs []uint
+	for _, v := range ret2 {
+		roleIDs = append(roleIDs, v.RoleID)
+	}
 
 	// 获取关联角色
 	var role []Role

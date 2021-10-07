@@ -51,7 +51,7 @@ func Login(c *gin.Context) {
 		res, resErr := sysUserService.GetByUserName(html.EscapeString(form.Username))
 		if resErr == nil {
 			if xor.Enc(form.Password) == res.Password {
-				userDetailRes := sysUserService.GetById(int64(res.ID))
+				userDetailRes := sysUserService.GetUserRolePermissionByUserId(res.ID)
 				user := &ReturnLoginUser{
 					ID:             res.ID,
 					Username:       res.Username,
