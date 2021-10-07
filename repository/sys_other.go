@@ -26,7 +26,7 @@ func (r *OtherRepository) Create(t *model.Other) (*model.Other, error) {
 	return t, err
 }
 
-func (r *OtherRepository) DeleteById(id int64) error {
+func (r *OtherRepository) DeleteById(id uint) error {
 	fmt.Println(id)
 	if err := db.GetMysql().Where("id = ?", id).Delete(Other{}).Error; err != nil {
 		return err
@@ -35,13 +35,13 @@ func (r *OtherRepository) DeleteById(id int64) error {
 	return nil
 }
 
-func (r *OtherRepository) UpdateById(id int64, t *model.Other) (*model.Other, error) {
+func (r *OtherRepository) UpdateById(id uint, t *model.Other) (*model.Other, error) {
 	var ret = new(model.Other)
 	err := db.GetMysql().Model(&ret).Where("id=?", id).Updates(t).Error
 	return ret, err
 }
 
-func (r *OtherRepository) GetById(id int64) (*model.Other, error) {
+func (r *OtherRepository) GetById(id uint) (*model.Other, error) {
 	var ret = &model.Other{}
 	err := db.GetMysql().First(ret, "id = ?", id).Error
 	return ret, err

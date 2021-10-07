@@ -50,25 +50,25 @@ func Create(User *model.User, roleIds string) (*model.User, error) {
 	ret, err := userRepo.Create(User)
 	roleIdArr := strings.Split(roleIds, ",")
 	for _, v := range roleIdArr {
-		userRoleRepo.Create(ret.ID, utils.StrToUInt(v), ret.Username)
+		userRoleRepo.Create(ret.ID, ret.Username, utils.StrToUInt(v))
 	}
 	return ret, err
 }
 
-func PutUserById(id int64, User *model.User, roleIds string) (*model.User, error) {
+func PutUserById(id uint, User *model.User, roleIds string) (*model.User, error) {
 	ret, err := userRepo.UpdateById(id, User)
 	roleIdArr := strings.Split(roleIds, ",")
 	for _, v := range roleIdArr {
-		userRoleRepo.DeleteById(id)
-		userRoleRepo.Create(ret.ID, utils.StrToUInt(v), ret.Username)
+		userRoleRepo.DeleteByUserId(id)
+		userRoleRepo.Create(ret.ID, ret.Username, utils.StrToUInt(v))
 	}
 	return ret, err
 }
 
-func DeleteById(id int64) error {
+func DeleteById(id uint) error {
 	err := userRepo.DeleteById(id)
 	if err == nil {
-		userRoleRepo.DeleteById(id)
+		userRoleRepo.DeleteByUserId(id)
 	}
 	return err
 }

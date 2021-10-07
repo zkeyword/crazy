@@ -46,7 +46,7 @@ func PostUser(c *gin.Context) {
 
 // DelUserById 删除用户
 func DelUserById(c *gin.Context) {
-	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	id := utils.StrToUInt(c.Param("id"))
 	resErr := sysUserService.DeleteById(id)
 	if resErr == nil {
 		utils.Ok(c)
@@ -57,7 +57,7 @@ func DelUserById(c *gin.Context) {
 
 // PutUserById 修改用户
 func PutUserById(c *gin.Context) {
-	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	id := utils.StrToUInt(c.Param("id"))
 	var form UserForm
 	err := c.ShouldBind(&form)
 	if err == nil {

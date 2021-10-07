@@ -4,7 +4,6 @@ import (
 	"CRAZY/model"
 	sysPermissionService "CRAZY/services/sys_permission"
 	"CRAZY/utils"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -40,7 +39,7 @@ func PostPermission(c *gin.Context) {
 
 // DelPermissionById 删除权限
 func DelPermissionById(c *gin.Context) {
-	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	id := utils.StrToUInt(c.Param("id"))
 	resErr := sysPermissionService.DeleteById(id)
 	if resErr == nil {
 		utils.Ok(c)
@@ -51,7 +50,7 @@ func DelPermissionById(c *gin.Context) {
 
 // PutPermissionById 修改权限
 func PutPermissionById(c *gin.Context) {
-	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	id := utils.StrToUInt(c.Param("id"))
 	var form PermissionForm
 	err := c.ShouldBind(&form)
 	if err == nil {
@@ -73,14 +72,14 @@ func PutPermissionById(c *gin.Context) {
 
 // GetPermissionById 获取权限
 func GetPermissionById(c *gin.Context) {
-	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	id := utils.StrToUInt(c.Param("id"))
 	res := sysPermissionService.GetById(id)
 	utils.OkDetailed(res, "success", c)
 }
 
 // GetPermission 获取权限列表树
 func GetPermissionTreeById(c *gin.Context) {
-	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	id := utils.StrToUInt(c.Param("id"))
 	res := sysPermissionService.GetTree(uint(id))
 	utils.OkDetailed(res, "success", c)
 }

@@ -21,7 +21,7 @@ func NewUserRoleRepository() *UserRoleRepository {
 	return &UserRoleRepository{}
 }
 
-func (r *UserRoleRepository) Create(userId uint, roleId uint, username string) (*model.UserRole, error) {
+func (r *UserRoleRepository) Create(userId uint, username string, roleId uint) (*model.UserRole, error) {
 	var ret = new(model.UserRole)
 	ret.RoleID = roleId
 	ret.UserID = userId
@@ -30,8 +30,24 @@ func (r *UserRoleRepository) Create(userId uint, roleId uint, username string) (
 	return ret, err
 }
 
-func (r *UserRoleRepository) DeleteById(userID int64) error {
+func (r *UserRoleRepository) DeleteByUserId(userID uint) error {
 	if err := db.GetMysql().Where("user_id = ?", userID).Delete(UserRole{}).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *UserRoleRepository) DeleteByRoleId(roleID uint) error {
+	if err := db.GetMysql().Where("role_id = ?", roleID).Delete(UserRole{}).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *UserRoleRepository) DeleteByRoleIdAndUserId(userID uint, roleID uint) error {
+	if err := db.GetMysql().Where("role_id = ?", userID).Delete(UserRole{}).Error; err != nil {
 		return err
 	}
 

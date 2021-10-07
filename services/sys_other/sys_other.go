@@ -21,17 +21,17 @@ func Create(Other *model.Other) (*model.Other, error) {
 	return ret, err
 }
 
-func PutById(id int64, Other *model.Other) (*model.Other, error) {
+func PutById(id uint, Other *model.Other) (*model.Other, error) {
 	ret, err := repo.UpdateById(id, Other)
 	return ret, err
 }
 
-func DeleteById(id int64) error {
+func DeleteById(id uint) error {
 	err := repo.DeleteById(id)
 	return err
 }
 
-func GetById(id int64) (*model.Other, error) {
+func GetById(id uint) (*model.Other, error) {
 	ret, err := repo.GetById(id)
 	return ret, err
 }

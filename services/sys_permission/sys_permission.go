@@ -16,17 +16,17 @@ func Create(Permission *model.Permission) (*model.Permission, error) {
 	return ret, err
 }
 
-func UpdateById(id int64, Permission *model.Permission) (*model.Permission, error) {
+func UpdateById(id uint, Permission *model.Permission) (*model.Permission, error) {
 	ret, err := repo.UpdateById(id, Permission)
 	return ret, err
 }
 
-func DeleteById(id int64) error {
+func DeleteById(id uint) error {
 	err := repo.DeleteById(id)
 	return err
 }
 
-func GetById(id int64) *repository.Permission {
+func GetById(id uint) *repository.Permission {
 	return repo.GetById(id)
 }
 

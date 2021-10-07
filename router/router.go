@@ -46,7 +46,7 @@ func Routers() *gin.Engine {
 	// 用户
 	r.GET("/user", api.GetUser)
 	r.GET("/user/:id", api.GetUserById)
-	r.GET("/user/:id/permission", api.GetUserRolePermissionByUserId)
+	r.GET("/user/:id/permission", api.GetUserRolePermissionByUserId) // 获取用户关联角色的权限
 	r.POST("/user/", api.PostUser)
 	r.DELETE("/user/:id", api.DelUserById)
 	r.PUT("/user/:id", api.PutUserById)
@@ -57,11 +57,15 @@ func Routers() *gin.Engine {
 	r.POST("/role/", api.PostRole)
 	r.DELETE("/role/:id", api.DelRoleById)
 	r.PUT("/role/:id", api.PutRoleById)
+
+	// 角色关联权限
 	r.GET("/role/:id/permission", api.GetRolePermissionByRoleID)
 	r.POST("/role/:id/permission", api.PostRolePermissionByRoleID)
+
+	// 角色关联用户
 	r.GET("/role/:id/user", api.GetRoleUserByRoleID)
 	r.POST("/role/:id/user", api.PostRoleUserByRoleID)
-	r.DELETE("/role/:id/user", api.DeleteRoleUserByRoleID)
+	r.DELETE("/role/:id/user", api.DelectRoleUserByRoleIAndUserID)
 
 	// 权限
 	r.GET("/permission/:id", api.GetPermissionById)

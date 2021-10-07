@@ -116,16 +116,45 @@ func GetRoleUserByRoleID(c *gin.Context) {
 	utils.OkDetailed(res, "success", c)
 }
 
+type PostRoleUserByRoleIDForm struct {
+	UserID   int    `form:"userId" binding:"required"`
+	Username string `form:"username" binding:"required"`
+}
+
 // PostRoleUserByRoleID 新增角色关联用户
 func PostRoleUserByRoleID(c *gin.Context) {
 	id := utils.StrToUInt(c.Param("id"))
-	res := sysRoleService.GetRolePermissionByRoleID(id)
-	utils.OkDetailed(res, "success", c)
+	var form PostRoleUserByRoleIDForm
+	err := c.ShouldBind(&form)
+	if err == nil {
+		res, resErr := sysRoleService.PostRoleUserByRoleID(uint(form.UserID), form.Username, id)
+		if resErr == nil {
+			utils.OkDetailed(res, "success", c)
+		} else {
+			utils.FailWithMessage(resErr.Error(), c)
+		}
+	} else {
+		utils.FailWithMessage(err.Error(), c)
+	}
 }
 
-// DeleteRoleUserByRoleID 删除角色关联的用户
-func DeleteRoleUserByRoleID(c *gin.Context) {
+type DelectRoleUserByRoleIAndUserIDForm struct {
+	UserID int `form:"userId" binding:"required"`
+}
+
+// DelectRoleUserByRoleIAndUserID 删除角色关联的用户
+func DelectRoleUserByRoleIAndUserID(c *gin.Context) {
 	id := utils.StrToUInt(c.Param("id"))
-	res := sysRoleService.GetRolePermissionByRoleID(id)
-	utils.OkDetailed(res, "success", c)
+	var form PostRoleUserByRoleIDForm
+	err := c.ShouldBind(&form)
+	if err == nil {
+		resErr := sysRoleService.DeleteByRoleIdAndUserId(uint(form.UserID), id)
+		if resErr == nil {
+			utils.OkDetailed("删除成功！", "success", c)
+		} else {
+			utils.FailWithMessage(resErr.Error(), c)
+		}
+	} else {
+		utils.FailWithMessage(err.Error(), c)
+	}
 }

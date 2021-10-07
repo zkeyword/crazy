@@ -30,7 +30,7 @@ func (r *PermissionRepository) Create(t *model.Permission) (*model.Permission, e
 }
 
 // DeleteById 删除权限
-func (r *PermissionRepository) DeleteById(id int64) error {
+func (r *PermissionRepository) DeleteById(id uint) error {
 	if err := db.GetMysql().Where("id = ?", id).Delete(Permission{}).Error; err != nil {
 		return err
 	}
@@ -39,14 +39,14 @@ func (r *PermissionRepository) DeleteById(id int64) error {
 }
 
 // UpdateById 修改权限
-func (r *PermissionRepository) UpdateById(id int64, t *model.Permission) (*model.Permission, error) {
+func (r *PermissionRepository) UpdateById(id uint, t *model.Permission) (*model.Permission, error) {
 	var ret = new(model.Permission)
 	err := db.GetMysql().Model(&ret).Where("id=?", id).Updates(t).Error
 	return ret, err
 }
 
 // GetById 获取权限
-func (r *PermissionRepository) GetById(id int64) *Permission {
+func (r *PermissionRepository) GetById(id uint) *Permission {
 	ret := &Permission{}
 	if err := db.GetMysql().First(ret, "id = ?", id).Error; err != nil {
 		return nil

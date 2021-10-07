@@ -10,9 +10,9 @@ type RolePermissionRepository struct {
 
 // RolePermission 类型
 type RolePermission struct {
-	ID             int64  `json:"id"`
+	ID             uint   `json:"id"`
 	PermissionKeys string `json:"permissionKeys"`
-	RoleId         int64  `json:"roleId"`
+	RoleId         uint   `json:"roleId"`
 }
 
 // NewRolePermissionRepository 实例化 DAO

@@ -5,7 +5,6 @@ import (
 	otherService "CRAZY/services/sys_other"
 	"CRAZY/utils"
 	"html"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,7 +35,7 @@ func PostOther(c *gin.Context) {
 }
 
 func DelOtherById(c *gin.Context) {
-	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	id := utils.StrToUInt(c.Param("id"))
 	resErr := otherService.DeleteById(id)
 	if resErr == nil {
 		utils.Ok(c)
@@ -46,7 +45,7 @@ func DelOtherById(c *gin.Context) {
 }
 
 func PutOtherById(c *gin.Context) {
-	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	id := utils.StrToUInt(c.Param("id"))
 	var form OtherForm
 	err := c.ShouldBind(&form)
 	if err == nil {
@@ -71,7 +70,7 @@ func GetOther(c *gin.Context) {
 }
 
 func GetOtherById(c *gin.Context) {
-	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	id := utils.StrToUInt(c.Param("id"))
 	res, _ := otherService.GetById(id)
 	utils.OkDetailed(res, "success", c)
 }

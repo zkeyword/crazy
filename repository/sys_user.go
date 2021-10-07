@@ -46,7 +46,7 @@ func (r *UserRepository) Create(t *model.User) (*model.User, error) {
 }
 
 // DeleteById 删除用户
-func (r *UserRepository) DeleteById(id int64) error {
+func (r *UserRepository) DeleteById(id uint) error {
 	if err := db.GetMysql().Where("id = ?", id).Delete(User{}).Error; err != nil {
 		return err
 	}
@@ -55,7 +55,7 @@ func (r *UserRepository) DeleteById(id int64) error {
 }
 
 // UpdateById 修改用户
-func (r *UserRepository) UpdateById(id int64, t *model.User) (*model.User, error) {
+func (r *UserRepository) UpdateById(id uint, t *model.User) (*model.User, error) {
 	var ret = new(model.User)
 	err := db.GetMysql().Model(&ret).Where("id=?", id).Updates(t).Error
 	return ret, err
