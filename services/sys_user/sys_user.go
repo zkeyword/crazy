@@ -3,6 +3,8 @@ package sysUserService
 import (
 	"CRAZY/model"
 	"CRAZY/repository"
+	"CRAZY/utils"
+	"strings"
 )
 
 var userRepo = getUserRepo()
@@ -42,16 +44,19 @@ func GetById(id int64) *repository.ReturnUser {
 
 func Create(User *model.User, roleIds string) (*model.User, error) {
 	ret, err := userRepo.Create(User)
-	if err == nil {
-		userRoleRepo.Create(ret.ID, roleIds)
+	roleIdArr := strings.Split(roleIds, ",")
+	for _, v := range roleIdArr {
+		userRoleRepo.Create(ret.ID, utils.StrToUInt(v), ret.Username)
 	}
 	return ret, err
 }
 
 func PutUserById(id int64, User *model.User, roleIds string) (*model.User, error) {
 	ret, err := userRepo.UpdateById(id, User)
-	if err == nil {
-		userRoleRepo.UpdateById(id, roleIds)
+	roleIdArr := strings.Split(roleIds, ",")
+	for _, v := range roleIdArr {
+		userRoleRepo.DeleteById(id)
+		userRoleRepo.Create(ret.ID, utils.StrToUInt(v), ret.Username)
 	}
 	return ret, err
 }

@@ -44,7 +44,7 @@ func (r *RolePermissionRepository) UpdateById(id uint, permissionKeys string) (*
 	return ret, err
 }
 
-func (r *RolePermissionRepository) Get(id int64) *RolePermission {
+func (r *RolePermissionRepository) GetById(id uint) *RolePermission {
 	ret := &RolePermission{}
 
 	if err := db.GetMysql().First(ret, "id = ?", id).Error; err != nil {

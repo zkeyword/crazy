@@ -56,6 +56,11 @@ func Routers() *gin.Engine {
 	r.POST("/role/", api.PostRole)
 	r.DELETE("/role/:id", api.DelRoleById)
 	r.PUT("/role/:id", api.PutRoleById)
+	r.GET("/role/:id/permission", api.GetRolePermissionByRoleID)
+	r.POST("/role/:id/permission", api.PostRolePermissionByRoleID)
+	r.GET("/role/:id/user", api.GetRoleUserByRoleID)
+	r.POST("/role/:id/user", api.PostRoleUserByRoleID)
+	r.DELETE("/role/:id/user", api.DeleteRoleUserByRoleID)
 
 	// 权限
 	r.GET("/permission/:id", api.GetPermissionById)

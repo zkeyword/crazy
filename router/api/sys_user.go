@@ -15,16 +15,16 @@ type UserForm struct {
 	Username string `form:"username" binding:"required"`
 	Password string `form:"password" binding:"required"`
 	Status   int    `form:"status" binding:"required"`
-	Role     string `form:"role"`
+	RoleIDs  string `form:"roleIds"`
 }
 
 // PostUser 新增用户
 func PostUser(c *gin.Context) {
 	var form UserForm
 	err := c.ShouldBind(&form)
-	if form.Role == "" {
+	if form.RoleIDs == "" {
 		// TODO: https://www.cnblogs.com/xinliangcoder/p/11234017.html 自定义验证器
-		utils.FailWithMessage("Key: 'UserForm.Role' Error:Field validation for 'Role' failed on the 'lt' 0", c)
+		utils.FailWithMessage("Key: 'UserForm.RoleIDs' Error:Field validation for 'roleIds' failed on the 'lt' 0", c)
 		return
 	}
 	if err == nil {
@@ -33,7 +33,7 @@ func PostUser(c *gin.Context) {
 			Password: xor.Enc(form.Password),
 			Status:   form.Status,
 		}
-		res, resErr := sysUserService.Create(Model, form.Role)
+		res, resErr := sysUserService.Create(Model, form.RoleIDs)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {
@@ -55,24 +55,17 @@ func DelUserById(c *gin.Context) {
 	}
 }
 
-type PutUserForm struct {
-	Username string `form:"username"`
-	Password string `form:"password"`
-	Status   int    `form:"status"`
-	Role     string `form:"role"`
-}
-
 // PutUserById 修改用户
 func PutUserById(c *gin.Context) {
 	id, _ := strconv.ParseInt(c.Param("id"), 10, 64)
-	var form PutUserForm
+	var form UserForm
 	err := c.ShouldBind(&form)
 	if err == nil {
 		Model := &model.User{
 			Username: form.Username,
 			Password: xor.Enc(form.Password),
 		}
-		res, resErr := sysUserService.PutUserById(id, Model, form.Role)
+		res, resErr := sysUserService.PutUserById(id, Model, form.RoleIDs)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {

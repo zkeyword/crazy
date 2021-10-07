@@ -8,7 +8,9 @@ import (
 
 var roleRepo = getRoleRepo()
 
-var rolePermission = getRolePermission()
+var rolePermissionRepo = getRolePermission()
+
+var userRoleRepo = getUserRole()
 
 func getRoleRepo() *repository.RoleRepository {
 	return repository.NewRoleRepository()
@@ -16,6 +18,10 @@ func getRoleRepo() *repository.RoleRepository {
 
 func getRolePermission() *repository.RolePermissionRepository {
 	return repository.NewRolePermissionRepository()
+}
+
+func getUserRole() *repository.UserRoleRepository {
+	return repository.NewUserRoleRepository()
 }
 
 type ReturnRoleList struct {
@@ -35,12 +41,12 @@ type ReturnPolePermission struct {
 
 func Get(page int, pageSize int, name string) (*ReturnRoleList, error) {
 	ret, err := roleRepo.Get(page, pageSize, name)
-	count := roleRepo.GetRoleCount(name)
+	// count := roleRepo.GetRoleCount(name)
 	returnValue := &ReturnRoleList{
 		Page:     page,
 		PageSize: pageSize,
-		Total:    count,
-		List:     ret,
+		// Total:    count,
+		List: ret,
 	}
 	return returnValue, err
 }
@@ -52,7 +58,7 @@ func GetById(id uint) *repository.Role {
 func Create(Role *model.Role, PermissionKeys string) (*ReturnPolePermission, error) {
 	ret, err := roleRepo.Create(Role)
 	if err == nil {
-		rolePermission.Create(ret.ID, PermissionKeys)
+		rolePermissionRepo.Create(ret.ID, PermissionKeys)
 	}
 	returnValue := &ReturnPolePermission{
 		ID:             ret.ID,
@@ -67,7 +73,7 @@ func Create(Role *model.Role, PermissionKeys string) (*ReturnPolePermission, err
 func UpdateById(id uint, Role *model.Role, PermissionKeys string) (*ReturnPolePermission, error) {
 	ret, err := roleRepo.UpdateById(id, Role)
 	if err == nil {
-		rolePermission.UpdateById(id, PermissionKeys)
+		rolePermissionRepo.UpdateById(id, PermissionKeys)
 	} else {
 		PermissionKeys = ""
 	}
@@ -84,4 +90,17 @@ func UpdateById(id uint, Role *model.Role, PermissionKeys string) (*ReturnPolePe
 func DeleteById(id uint) error {
 	err := roleRepo.DeleteById(id)
 	return err
+}
+
+func GetRolePermissionByRoleID(id uint) *repository.RolePermission {
+	return rolePermissionRepo.GetById(id)
+}
+
+func PostRolePermissionByRoleID(id uint, permissionKeys string) (*model.RolePermission, error) {
+	ret, err := rolePermissionRepo.UpdateById(id, permissionKeys)
+	return ret, err
+}
+
+func GetRoleUserByRoleID(id uint) *[]repository.UserRole {
+	return userRoleRepo.GetByRoleID(id)
 }

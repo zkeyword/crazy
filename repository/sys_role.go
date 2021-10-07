@@ -55,6 +55,9 @@ func (r *RoleRepository) GetById(id uint) *Role {
 func (r *RoleRepository) Get(page int, pageSize int, name string) ([]model.Role, error) {
 	var roles []model.Role
 	var err error
+	if pageSize < 1 {
+		pageSize = 10
+	}
 	if name != "" {
 		err = db.GetMysql().Where("name like ?", "%"+name+"%").Limit(pageSize).Offset((page - 1) * pageSize).Find(&roles).Error
 	} else {

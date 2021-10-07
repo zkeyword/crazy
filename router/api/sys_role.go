@@ -80,3 +80,52 @@ func GetRole(c *gin.Context) {
 	res, _ := sysRoleService.Get(page, pageSize, name)
 	utils.OkDetailed(res, "success", c)
 }
+
+// GetRolePermissionByRoleID 获取角色权限
+func GetRolePermissionByRoleID(c *gin.Context) {
+	id := utils.StrToUInt(c.Param("id"))
+	res := sysRoleService.GetRolePermissionByRoleID(id)
+	utils.OkDetailed(res, "success", c)
+}
+
+type RolePermissionForm struct {
+	PermissionKeys string `form:"permission" binding:"required"`
+}
+
+// PostRolePermissionByRoleID 修改角色权限
+func PostRolePermissionByRoleID(c *gin.Context) {
+	var form RolePermissionForm
+	err := c.ShouldBind(&form)
+	if err == nil {
+		id := utils.StrToUInt(c.Param("id"))
+		res, resErr := sysRoleService.PostRolePermissionByRoleID(id, form.PermissionKeys)
+		if resErr == nil {
+			utils.OkDetailed(res, "success", c)
+		} else {
+			utils.FailWithMessage(resErr.Error(), c)
+		}
+	} else {
+		utils.FailWithMessage(err.Error(), c)
+	}
+}
+
+// GetRoleUserByRoleID 获取角色关联的用户
+func GetRoleUserByRoleID(c *gin.Context) {
+	id := utils.StrToUInt(c.Param("id"))
+	res := sysRoleService.GetRoleUserByRoleID(id)
+	utils.OkDetailed(res, "success", c)
+}
+
+// PostRoleUserByRoleID 新增角色关联用户
+func PostRoleUserByRoleID(c *gin.Context) {
+	id := utils.StrToUInt(c.Param("id"))
+	res := sysRoleService.GetRolePermissionByRoleID(id)
+	utils.OkDetailed(res, "success", c)
+}
+
+// DeleteRoleUserByRoleID 删除角色关联的用户
+func DeleteRoleUserByRoleID(c *gin.Context) {
+	id := utils.StrToUInt(c.Param("id"))
+	res := sysRoleService.GetRolePermissionByRoleID(id)
+	utils.OkDetailed(res, "success", c)
+}
