@@ -16,7 +16,15 @@ func StartRedis(addr string, password string, db, maxIdle, maxOpen int) (err err
 		MaxActive:   maxOpen,
 		IdleTimeout: time.Duration(30) * time.Minute,
 		Dial: func() (redis.Conn, error) {
-			return redis.Dial("tcp", addr, redis.DialDatabase(db), redis.DialPassword(password))
+			c, err := redis.Dial("tcp", addr, redis.DialDatabase(db), redis.DialPassword(password))
+			if err != nil {
+				return nil, err
+			}
+			if err != nil {
+				c.Close()
+				return nil, err
+			}
+			return c, err
 		},
 	}
 
@@ -33,6 +41,11 @@ func StartRedis(addr string, password string, db, maxIdle, maxOpen int) (err err
 // 获取redis连接
 func GetRedis() redis.Conn {
 	return redisPool.Get()
+}
+
+// GetRedisPool
+func GetRedisPool() *redis.Pool {
+	return redisPool
 }
 
 // 关闭redis

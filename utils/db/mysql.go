@@ -24,12 +24,17 @@ func StartMysql(dsn string, maxIdle, maxOpen int) (err error) {
 	db.LogMode(true)
 	db.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
 		AutoMigrate(
+			// sys
 			&model.User{},
 			&model.UserRole{},
 			&model.Permission{},
 			&model.Role{},
 			&model.RolePermission{},
 			&model.Other{},
+			&model.UserAddress{},
+			// shop
+			&model.ShopCart{},
+			&model.ShopOrder{},
 		)
 
 		// user := &model.User{

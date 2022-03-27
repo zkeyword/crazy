@@ -4,12 +4,13 @@ import (
 	"CRAZY/middleware"
 	"CRAZY/router/api"
 
-	"github.com/gin-gonic/gin"
+	// "CRAZY/utils/db"
 
-	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
+	// "github.com/gin-contrib/sessions"
 	// session存储引擎
-	"github.com/gin-contrib/sessions/cookie"
-	// "github.com/gin-contrib/sessions/redis" 基于redis存储引擎的session
+	// "github.com/gin-contrib/sessions/cookie"
+	// "github.com/gin-contrib/sessions/redis" //基于redis存储引擎的session
 )
 
 // Routers 总路由
@@ -20,8 +21,9 @@ func Routers() *gin.Engine {
 	r.Use(middleware.Cors())
 
 	// 设置 session
-	store := cookie.NewStore([]byte("crazy"))
-	r.Use(sessions.Sessions("session", store))
+	// store := cookie.NewStore([]byte("crazy"))
+	// store, _ := redis.NewStoreWithPool(db.GetRedisPool(), []byte("crazy"))
+	// r.Use(sessions.Sessions("session", store))
 
 	// 设置静态目录
 	r.Static("/public", "./public")
@@ -34,7 +36,7 @@ func Routers() *gin.Engine {
 
 	// 验证码
 	r.GET("/captcha", api.GetCaptcha)
-	r.POST("/captcha", api.PostCaptcha) // TODO: 支持redis
+	r.POST("/captcha", api.PostCaptcha)
 
 	// 上传
 	r.POST("/upload", api.Upload)
@@ -50,6 +52,9 @@ func Routers() *gin.Engine {
 	r.POST("/user/", api.PostUser)
 	r.DELETE("/user/:id", api.DelUserById)
 	r.PUT("/user/:id", api.PutUserById)
+
+	// 用户地址
+	r.GET("/userAddress", api.GetUser)
 
 	// 角色
 	r.GET("/role", api.GetRole)
@@ -80,6 +85,8 @@ func Routers() *gin.Engine {
 	r.POST("/other/", api.PostOther)
 	r.DELETE("/other/:id", api.DelOtherById)
 	r.PUT("/other/:id", api.PutOtherById)
+
+	r.GET("/test", api.GetTest)
 
 	// api 部分
 	apiRouter := r.Group("/api")

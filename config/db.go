@@ -26,7 +26,7 @@ type RedisDbConf struct {
 // RedisDbConfig Redis 数据库结构
 var RedisDbConfig RedisDbConf = RedisDbConf{
 	Addr:     "127.0.0.1:6379",
-	DB:       1,
+	DB:       0, // use default DB
 	Password: "123456",
 	MaxIdle:  10,
 	MaxOpen:  100,
