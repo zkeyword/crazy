@@ -76,6 +76,30 @@ func PutUserById(c *gin.Context) {
 	}
 }
 
+type UserDisableForm struct {
+	Status string `form:"status" binding:"required"` // TODO: int 0 不能通过 ShouldBind 校验
+}
+
+// PutUserDisableById 修改用户状态
+func PutUserDisableById(c *gin.Context) {
+	id := utils.StrToUInt(c.Param("id"))
+	var form UserDisableForm
+	err := c.ShouldBind(&form)
+	if err == nil {
+		Model := &model.User{
+			Status: utils.StrToInt(form.Status),
+		}
+		res, resErr := sysUserService.PutUserDisableById(id, Model)
+		if resErr == nil {
+			utils.OkDetailed(res, "success", c)
+		} else {
+			utils.FailWithMessage(resErr.Error(), c)
+		}
+	} else {
+		utils.FailWithMessage(err.Error(), c)
+	}
+}
+
 // GetUser 获取用户列表
 func GetUser(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))

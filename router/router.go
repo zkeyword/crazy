@@ -52,6 +52,7 @@ func Routers() *gin.Engine {
 	r.POST("/user/", api.PostUser)
 	r.DELETE("/user/:id", api.DelUserById)
 	r.PUT("/user/:id", api.PutUserById)
+	r.PUT("/user/disable/:id", api.PutUserDisableById)
 
 	// 用户地址
 	r.GET("/userAddress", api.GetUser)

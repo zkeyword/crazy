@@ -11,6 +11,14 @@ func StrToUInt(str string) uint {
 	return uint(i)
 }
 
+func StrToInt(str string) int {
+	i, e := strconv.Atoi(str)
+	if e != nil {
+		return 0
+	}
+	return i
+}
+
 // RemoveRepeatedElement 数组去重
 // func RemoveRepeatedElement(arr []string) (newArr []string) {
 // 	newArr = make([]string, 0)
