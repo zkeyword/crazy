@@ -17,10 +17,10 @@ func GetCaptcha(c *gin.Context) {
 	c.Writer.Header().Set("Pragma", "no-cache")
 	c.Writer.Header().Set("Expires", "0")
 	c.Writer.Header().Set("Content-Type", "image/png")
-	c.Writer.Header().Set("CaptchaID", captchaID)
+	c.Writer.Header().Set("Captcha-ID", captchaID)
 
 	var content bytes.Buffer
-	captcha.WriteImage(&content, captchaID, 100, 50)
+	captcha.WriteImage(&content, captchaID, 100, 40)
 	http.ServeContent(c.Writer, c.Request, captchaID+".png", time.Time{}, bytes.NewReader(content.Bytes()))
 }
 

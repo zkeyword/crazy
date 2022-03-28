@@ -16,8 +16,8 @@ import (
 type LoginUserForm struct {
 	Username  string `form:"username" binding:"required"`
 	Password  string `form:"password" binding:"required"`
-	CaptchaID string `form:"captchaID"`
-	Code      string `form:"code"`
+	CaptchaID string `form:"captchaID" binding:"required"`
+	Code      string `form:"code" binding:"required"`
 }
 
 type ReturnLoginUser struct {
