@@ -87,7 +87,8 @@ func Routers() *gin.Engine {
 	r.DELETE("/other/:id", api.DelOtherById)
 	r.PUT("/other/:id", api.PutOtherById)
 
-	r.GET("/test", api.GetTest)
+	// r.GET("/test", api.GetTest)
+	r.GET("/sse", api.GetSSE)
 
 	// api 部分
 	apiRouter := r.Group("/api")

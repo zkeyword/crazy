@@ -58,8 +58,8 @@ func Create(User *model.User, roleIds string) (*model.User, error) {
 func PutUserById(id uint, User *model.User, roleIds string) (*model.User, error) {
 	ret, err := userRepo.UpdateById(id, User)
 	roleIdArr := strings.Split(roleIds, ",")
+	userRoleRepo.DeleteByUserId(id)
 	for _, v := range roleIdArr {
-		userRoleRepo.DeleteByUserId(id)
 		userRoleRepo.Create(ret.ID, ret.Username, utils.StrToUInt(v))
 	}
 	return ret, err

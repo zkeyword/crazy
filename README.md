@@ -12,10 +12,12 @@ https://www.jianshu.com/p/3c4832e3c6d5
 https://zhuanlan.zhihu.com/p/26733683
 
 // 打包静态文件
-go-bindata
+安装 go install github.com/go-bindata/go-bindata/go-bindata@latest
 
-// 部署
-nohup ./main &1>2 &
+命令 //go:generate go-bindata -fs -nocompress -nomemcopy -o=pkg/assets/assets.go -pkg=assets ./assets
+
+// 部署  // 貌似不能自动重启
+nohup ./main &1>2 & 
 
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" main.go
 
@@ -31,3 +33,8 @@ go get github.com/pilu/fresh
 可以代替
 
     go run main.go
+
+// 
+go mod tidy的使用
+引用项目需要的依赖增加到go.mod文件。
+去掉go.mod文件中项目不需要的依赖。

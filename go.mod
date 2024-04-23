@@ -8,6 +8,7 @@ require (
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/sessions v0.0.4
 	github.com/gin-gonic/gin v1.7.4
+	github.com/go-bindata/go-bindata v3.1.2+incompatible // indirect
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/howeyc/fsnotify v0.9.0 // indirect
 	github.com/jinzhu/gorm v1.9.16
@@ -19,4 +20,5 @@ require (
 	github.com/pilu/fresh v0.0.0-20190826141211-0fa698148017 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/sirupsen/logrus v1.6.0
+	golang.org/x/oauth2 v0.1.0 // indirect
 )

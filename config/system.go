@@ -6,7 +6,8 @@ import "time"
 var ServerPort = ":9000"
 
 // ServerMode gin开发模式
-var ServerMode = "debug" // release
+// var ServerMode = "debug" // release
+var ServerMode = "release"
 
 // LogPath 日志路径
 var LogPath = "runtime/logs/%Y%m%d.log"

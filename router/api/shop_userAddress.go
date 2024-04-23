@@ -22,5 +22,7 @@ func GetUserAddress(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	username := html.EscapeString(c.Query("username"))
 	res, _ := sysUserService.Get(page, pageSize, username)
+
 	utils.OkDetailed(res, "success", c)
+
 }
