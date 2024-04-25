@@ -5,14 +5,26 @@
 <h1>My SSE Test</h1>
 <div id="result"></div>
 <script>
-    var source = new EventSource("http://localhost:9000/sse");
+    var source = new EventSource('http://localhost:9000/sse')
+    var div = document.getElementById('result')
 
-    source.onmessage = function(event) {
-        console.log(event)
-        document.getElementById("result").innerHTML += event.data + "<br>";
-    };
+    source.onopen = function (event) {
+        div.innerHTML += '<p>Connection open ...</p>'
+    }
 
-    source.onerror = function(error) {
-        console.error("Error occurred:", error);
-    };
+    source.onerror = function (event) {
+        div.innerHTML += '<p>Connection close.</p>'
+    }
+
+    source.addEventListener(
+        'connecttime',
+        function (event) {
+            div.innerHTML += '<p>Start time: ' + event.data + '</p>'
+        },
+        false,
+    )
+
+    source.onmessage = function (event) {
+        div.innerHTML += '<p>Ping: ' + event.data + '</p>'
+    }
 </script>

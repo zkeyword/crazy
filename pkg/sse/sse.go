@@ -32,13 +32,14 @@ func SendEvent(c *gin.Context) {
 		delete(Clients, clientChan)
 		Mutex.Unlock()
 		close(clientChan)
+		log.Println("Client disconnected")
 	}()
 
 	c.Writer.Header().Set("Content-Type", "text/event-stream")
 	c.Writer.Header().Set("Cache-Control", "no-cache")
 	c.Writer.Header().Set("Connection", "keep-alive")
 
-	c.SSEvent("connected", "Connected successfully")
+	fmt.Fprintf(c.Writer, "data: %s\n\n", "Connected successfully")
 	c.Writer.Flush()
 
 	closeNotify := c.Writer.CloseNotify()
@@ -46,9 +47,10 @@ func SendEvent(c *gin.Context) {
 	for {
 		select {
 		case <-closeNotify:
+			log.Println("Received close notify")
 			return
 		case msg := <-clientChan:
-			c.SSEvent("message", msg)
+			// c.SSEvent("message", msg)
 			fmt.Fprintf(c.Writer, "data: %s\n\n", msg)
 			c.Writer.Flush()
 		case <-time.After(30 * time.Second):
