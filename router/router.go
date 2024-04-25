@@ -2,6 +2,7 @@ package router
 
 import (
 	"CRAZY/middleware"
+	"CRAZY/pkg/sse"
 	"CRAZY/router/api"
 
 	// "CRAZY/utils/db"
@@ -87,8 +88,9 @@ func Routers() *gin.Engine {
 	r.DELETE("/other/:id", api.DelOtherById)
 	r.PUT("/other/:id", api.PutOtherById)
 
-	// r.GET("/test", api.GetTest)
-	r.GET("/sse", api.GetSSE)
+	r.GET("/test", api.GetTest)
+	r.GET("/sse", sse.SendEvent)
+	r.POST("/sse", sse.PublishHandler)
 
 	// api 部分
 	apiRouter := r.Group("/api")

@@ -2,3 +2,17 @@
     {{template "header" .}}
     {{template "footer" .}}
 </section>
+<h1>My SSE Test</h1>
+<div id="result"></div>
+<script>
+    var source = new EventSource("http://localhost:9000/sse");
+
+    source.onmessage = function(event) {
+        console.log(event)
+        document.getElementById("result").innerHTML += event.data + "<br>";
+    };
+
+    source.onerror = function(error) {
+        console.error("Error occurred:", error);
+    };
+</script>

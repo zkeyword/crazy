@@ -2,6 +2,7 @@ package main
 
 import (
 	"CRAZY/config"
+	"CRAZY/pkg/sse"
 	"CRAZY/router"
 	"CRAZY/utils/db"
 
@@ -61,6 +62,9 @@ func main() {
 	fmt.Print("Start Redis...\r")
 	db.StartRedis(config.RedisDbConfig.Addr, config.RedisDbConfig.Password, config.RedisDbConfig.DB, config.RedisDbConfig.MaxIdle, config.RedisDbConfig.MaxOpen)
 	fmt.Print("Start Redis Success!!!\n")
+
+	// 启动sse Subscribe
+	sse.Subscribe()
 
 	// 创建文件日志，按天分割，日志文件仅保留一周
 	w, err := rotatelogs.New(config.LogPath)
