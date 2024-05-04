@@ -11,7 +11,7 @@ import (
 var db *gorm.DB
 
 // StartMysql 初始化mysql
-func StartMysql(dsn string, maxIdle, maxOpen int) (err error) {
+func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (err error) {
 	db, err = gorm.Open("mysql", dsn)
 
 	if err != nil {
@@ -21,7 +21,7 @@ func StartMysql(dsn string, maxIdle, maxOpen int) (err error) {
 	db.DB().SetMaxIdleConns(maxIdle)
 	db.DB().SetMaxOpenConns(maxOpen)
 	db.DB().SetConnMaxLifetime(time.Duration(30) * time.Minute)
-	db.LogMode(true)
+	db.LogMode(LogMode)
 	db.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
 		AutoMigrate(
 			// sys
@@ -37,39 +37,39 @@ func StartMysql(dsn string, maxIdle, maxOpen int) (err error) {
 			&model.ShopOrder{},
 		)
 
-		// user := &model.User{
-		// 	Username: "admin2",
-		// 	Password: "d36dd63cfd",
-		// 	Status:   1,
-		// 	Level:    0,
-		// 	ParentID: 0,
-		// }
+	// user := &model.User{
+	// 	Username: "admin2",
+	// 	Password: "d36dd63cfd", // admin
+	// 	Status:   1,
+	// 	Level:    0,
+	// 	ParentID: 0,
+	// }
 
-		// userRole := &model.UserRole{
-		// 	UserID:  1,
-		// 	RoleIDs: "1,2",
-		// }
+	// // userRole := &model.UserRole{
+	// // 	UserID:  1,
+	// // 	RoleIDs: "1,2",
+	// // }
 
-		// permission := &model.Permission{
-		// 	Name:   "全部2",
-		// 	Key:    "all2",
-		// 	Status: 1,
-		// }
+	// permission := &model.Permission{
+	// 	Name:   "全部2",
+	// 	Key:    "all2",
+	// 	Status: 1,
+	// }
 
-		// role := &model.Role{
-		// 	Name: "管理员2",
-		// }
+	// role := &model.Role{
+	// 	Name: "管理员2",
+	// }
 
-		// rolePermission := &model.RolePermission{
-		// 	RoleID:         2,
-		// 	PermissionKeys: "all,all2",
-		// }
+	// rolePermission := &model.RolePermission{
+	// 	RoleID:         2,
+	// 	PermissionKeys: "all,all2",
+	// }
 
-		// db.Create(user)
-		// db.Create(userRole)
-		// db.Create(permission)
-		// db.Create(role)
-		// db.Create(rolePermission)
+	// db.Create(user)
+	// // db.Create(userRole)
+	// db.Create(permission)
+	// db.Create(role)
+	// db.Create(rolePermission)
 
 	return
 }

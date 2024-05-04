@@ -39,11 +39,13 @@ func SendEvent(c *gin.Context) {
 	c.Writer.Header().Set("Cache-Control", "no-cache")
 	c.Writer.Header().Set("Connection", "keep-alive")
 
-	fmt.Fprintf(c.Writer, "data: %s\n\n", "Connected successfully")
-	c.Writer.Flush()
+	// fmt.Fprintf(c.Writer, "data: %s\n\n", "Connected successfully")
+	// c.Writer.Flush()
 
 	closeNotify := c.Writer.CloseNotify()
-	fmt.Println(clientChan)
+	var lastMessage string
+	idleTimeout := time.After(30 * time.Second)
+	// fmt.Println(clientChan)
 	for {
 		select {
 		case <-closeNotify:
@@ -51,11 +53,17 @@ func SendEvent(c *gin.Context) {
 			return
 		case msg := <-clientChan:
 			// c.SSEvent("message", msg)
+			log.Println("Received message:", msg)
+			lastMessage = msg
 			fmt.Fprintf(c.Writer, "data: %s\n\n", msg)
 			c.Writer.Flush()
-		case <-time.After(30 * time.Second):
-			fmt.Fprintf(c.Writer, "data: %s\n\n", "time out")
-			c.Writer.Flush()
+		case <-idleTimeout:
+			log.Println("Idle timeout")
+			if lastMessage != "" {
+				fmt.Fprintf(c.Writer, "data: %s\n\n", lastMessage)
+				c.Writer.Flush()
+			}
+			idleTimeout = time.After(30 * time.Second)
 		}
 	}
 
@@ -64,7 +72,6 @@ func SendEvent(c *gin.Context) {
 	// 	c.Writer.Flush()
 	// 	time.Sleep(time.Second)
 	// }
-
 }
 
 type SSEForm struct {

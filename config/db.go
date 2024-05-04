@@ -5,6 +5,7 @@ type DbConf struct {
 	Dsn     string
 	MaxIdle int
 	MaxOpen int
+	LogMode bool
 }
 
 // DbConfig  Mysql主库配置
@@ -12,6 +13,7 @@ var DbConfig DbConf = DbConf{
 	Dsn:     "root:@tcp(127.0.0.1:3306)/b?charset=utf8mb4&parseTime=true",
 	MaxIdle: 10,
 	MaxOpen: 100,
+	LogMode: true,
 }
 
 // RedisDbConf Redis数据库结构

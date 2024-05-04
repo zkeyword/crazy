@@ -7,6 +7,7 @@ import (
 	"CRAZY/utils"
 	"CRAZY/utils/xor"
 	"html"
+	"regexp"
 	"time"
 
 	"github.com/dchest/captcha"
@@ -18,6 +19,7 @@ type LoginUserForm struct {
 	Password  string `form:"password" binding:"required"`
 	CaptchaID string `form:"captchaID" binding:"required"`
 	Code      string `form:"code" binding:"required"`
+	Time      string `form:"time" binding:"required"`
 }
 
 type ReturnLoginUser struct {
@@ -52,7 +54,11 @@ func Login(c *gin.Context) {
 	err := c.ShouldBind(&form)
 	if err == nil {
 		// 校验验证码
-		if !captcha.VerifyString(form.CaptchaID, form.Code) {
+		str := xor.Dec(form.CaptchaID)
+		re := regexp.MustCompile(`^(.*)(\d{13})$`)
+		matches := re.FindStringSubmatch(str)
+		// fmt.Println(form.Time, matches[2], matches[1], form.Code)
+		if !(form.Time == matches[2] && captcha.VerifyString(matches[1], form.Code)) {
 			utils.FailWithMessage("验证码错误", c)
 			return
 		}
@@ -93,7 +99,10 @@ func Register(c *gin.Context) {
 	err := c.ShouldBind(&form)
 	if err == nil {
 		// 校验验证码
-		if !captcha.VerifyString(form.CaptchaID, form.Code) {
+		str := xor.Dec(form.CaptchaID)
+		re := regexp.MustCompile(`^(.*)(\d{13})$`)
+		matches := re.FindStringSubmatch(str)
+		if !(form.Time == matches[2] && captcha.VerifyString(matches[1], form.Code)) {
 			utils.FailWithMessage("验证码错误", c)
 			return
 		}

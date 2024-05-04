@@ -62,3 +62,12 @@ func RemoveRepeated(s []string) []string {
 // 	}
 // 	return result
 // }
+
+// 判断字符串是不是时间戳
+func IsTimestamp(s string) bool {
+	_, err := strconv.ParseInt(s, 10, 64)
+	if err == nil {
+		return true
+	}
+	return false
+}

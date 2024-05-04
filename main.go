@@ -18,6 +18,8 @@ import (
 )
 
 func main() {
+	ENV := os.Getenv("MY_ENV_VAR")
+	fmt.Println("The value of MY_ENV_VAR is:", ENV)
 	// fmt.Println("请输入账号:")
 	// reader := bufio.NewReader(os.Stdin)
 	// user, _ := reader.ReadString('\n')
@@ -42,19 +44,10 @@ func main() {
 	// utils.WriteFile()
 	// utils.ReadFile()
 
-	// startTime := time.Now()
-	// d, _ := time.ParseDuration(strconv.Itoa(7*24) + "h")
-	// endTime := startTime.Add(d)
-	// fmt.Println(xor.Enc(endTime.Format(config.SysTimeform)))
-	// x := xor.Dec("80398965be5d736a81399b67a157747688398a")
-	// fmt.Println(x)
-
-	// flag.Parse()
-
 	// 启动mysql
 	defer db.CloseMysql()
 	fmt.Print("Start Mysql...\r")
-	db.StartMysql(config.DbConfig.Dsn, config.DbConfig.MaxIdle, config.DbConfig.MaxOpen)
+	db.StartMysql(config.DbConfig.Dsn, config.DbConfig.MaxIdle, config.DbConfig.MaxOpen, config.DbConfig.LogMode)
 	fmt.Print("Start Mysql Success!!!\n")
 
 	// 启动redis
