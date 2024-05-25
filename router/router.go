@@ -48,7 +48,8 @@ func Routers() *gin.Engine {
 
 	// 用户
 	r.GET("/user", api.GetUser)
-	r.GET("/user/:id", api.GetUserById)
+	r.GET("/user/name/:username", api.GetUserByUsername)
+	r.GET("/user/id/:id", api.GetUserById)
 	r.GET("/user/:id/permission", api.GetUserRolePermissionByUserId) // 获取用户关联角色的权限
 	r.POST("/user/", api.PostUser)
 	r.DELETE("/user/:id", api.DelUserById)

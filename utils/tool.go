@@ -1,6 +1,11 @@
 package utils
 
-import "strconv"
+import (
+	"html"
+	"net/url"
+	"regexp"
+	"strconv"
+)
 
 // StrToUInt 字符串转 uint
 func StrToUInt(str string) uint {
@@ -70,4 +75,21 @@ func IsTimestamp(s string) bool {
 		return true
 	}
 	return false
+}
+
+// 简单过滤XXS攻击和sql注入
+var sqlInjectionRegex = regexp.MustCompile(`(?i)('|--|\|)|((\%27)|(\-\-)|(\%7C))`)
+
+func SanitizeInput(input string) string {
+	// Escape the input to prevent XSS attacks
+	safeHTML := html.EscapeString(input)
+
+	// URL encode the input to prevent SQL injection attacks
+	safeSQL := url.QueryEscape(safeHTML)
+
+	// Further sanitize the input to remove special characters
+	// that might lead to SQL injection attacks
+	safeSQL = sqlInjectionRegex.ReplaceAllString(safeSQL, "")
+
+	return safeSQL
 }

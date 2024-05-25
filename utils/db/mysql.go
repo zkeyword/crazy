@@ -43,12 +43,13 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (err error) 
 	// 	Status:   1,
 	// 	Level:    0,
 	// 	ParentID: 0,
+	// 	RealName: "ADMIN",
 	// }
 
-	// // userRole := &model.UserRole{
-	// // 	UserID:  1,
-	// // 	RoleIDs: "1,2",
-	// // }
+	// userRole := &model.UserRole{
+	// 	UserID: 1,
+	// 	RoleID: 1,
+	// }
 
 	// permission := &model.Permission{
 	// 	Name:   "全部2",
@@ -66,7 +67,7 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (err error) 
 	// }
 
 	// db.Create(user)
-	// // db.Create(userRole)
+	// db.Create(userRole)
 	// db.Create(permission)
 	// db.Create(role)
 	// db.Create(rolePermission)

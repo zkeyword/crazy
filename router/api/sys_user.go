@@ -116,6 +116,13 @@ func GetUserById(c *gin.Context) {
 	utils.OkDetailed(res, "success", c)
 }
 
+// GetUserById 获取用户
+func GetUserByUsername(c *gin.Context) {
+	username := c.Param("username")
+	res, _ := sysUserService.GetByUserName(html.EscapeString(username))
+	utils.OkDetailed(res, "success", c)
+}
+
 // GetUserRolePermissionByUserId 获取用户角色权限
 func GetUserRolePermissionByUserId(c *gin.Context) {
 	id := utils.StrToUInt(c.Param("id"))
