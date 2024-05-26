@@ -2,7 +2,6 @@ package router
 
 import (
 	"CRAZY/middleware"
-	"CRAZY/pkg/sse"
 	"CRAZY/router/api"
 
 	// "CRAZY/utils/db"
@@ -35,70 +34,66 @@ func Routers() *gin.Engine {
 	// 首页
 	r.GET("/", api.GetHTML)
 
-	// 验证码
-	r.GET("/captcha", api.GetCaptcha)
-	r.POST("/captcha", api.PostCaptcha)
-
-	// 上传
-	r.POST("/upload", api.Upload)
-
 	// 登陆/注册
 	r.POST("/login", api.Login)
 	r.POST("/register", api.Register)
 
-	// 用户
-	r.GET("/user", api.GetUser)
-	r.GET("/user/name/:username", api.GetUserByUsername)
-	r.GET("/user/id/:id", api.GetUserById)
-	r.GET("/user/:id/permission", api.GetUserRolePermissionByUserId) // 获取用户关联角色的权限
-	r.POST("/user/", api.PostUser)
-	r.DELETE("/user/:id", api.DelUserById)
-	r.PUT("/user/:id", api.PutUserById)
-	r.PUT("/user/disable/:id", api.PutUserDisableById)
+	// 验证码
+	r.GET("/captcha", api.GetCaptcha)
+	r.POST("/captcha", api.PostCaptcha)
 
-	// 用户地址
-	r.GET("/userAddress", api.GetUser)
-
-	// 角色
-	r.GET("/role", api.GetRole)
-	r.GET("/role/:id", api.GetRoleById)
-	r.POST("/role/", api.PostRole)
-	r.DELETE("/role/:id", api.DelRoleById)
-	r.PUT("/role/:id", api.PutRoleById)
-
-	// 角色关联权限
-	r.GET("/role/:id/permission", api.GetRolePermissionByRoleID)
-	r.POST("/role/:id/permission", api.PostRolePermissionByRoleID)
-
-	// 角色关联用户
-	r.GET("/role/:id/user", api.GetRoleUserByRoleID)
-	r.POST("/role/:id/user", api.PostRoleUserByRoleID)
-	r.DELETE("/role/:id/user", api.DelectRoleUserByRoleIAndUserID)
-
-	// 权限
-	r.GET("/permission/:id", api.GetPermissionById)
-	r.GET("/permission/:id/tree", api.GetPermissionTreeById)
-	r.POST("/permission/", api.PostPermission)
-	r.DELETE("/permission/:id", api.DelPermissionById)
-	r.PUT("/permission/:id", api.PutPermissionById)
-
-	// 其他设置
-	r.GET("/other", api.GetOther)
-	r.GET("/other/:id", api.GetOtherById)
-	r.POST("/other/", api.PostOther)
-	r.DELETE("/other/:id", api.DelOtherById)
-	r.PUT("/other/:id", api.PutOtherById)
-
-	r.GET("/test", api.GetTest)
-	r.GET("/sse", sse.SendEvent)
-	r.POST("/sse", sse.PublishHandler)
+	// r.GET("/test", api.GetTest)
+	// r.GET("/sse", sse.SendEvent)
+	// r.POST("/sse", sse.PublishHandler)
 
 	// api 部分
 	apiRouter := r.Group("/api")
 	apiRouter.Use(middleware.JWTAuth())
 	{
-		// 获取配置
-		apiRouter.GET("/config", api.GetConfig)
+		apiRouter.POST("/upload", api.Upload)
+
+		// 用户
+		apiRouter.GET("/user", api.GetUser)
+		apiRouter.GET("/user/name/:username", api.GetUserByUsername)
+		apiRouter.GET("/user/id/:id", api.GetUserById)
+		apiRouter.GET("/user/:id/permission", api.GetUserRolePermissionByUserId) // 获取用户关联角色的权限
+		apiRouter.POST("/user/", api.PostUser)
+		apiRouter.DELETE("/user/:id", api.DelUserById)
+		apiRouter.PUT("/user/:id", api.PutUserById)
+		apiRouter.PUT("/user/disable/:id", api.PutUserDisableById)
+
+		// 用户地址
+		apiRouter.GET("/userAddress", api.GetUser)
+
+		// 角色
+		apiRouter.GET("/role", api.GetRole)
+		apiRouter.GET("/role/:id", api.GetRoleById)
+		apiRouter.POST("/role/", api.PostRole)
+		apiRouter.DELETE("/role/:id", api.DelRoleById)
+		apiRouter.PUT("/role/:id", api.PutRoleById)
+
+		// 角色关联权限
+		apiRouter.GET("/role/:id/permission", api.GetRolePermissionByRoleID)
+		apiRouter.POST("/role/:id/permission", api.PostRolePermissionByRoleID)
+
+		// 角色关联用户
+		apiRouter.GET("/role/:id/user", api.GetRoleUserByRoleID)
+		apiRouter.POST("/role/:id/user", api.PostRoleUserByRoleID)
+		apiRouter.DELETE("/role/:id/user", api.DelectRoleUserByRoleIAndUserID)
+
+		// 权限
+		apiRouter.GET("/permission/:id", api.GetPermissionById)
+		apiRouter.GET("/permission/:id/tree", api.GetPermissionTreeById)
+		apiRouter.POST("/permission/", api.PostPermission)
+		apiRouter.DELETE("/permission/:id", api.DelPermissionById)
+		apiRouter.PUT("/permission/:id", api.PutPermissionById)
+
+		// 其他设置
+		apiRouter.GET("/other", api.GetOther)
+		apiRouter.GET("/other/:id", api.GetOtherById)
+		apiRouter.POST("/other/", api.PostOther)
+		apiRouter.DELETE("/other/:id", api.DelOtherById)
+		apiRouter.PUT("/other/:id", api.PutOtherById)
 	}
 
 	return r

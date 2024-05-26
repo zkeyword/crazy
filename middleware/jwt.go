@@ -3,7 +3,8 @@ package middleware
 import (
 	"CRAZY/utils"
 	"errors"
-	"log"
+	"fmt"
+	"strings"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -20,13 +21,15 @@ func JWTAuth() gin.HandlerFunc {
 			return
 		}
 
-		log.Print("get token: ", token)
+		// log.Print("get token: ", token)
 
 		j := NewJWT()
 		// parseToken 解析token包含的信息
-		claims, err := j.ParseToken(token)
+		tokenString := strings.TrimPrefix(token, "Bearer ")
+		claims, err := j.ParseToken(tokenString)
+		fmt.Print(claims.UserID)
 		if err != nil {
-			if err == TokenExpired {
+			if err == ErrTokenExpired {
 				utils.FailWithMessage("授权已过期", c)
 				c.Abort()
 				return
@@ -47,16 +50,17 @@ type JWT struct {
 
 // 一些常量
 var (
-	TokenExpired     error  = errors.New("Token is expired")
-	TokenNotValidYet error  = errors.New("Token not active yet")
-	TokenMalformed   error  = errors.New("That's not even a token")
-	TokenInvalid     error  = errors.New("Couldn't handle this token:")
-	SignKey          string = "crazy"
+	ErrTokenExpired     error  = errors.New("token is expired")
+	ErrTokenNotValidYet error  = errors.New("token not active yet")
+	ErrTokenMalformed   error  = errors.New("that's not even a token")
+	ErrTokenInvalid     error  = errors.New("couldn't handle this token")
+	SignKey             string = "crazy"
 )
 
 // 载荷，可以加一些自己需要的信息
 type CustomClaims struct {
-	Name string `json:"name"`
+	UserName string `json:"userName"`
+	UserID   uint   `json:"userID"`
 	jwt.StandardClaims
 }
 
@@ -92,21 +96,21 @@ func (j *JWT) ParseToken(tokenString string) (*CustomClaims, error) {
 	if err != nil {
 		if ve, ok := err.(*jwt.ValidationError); ok {
 			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
-				return nil, TokenMalformed
+				return nil, ErrTokenMalformed
 			} else if ve.Errors&jwt.ValidationErrorExpired != 0 {
 				// Token is expired
-				return nil, TokenExpired
+				return nil, ErrTokenExpired
 			} else if ve.Errors&jwt.ValidationErrorNotValidYet != 0 {
-				return nil, TokenNotValidYet
+				return nil, ErrTokenNotValidYet
 			} else {
-				return nil, TokenInvalid
+				return nil, ErrTokenInvalid
 			}
 		}
 	}
 	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
 		return claims, nil
 	}
-	return nil, TokenInvalid
+	return nil, ErrTokenInvalid
 }
 
 // RefreshToken 更新token
@@ -125,5 +129,5 @@ func (j *JWT) RefreshToken(tokenString string) (string, error) {
 		claims.StandardClaims.ExpiresAt = time.Now().Add(1 * time.Hour).Unix()
 		return j.CreateToken(*claims)
 	}
-	return "", TokenInvalid
+	return "", ErrTokenInvalid
 }

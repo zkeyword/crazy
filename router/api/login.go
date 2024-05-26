@@ -34,12 +34,13 @@ type ReturnLoginUser struct {
 }
 
 // getToken 获取 JWT token
-func getToken(Name string) string {
+func getToken(UserName string, UserID uint) string {
 	j := &middleware.JWT{
 		SigningKey: []byte("crazy"),
 	}
 	claims := middleware.CustomClaims{
-		Name: Name,
+		UserName: UserName,
+		UserID:   UserID,
 	}
 
 	claims.IssuedAt = time.Now().Unix()                // 签名生效时间
@@ -84,7 +85,7 @@ func Login(c *gin.Context) {
 			Level:          res.Level,
 			ParentID:       res.ParentID,
 			UpdatedAt:      res.UpdatedAt,
-			Token:          getToken(form.Username),
+			Token:          getToken(form.Username, res.ID),
 			PermissionKeys: userDetailRes.PermissionKeys,
 		}
 		utils.OkDetailed(user, "success", c)
@@ -126,7 +127,7 @@ func Register(c *gin.Context) {
 			Level:     res.Level,
 			ParentID:  res.ParentID,
 			UpdatedAt: res.UpdatedAt,
-			Token:     getToken(form.Username),
+			Token:     getToken(form.Username, res.ID),
 		}
 		utils.OkDetailed(user, "success", c)
 	} else {

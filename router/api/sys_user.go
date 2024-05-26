@@ -1,10 +1,12 @@
 package api
 
 import (
+	"CRAZY/middleware"
 	"CRAZY/model"
 	sysUserService "CRAZY/services/sys_user"
 	"CRAZY/utils"
 	"CRAZY/utils/xor"
+	"fmt"
 	"html"
 	"strconv"
 
@@ -102,6 +104,18 @@ func PutUserDisableById(c *gin.Context) {
 
 // GetUser 获取用户列表
 func GetUser(c *gin.Context) {
+	claims, exists := c.Get("claims")
+	if !exists {
+		utils.FailWithMessage("Authorization出错, 清重新登录", c)
+		return
+	}
+	customClaims, ok := claims.(*middleware.CustomClaims)
+	if !ok || customClaims.UserID == 0 {
+		utils.FailWithMessage("Authorization出错, 清重新登录", c)
+		return
+	}
+	userDetailRes := sysUserService.GetUserRolePermissionByUserId(customClaims.UserID)
+	fmt.Print(userDetailRes, customClaims.UserID)
 	page, _ := strconv.Atoi(c.Query("page"))
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	username := html.EscapeString(c.Query("username"))
@@ -113,6 +127,8 @@ func GetUser(c *gin.Context) {
 func GetUserById(c *gin.Context) {
 	id := utils.StrToUInt(c.Param("id"))
 	res, _ := sysUserService.GetById(id)
+	userDetailRes := sysUserService.GetUserRolePermissionByUserId(res.ID)
+	fmt.Print(userDetailRes)
 	utils.OkDetailed(res, "success", c)
 }
 

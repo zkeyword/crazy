@@ -38,7 +38,7 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (err error) 
 		)
 
 	// user := &model.User{
-	// 	Username: "admin2",
+	// 	Username: "admin",
 	// 	Password: "d36dd63cfd", // admin
 	// 	Status:   1,
 	// 	Level:    0,
