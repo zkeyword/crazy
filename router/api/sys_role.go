@@ -12,6 +12,7 @@ import (
 
 type RoleForm struct {
 	Name           string `form:"name" binding:"required"`
+	Desc           string `form:"desc"`
 	PermissionKeys string `form:"permission" binding:"required"`
 }
 
@@ -22,6 +23,7 @@ func PostRole(c *gin.Context) {
 	if err == nil {
 		Model := &model.Role{
 			Name: form.Name,
+			Desc: form.Desc,
 		}
 		res, resErr := sysRoleService.Create(Model, form.PermissionKeys)
 		if resErr == nil {
@@ -53,6 +55,7 @@ func PutRoleById(c *gin.Context) {
 	if err == nil {
 		Model := &model.Role{
 			Name: form.Name,
+			Desc: form.Desc,
 		}
 		res, resErr := sysRoleService.UpdateById(id, Model, form.PermissionKeys)
 		if resErr == nil {

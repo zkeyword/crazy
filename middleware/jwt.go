@@ -3,7 +3,6 @@ package middleware
 import (
 	"CRAZY/utils"
 	"errors"
-	"fmt"
 	"strings"
 	"time"
 
@@ -20,14 +19,10 @@ func JWTAuth() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
-		// log.Print("get token: ", token)
-
 		j := NewJWT()
 		// parseToken 解析token包含的信息
 		tokenString := strings.TrimPrefix(token, "Bearer ")
 		claims, err := j.ParseToken(tokenString)
-		fmt.Print(claims.UserID)
 		if err != nil {
 			if err == ErrTokenExpired {
 				utils.FailWithMessage("授权已过期", c)
@@ -38,8 +33,13 @@ func JWTAuth() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+		// if claims.UserID == 0 {
+		// 	utils.FailWithMessage("Authorization出错, 清重新登录", c)
+		// 	c.Abort()
+		// 	return
+		// }
 		// 继续交由下一个路由处理,并将解析出的信息传递下去
-		c.Set("claims", claims)
+		c.Set("userID", claims.UserID)
 	}
 }
 

@@ -11,6 +11,7 @@ type RoleRepository struct {
 type Role struct {
 	ID   uint   `json:"id"`
 	Name string `json:"name"`
+	Desc string `json:"desc"`
 }
 
 func NewRoleRepository() *RoleRepository {
@@ -57,6 +58,9 @@ func (r *RoleRepository) Get(page int, pageSize int, name string) ([]model.Role,
 	var err error
 	if pageSize < 1 {
 		pageSize = 10
+	}
+	if page < 1 {
+		page = 1
 	}
 	if name != "" {
 		err = db.GetMysql().Where("name like ?", "%"+name+"%").Limit(pageSize).Offset((page - 1) * pageSize).Find(&roles).Error

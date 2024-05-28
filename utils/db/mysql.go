@@ -37,40 +37,40 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (err error) 
 			&model.ShopOrder{},
 		)
 
-	// user := &model.User{
-	// 	Username: "admin",
-	// 	Password: "d36dd63cfd", // admin
-	// 	Status:   1,
-	// 	Level:    0,
-	// 	ParentID: 0,
-	// 	RealName: "ADMIN",
-	// }
+	user := &model.User{
+		Username: "admin",
+		Password: "d36dd63cfd", // admin
+		Status:   1,
+		Level:    0,
+		ParentID: 0,
+		RealName: "ADMIN",
+	}
 
-	// userRole := &model.UserRole{
-	// 	UserID: 1,
-	// 	RoleID: 1,
-	// }
+	userRole := &model.UserRole{
+		UserID: 1,
+		RoleID: 1,
+	}
 
-	// permission := &model.Permission{
-	// 	Name:   "全部2",
-	// 	Key:    "all2",
-	// 	Status: 1,
-	// }
+	permission := &model.Permission{
+		Name:   "全部",
+		Key:    "all",
+		Status: 1,
+	}
 
-	// role := &model.Role{
-	// 	Name: "管理员2",
-	// }
+	role := &model.Role{
+		Name: "管理员",
+	}
 
-	// rolePermission := &model.RolePermission{
-	// 	RoleID:         2,
-	// 	PermissionKeys: "all,all2",
-	// }
+	rolePermission := &model.RolePermission{
+		RoleID:         1,
+		PermissionKeys: "all",
+	}
 
-	// db.Create(user)
-	// db.Create(userRole)
-	// db.Create(permission)
-	// db.Create(role)
-	// db.Create(rolePermission)
+	db.Create(user)
+	db.Create(userRole)
+	db.Create(permission)
+	db.Create(role)
+	db.Create(rolePermission)
 
 	return
 }

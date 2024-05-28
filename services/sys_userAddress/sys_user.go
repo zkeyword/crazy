@@ -27,6 +27,12 @@ type ReturnUserList struct {
 }
 
 func Get(page int, pageSize int, username string) (*ReturnUserList, error) {
+	if pageSize < 1 {
+		pageSize = 10
+	}
+	if page < 1 {
+		page = 1
+	}
 	ret, err := userRepo.Get(page, pageSize, username)
 	count := userRepo.GetUserCount(username)
 	returnValue := &ReturnUserList{

@@ -69,6 +69,9 @@ func (r *UserRepository) Get(page int, pageSize int, username string) ([]model.U
 	if pageSize < 1 {
 		pageSize = 10
 	}
+	if page < 1 {
+		page = 1
+	}
 	if username != "" {
 		err = db.GetMysql().Where("username like ?", "%"+username+"%").Limit(pageSize).Offset((page - 1) * pageSize).Find(&users).Error
 	} else {

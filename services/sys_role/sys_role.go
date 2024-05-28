@@ -40,13 +40,19 @@ type ReturnPolePermission struct {
 }
 
 func Get(page int, pageSize int, name string) (*ReturnRoleList, error) {
+	if pageSize < 1 {
+		pageSize = 10
+	}
+	if page < 1 {
+		page = 1
+	}
 	ret, err := roleRepo.Get(page, pageSize, name)
-	// count := roleRepo.GetRoleCount(name)
+	count := roleRepo.GetRoleCount(name)
 	returnValue := &ReturnRoleList{
 		Page:     page,
 		PageSize: pageSize,
-		// Total:    count,
-		List: ret,
+		Total:    count,
+		List:     ret,
 	}
 	return returnValue, err
 }

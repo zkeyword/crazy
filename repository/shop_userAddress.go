@@ -62,6 +62,9 @@ func (r *UserAddressRepository) Get(page int, pageSize int, username string) ([]
 	if pageSize < 1 {
 		pageSize = 10
 	}
+	if page < 1 {
+		page = 1
+	}
 	if username != "" {
 		err = db.GetMysql().Where("username like ?", "%"+username+"%").Limit(pageSize).Offset((page - 1) * pageSize).Find(&usersAdress).Error
 	} else {
