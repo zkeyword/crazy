@@ -23,23 +23,24 @@ func NewUserRepository() *UserRepository {
 }
 
 // Create 创建用户
-// func (r *UserRepository) Create(t *model.User, RoleId uint) (*model.User, error) {
-// 	tx := db.GetMysql().Begin()
-// 	c := tx.Create(t)
-// 	rowsAffected := c.RowsAffected
-// 	if rowsAffected == 0 {
-// 		tx.Rollback()
-// 		return t, c.Error
-// 	}
-// 	var ur *UserRoleRepository
-// 	_, err := ur.Create(t.ID, RoleId)
-// 	if err != nil {
-// 		tx.Rollback()
-// 	} else {
-// 		tx.Commit()
-// 	}
-// 	return t, err
-// }
+//
+//	func (r *UserRepository) Create(t *model.User, RoleId uint) (*model.User, error) {
+//		tx := db.GetMysql().Begin()
+//		c := tx.Create(t)
+//		rowsAffected := c.RowsAffected
+//		if rowsAffected == 0 {
+//			tx.Rollback()
+//			return t, c.Error
+//		}
+//		var ur *UserRoleRepository
+//		_, err := ur.Create(t.ID, RoleId)
+//		if err != nil {
+//			tx.Rollback()
+//		} else {
+//			tx.Commit()
+//		}
+//		return t, err
+//	}
 func (r *UserRepository) Create(t *model.User) (*model.User, error) {
 	err := db.GetMysql().Create(t).Error
 	return t, err
@@ -94,17 +95,18 @@ func (r *UserRepository) GetById(id uint) (*model.User, error) {
 	return ret, err
 }
 
-type ReturnUser struct {
-	ID             uint     `json:"id"`
-	RoleID         uint     `json:"roleIDs"`
-	PermissionKeys string   `json:"permissionKeys"`
-	RoleName       []string `json:"roles"`
+type ReturnRolePermission struct {
+	ID             uint             `json:"id"`
+	RoleID         uint             `json:"roleIDs"`
+	PermissionKeys string           `json:"permissionKeys"`
+	RoleName       []string         `json:"roles"`
+	Permission     []RolePermission `json:"permissions"`
 }
 
 // GetUserRolePermissionByUserId 获取用户角色关联权限
-func (r *UserRepository) GetUserRolePermissionByUserId(id uint) *ReturnUser {
-	ret := &ReturnUser{}
-	var ret2 []ReturnUser
+func (r *UserRepository) GetUserRolePermissionByUserId(id uint) *ReturnRolePermission {
+	ret := &ReturnRolePermission{}
+	var ret2 []ReturnRolePermission
 
 	err := db.GetMysql().Table("user_roles").Where("user_id = ?", id).Find(&ret2).Error
 
@@ -128,6 +130,8 @@ func (r *UserRepository) GetUserRolePermissionByUserId(id uint) *ReturnUser {
 	// 获取关联权限
 	var permission []RolePermission
 	db.GetMysql().Table("role_permissions").Where("id IN (?)", roleIDs).Find(&permission)
+
+	ret.Permission = permission
 
 	permissionKey := make([]string, 0)
 	for _, v := range permission {

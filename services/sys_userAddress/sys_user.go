@@ -42,7 +42,7 @@ func GetById(id uint) (*model.User, error) {
 	return userRepo.GetById(id)
 }
 
-func GetUserRolePermissionByUserId(id uint) *repository.ReturnUser {
+func GetUserRolePermissionByUserId(id uint) *repository.ReturnRolePermission {
 	return userRepo.GetUserRolePermissionByUserId(id)
 }
 
