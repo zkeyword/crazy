@@ -59,6 +59,9 @@ func (r *UserRepository) DeleteById(id uint) error {
 func (r *UserRepository) UpdateById(id uint, t *model.User) (*model.User, error) {
 	var ret = new(model.User)
 	err := db.GetMysql().Model(&ret).Where("id=?", id).Updates(t).Error
+	if err == nil {
+		ret.ID = id
+	}
 	return ret, err
 }
 

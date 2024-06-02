@@ -37,7 +37,9 @@ func (r *RoleRepository) DeleteById(id uint) error {
 func (r *RoleRepository) UpdateById(id uint, t *model.Role) (*model.Role, error) {
 	var ret = new(model.Role)
 	err := db.GetMysql().Model(&ret).Where("id=?", id).Updates(t).Error
-	t.ID = id
+	if err == nil {
+		t.ID = id
+	}
 	return t, err
 }
 

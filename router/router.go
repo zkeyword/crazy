@@ -57,7 +57,7 @@ func Routers() *gin.Engine {
 		apiRouter.GET("/user/name/:username", api.GetUserByUsername)
 		apiRouter.GET("/user/id/:id", api.GetUserById)
 		apiRouter.GET("/user/:id/permission", api.GetUserRolePermissionByUserId) // 获取用户关联角色的权限
-		apiRouter.POST("/user/", api.PostUser)
+		apiRouter.POST("/user", api.PostUser)
 		apiRouter.DELETE("/user/:id", api.DelUserById)
 		apiRouter.PUT("/user/:id", api.PutUserById)
 		apiRouter.PUT("/user/disable/:id", api.PutUserDisableById)
@@ -68,7 +68,7 @@ func Routers() *gin.Engine {
 		// 角色
 		apiRouter.GET("/role", api.GetRole)
 		apiRouter.GET("/role/:id", api.GetRoleById)
-		apiRouter.POST("/role/", api.PostRole)
+		apiRouter.POST("/role", api.PostRole)
 		apiRouter.DELETE("/role/:id", api.DelRoleById)
 		apiRouter.PUT("/role/:id", api.PutRoleById)
 
@@ -84,14 +84,14 @@ func Routers() *gin.Engine {
 		// 权限
 		apiRouter.GET("/permission/:id", api.GetPermissionById)
 		apiRouter.GET("/permission/:id/tree", api.GetPermissionTreeById)
-		apiRouter.POST("/permission/", api.PostPermission)
+		apiRouter.POST("/permission", api.PostPermission)
 		apiRouter.DELETE("/permission/:id", api.DelPermissionById)
 		apiRouter.PUT("/permission/:id", api.PutPermissionById)
 
 		// 其他设置
 		apiRouter.GET("/other", api.GetOther)
 		apiRouter.GET("/other/:id", api.GetOtherById)
-		apiRouter.POST("/other/", api.PostOther)
+		apiRouter.POST("/other", api.PostOther)
 		apiRouter.DELETE("/other/:id", api.DelOtherById)
 		apiRouter.PUT("/other/:id", api.PutOtherById)
 	}

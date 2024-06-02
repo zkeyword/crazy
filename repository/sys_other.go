@@ -38,6 +38,9 @@ func (r *OtherRepository) DeleteById(id uint) error {
 func (r *OtherRepository) UpdateById(id uint, t *model.Other) (*model.Other, error) {
 	var ret = new(model.Other)
 	err := db.GetMysql().Model(&ret).Where("id=?", id).Updates(t).Error
+	if err == nil {
+		ret.ID = id
+	}
 	return ret, err
 }
 

@@ -1,6 +1,7 @@
 package api
 
 import (
+	"CRAZY/config"
 	"CRAZY/middleware"
 	"CRAZY/model"
 	sysUserService "CRAZY/services/sys_user"
@@ -43,8 +44,8 @@ func getToken(UserName string, UserID uint) string {
 		UserID:   UserID,
 	}
 
-	claims.IssuedAt = time.Now().Unix()                // 签名生效时间
-	claims.ExpiresAt = int64(time.Now().Unix() + 3600) // 过期时间 一小时
+	claims.IssuedAt = time.Now().Unix()    // 签名生效时间
+	claims.ExpiresAt = config.JWTExpiresAt // 过期时间 30D
 	token, _ := j.CreateToken(claims)
 	return token
 }

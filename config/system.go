@@ -37,3 +37,5 @@ var SystemConfig = &System{
 	UserIDKey:     "UserID",
 	UserStructKey: "User",
 }
+
+var JWTExpiresAt = time.Now().Add(24 * 30 * time.Hour).Unix()

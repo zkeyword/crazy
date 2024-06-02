@@ -4,6 +4,7 @@ import (
 	"CRAZY/model"
 	sysPermissionService "CRAZY/services/sys_permission"
 	"CRAZY/utils"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,12 +13,14 @@ type PermissionForm struct {
 	Name   string `form:"name" binding:"required"`
 	Key    string `form:"key" binding:"required"`
 	Status int    `form:"status" binding:"required"`
-	PID    int    `form:"pid" binding:"required"`
+	// PID    int    `form:"pid" binding:"required"`
+	PID int `form:"pid" binding:"min=1"`
 }
 
 // PostPermission 新增权限
 func PostPermission(c *gin.Context) {
 	var form PermissionForm
+	fmt.Println(form.PID)
 	err := c.ShouldBind(&form)
 	if err == nil {
 		Model := &model.Permission{
@@ -58,6 +61,7 @@ func PutPermissionById(c *gin.Context) {
 			Name:   form.Name,
 			Key:    form.Key,
 			Status: form.Status,
+			PID:    uint(form.PID),
 		}
 		res, resErr := sysPermissionService.UpdateById(id, Model)
 		if resErr == nil {

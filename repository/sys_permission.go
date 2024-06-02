@@ -42,6 +42,9 @@ func (r *PermissionRepository) DeleteById(id uint) error {
 func (r *PermissionRepository) UpdateById(id uint, t *model.Permission) (*model.Permission, error) {
 	var ret = new(model.Permission)
 	err := db.GetMysql().Model(&ret).Where("id=?", id).Updates(t).Error
+	if err == nil {
+		ret.ID = id
+	}
 	return ret, err
 }
 
