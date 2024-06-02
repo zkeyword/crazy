@@ -79,7 +79,7 @@ func Routers() *gin.Engine {
 		// 角色关联用户
 		apiRouter.GET("/role/:id/user", api.GetRoleUserByRoleID)
 		apiRouter.POST("/role/:id/user", api.PostRoleUserByRoleID)
-		apiRouter.DELETE("/role/:id/user", api.DelectRoleUserByRoleIAndUserID)
+		apiRouter.DELETE("/role/:id/user", api.DeleteRoleUserByRoleIAndUserID)
 
 		// 权限
 		apiRouter.GET("/permission/:id", api.GetPermissionById)

@@ -56,22 +56,22 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (err error) 
 		Name: "管理员",
 	}
 
-	// userRole := &model.UserRole{
-	// 	UserID: 1,
-	// 	RoleID: 1,
-	// }
+	userRole := &model.UserRole{
+		UserID: 1,
+		RoleID: 1,
+	}
 
-	// rolePermission := &model.RolePermission{
-	// 	RoleID:         1,
-	// 	PermissionKeys: "all",
-	// }
+	rolePermission := &model.RolePermission{
+		RoleID:         1,
+		PermissionKeys: "all",
+	}
 
-	db.Create(user)
-	db.Create(permission)
-	db.Create(role)
+	db.FirstOrCreate(user)
+	db.FirstOrCreate(permission)
+	db.FirstOrCreate(role)
 
-	// db.Create(userRole)
-	// db.Create(rolePermission)
+	db.FirstOrCreate(userRole)
+	db.FirstOrCreate(rolePermission)
 
 	return
 }

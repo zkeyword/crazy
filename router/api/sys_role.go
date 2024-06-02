@@ -141,12 +141,12 @@ func PostRoleUserByRoleID(c *gin.Context) {
 	}
 }
 
-type DelectRoleUserByRoleIAndUserIDForm struct {
+type DeleteRoleUserByRoleIAndUserIDForm struct {
 	UserID int `form:"userId" binding:"required"`
 }
 
-// DelectRoleUserByRoleIAndUserID 删除角色关联的用户
-func DelectRoleUserByRoleIAndUserID(c *gin.Context) {
+// DeleteRoleUserByRoleIAndUserID 删除角色关联的用户
+func DeleteRoleUserByRoleIAndUserID(c *gin.Context) {
 	id := utils.StrToUInt(c.Param("id"))
 	var form PostRoleUserByRoleIDForm
 	err := c.ShouldBind(&form)
