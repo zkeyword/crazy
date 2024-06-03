@@ -3,7 +3,6 @@ package repository
 import (
 	"CRAZY/model"
 	"CRAZY/utils/db"
-	"fmt"
 )
 
 type OtherRepository struct {
@@ -27,7 +26,6 @@ func (r *OtherRepository) Create(t *model.Other) (*model.Other, error) {
 }
 
 func (r *OtherRepository) DeleteById(id uint) error {
-	fmt.Println(id)
 	if err := db.GetMysql().Where("id = ?", id).Delete(Other{}).Error; err != nil {
 		return err
 	}

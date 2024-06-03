@@ -15,6 +15,7 @@ import (
 type UserForm struct {
 	Username string `form:"username" binding:"required"`
 	Password string `form:"password" binding:"required"`
+	RealName string `form:"realName" binding:"required"`
 	Status   int    `form:"status" binding:"required"`
 	RoleIDs  string `form:"roleIds"`
 }
@@ -32,6 +33,7 @@ func PostUser(c *gin.Context) {
 		Model := &model.User{
 			Username: html.EscapeString(form.Username),
 			Password: xor.Enc(form.Password),
+			RealName: form.RealName,
 			Status:   form.Status,
 		}
 		res, resErr := sysUserService.Create(Model, form.RoleIDs)
@@ -62,9 +64,14 @@ func PutUserById(c *gin.Context) {
 	var form UserForm
 	err := c.ShouldBind(&form)
 	if err == nil {
+		userRes, _ := sysUserService.GetById(id)
+		var Password = userRes.Password
+		if userRes.Password != form.Password {
+			Password = xor.Enc(form.Password)
+		}
 		Model := &model.User{
 			Username: form.Username,
-			Password: xor.Enc(form.Password),
+			Password: Password,
 		}
 		res, resErr := sysUserService.PutUserById(id, Model, form.RoleIDs)
 		if resErr == nil {

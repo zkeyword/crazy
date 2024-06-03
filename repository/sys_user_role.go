@@ -47,7 +47,7 @@ func (r *UserRoleRepository) DeleteByRoleId(roleID uint) error {
 }
 
 func (r *UserRoleRepository) DeleteByRoleIdAndUserId(userID uint, roleID uint) error {
-	if err := db.GetMysql().Where("role_id = ?", userID).Delete(UserRole{}).Error; err != nil {
+	if err := db.GetMysql().Where("user_id = ? AND role_id = ?", userID, roleID).Delete(UserRole{}).Error; err != nil {
 		return err
 	}
 
@@ -67,7 +67,7 @@ func (r *UserRoleRepository) GetByRoleID(id uint) *[]UserRole {
 func (r *UserRoleRepository) GetByUserID(id uint) *[]UserRole {
 	ret := &[]UserRole{}
 
-	if err := db.GetMysql().First(ret, "role_id = ?", id).Error; err != nil {
+	if err := db.GetMysql().Find(ret, "user_id = ?", id).Error; err != nil {
 		return nil
 	}
 

@@ -56,14 +56,10 @@ func Routers() *gin.Engine {
 		apiRouter.GET("/user", api.GetUser)
 		apiRouter.GET("/user/name/:username", api.GetUserByUsername)
 		apiRouter.GET("/user/id/:id", api.GetUserById)
-		apiRouter.GET("/user/:id/permission", api.GetUserRolePermissionByUserId) // 获取用户关联角色的权限
 		apiRouter.POST("/user", api.PostUser)
 		apiRouter.DELETE("/user/:id", api.DelUserById)
 		apiRouter.PUT("/user/:id", api.PutUserById)
 		apiRouter.PUT("/user/disable/:id", api.PutUserDisableById)
-
-		// 用户地址
-		apiRouter.GET("/userAddress", api.GetUser)
 
 		// 角色
 		apiRouter.GET("/role", api.GetRole)
@@ -72,21 +68,26 @@ func Routers() *gin.Engine {
 		apiRouter.DELETE("/role/:id", api.DelRoleById)
 		apiRouter.PUT("/role/:id", api.PutRoleById)
 
-		// 角色关联权限
-		apiRouter.GET("/role/:id/permission", api.GetRolePermissionByRoleID)
-		apiRouter.POST("/role/:id/permission", api.PostRolePermissionByRoleID)
-
-		// 角色关联用户
-		apiRouter.GET("/role/:id/user", api.GetRoleUserByRoleID)
-		apiRouter.POST("/role/:id/user", api.PostRoleUserByRoleID)
-		apiRouter.DELETE("/role/:id/user", api.DeleteRoleUserByRoleIAndUserID)
-
 		// 权限
 		apiRouter.GET("/permission/:id", api.GetPermissionById)
 		apiRouter.GET("/permission/:id/tree", api.GetPermissionTreeById)
 		apiRouter.POST("/permission", api.PostPermission)
 		apiRouter.DELETE("/permission/:id", api.DelPermissionById)
 		apiRouter.PUT("/permission/:id", api.PutPermissionById)
+
+		// 角色、用户、权限关联
+		apiRouter.GET("/role/:id/permission", api.GetRolePermissionByRoleID)
+		apiRouter.POST("/role/:id/permission", api.PostRolePermissionByRoleID)
+
+		apiRouter.GET("/user/:id/role", api.GetRoleUserByUserID)
+		apiRouter.GET("/user/:id/permission", api.GetUserRolePermissionByUserId)
+
+		apiRouter.GET("/role/:id/user", api.GetRoleUserByRoleID)
+		apiRouter.POST("/role/:id/user/:userId", api.PostRoleUserByRoleIDAndUserID)
+		apiRouter.DELETE("/role/:id/user/:userId", api.DeleteRoleUserByRoleIDAndUserID)
+
+		// 用户地址
+		apiRouter.GET("/userAddress", api.GetUser)
 
 		// 其他设置
 		apiRouter.GET("/other", api.GetOther)

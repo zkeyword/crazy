@@ -121,18 +121,25 @@ func GetRoleUserByRoleID(c *gin.Context) {
 	utils.OkDetailed(res, "success", c)
 }
 
-type PostRoleUserByRoleIDForm struct {
-	UserID   int    `form:"userId" binding:"required"`
+// GetRoleUserByUserID 获取用户关联的角色
+func GetRoleUserByUserID(c *gin.Context) {
+	id := utils.StrToUInt(c.Param("id"))
+	res := sysRoleService.GetRoleUserByUserID(id)
+	utils.OkDetailed(res, "success", c)
+}
+
+type PostRoleUserForm struct {
 	Username string `form:"username" binding:"required"`
 }
 
-// PostRoleUserByRoleID 新增角色关联用户
-func PostRoleUserByRoleID(c *gin.Context) {
+// PostRoleUser 新增角色关联用户
+func PostRoleUserByRoleIDAndUserID(c *gin.Context) {
 	id := utils.StrToUInt(c.Param("id"))
-	var form PostRoleUserByRoleIDForm
+	userId := utils.StrToUInt(c.Param("userId"))
+	var form PostRoleUserForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		res, resErr := sysRoleService.PostRoleUserByRoleID(uint(form.UserID), form.Username, id)
+		res, resErr := sysRoleService.PostRoleUser(userId, form.Username, id)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {
@@ -143,23 +150,14 @@ func PostRoleUserByRoleID(c *gin.Context) {
 	}
 }
 
-type DeleteRoleUserByRoleIAndUserIDForm struct {
-	UserID int `form:"userId" binding:"required"`
-}
-
 // DeleteRoleUserByRoleIAndUserID 删除角色关联的用户
-func DeleteRoleUserByRoleIAndUserID(c *gin.Context) {
+func DeleteRoleUserByRoleIDAndUserID(c *gin.Context) {
 	id := utils.StrToUInt(c.Param("id"))
-	var form PostRoleUserByRoleIDForm
-	err := c.ShouldBind(&form)
-	if err == nil {
-		resErr := sysRoleService.DeleteByRoleIdAndUserId(uint(form.UserID), id)
-		if resErr == nil {
-			utils.OkDetailed("删除成功！", "success", c)
-		} else {
-			utils.FailWithMessage(resErr.Error(), c)
-		}
+	userId := utils.StrToUInt(c.Param("userId"))
+	resErr := sysRoleService.DeleteByRoleIdAndUserId(userId, id)
+	if resErr == nil {
+		utils.OkDetailed("删除成功！", "success", c)
 	} else {
-		utils.FailWithMessage(err.Error(), c)
+		utils.FailWithMessage(resErr.Error(), c)
 	}
 }

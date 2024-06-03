@@ -112,7 +112,11 @@ func GetRoleUserByRoleID(id uint) *[]repository.UserRole {
 	return userRoleRepo.GetByRoleID(id)
 }
 
-func PostRoleUserByRoleID(userID uint, username string, roleId uint) (*model.UserRole, error) {
+func GetRoleUserByUserID(id uint) *[]repository.UserRole {
+	return userRoleRepo.GetByUserID(id)
+}
+
+func PostRoleUser(userID uint, username string, roleId uint) (*model.UserRole, error) {
 	return userRoleRepo.Create(userID, username, roleId)
 }
 

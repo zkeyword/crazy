@@ -2,6 +2,7 @@ package captcha
 
 import (
 	"fmt"
+
 	"github.com/mojocn/base64Captcha"
 )
 
@@ -18,7 +19,7 @@ type configJsonBody struct {
 
 var store = base64Captcha.DefaultMemStore
 
-//GenerateCaptcha 生成验证码，返回验证码和base64字符串
+// GenerateCaptcha 生成验证码，返回验证码和base64字符串
 func GenerateCaptcha() {
 
 	// var driver base64Captcha.Driver
@@ -37,11 +38,8 @@ func GenerateCaptcha() {
 	// 	driver = param.DriverDigit
 	// }
 
-	fmt.Println("11")
-
 	c := base64Captcha.NewCaptcha(param.DriverDigit, store)
 
-	fmt.Println(2222, c)
 	if id, b64s, err := c.Generate(); err != nil {
 		fmt.Println(id, b64s, err)
 	}
