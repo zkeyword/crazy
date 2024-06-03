@@ -100,7 +100,7 @@ func DeleteById(id uint) error {
 }
 
 func GetRolePermissionByRoleID(id uint) *repository.RolePermission {
-	return rolePermissionRepo.GetById(id)
+	return rolePermissionRepo.GetByRoleID(id)
 }
 
 func PostRolePermissionByRoleID(id uint, permissionKeys string) (*model.RolePermission, error) {

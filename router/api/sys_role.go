@@ -4,6 +4,7 @@ import (
 	"CRAZY/model"
 	sysRoleService "CRAZY/services/sys_role"
 	"CRAZY/utils"
+	"fmt"
 	"html"
 	"strconv"
 
@@ -13,12 +14,13 @@ import (
 type RoleForm struct {
 	Name           string `form:"name" binding:"required"`
 	Desc           string `form:"desc"`
-	PermissionKeys string `form:"permission" binding:"required"`
+	PermissionKeys string `form:"permissionKeys" binding:"required"`
 }
 
 // PostRole 新增角色
 func PostRole(c *gin.Context) {
 	var form RoleForm
+	fmt.Println(c.Request.Form)
 	err := c.ShouldBind(&form)
 	if err == nil {
 		Model := &model.Role{
@@ -92,7 +94,7 @@ func GetRolePermissionByRoleID(c *gin.Context) {
 }
 
 type RolePermissionForm struct {
-	PermissionKeys string `form:"permission" binding:"required"`
+	PermissionKeys string `form:"permissionKeys" binding:"required"`
 }
 
 // PostRolePermissionByRoleID 修改角色权限
