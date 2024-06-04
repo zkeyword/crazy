@@ -45,7 +45,6 @@ func SendEvent(c *gin.Context) {
 	closeNotify := c.Writer.CloseNotify()
 	var lastMessage string
 	idleTimeout := time.After(30 * time.Second)
-	// fmt.Println(clientChan)
 	for {
 		select {
 		case <-closeNotify:
@@ -106,7 +105,6 @@ func Subscribe() {
 			switch v := psc.Receive().(type) {
 			case redis.Message:
 				Mutex.Lock()
-				fmt.Println(Clients)
 				for clientMessageChan := range Clients {
 					func() {
 						defer func() {
@@ -115,7 +113,6 @@ func Subscribe() {
 								delete(Clients, clientMessageChan)
 							}
 						}()
-						fmt.Println(string(v.Data), clientMessageChan)
 						clientMessageChan <- string(v.Data)
 					}()
 				}

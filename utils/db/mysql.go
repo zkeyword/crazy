@@ -2,7 +2,6 @@ package db
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"gorm.io/driver/mysql"
@@ -36,14 +35,14 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (*gorm.DB, e
 		db = db.Debug()
 	}
 
-	db_, _ := db.DB()
-	if err := db_.Ping(); err != nil {
+	_db, _ := db.DB()
+	if err := _db.Ping(); err != nil {
 		panic(err)
 	}
 
-	db_.SetMaxIdleConns(maxIdle)
-	db_.SetMaxOpenConns(maxOpen)
-	db_.SetConnMaxLifetime(time.Hour * 8)
+	_db.SetMaxIdleConns(maxIdle)
+	_db.SetMaxOpenConns(maxOpen)
+	_db.SetConnMaxLifetime(time.Hour * 8)
 
 	// db.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
 	// 	AutoMigrate(
@@ -101,7 +100,6 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (*gorm.DB, e
 
 // GetMysql 获取mysql连接
 func GetMysql() (*gorm.DB, error) {
-	fmt.Println(db)
 	if db == nil {
 		return nil, InitErr
 	}

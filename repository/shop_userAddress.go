@@ -42,11 +42,7 @@ func (r *UserAddressRepository) DeleteById(id uint) error {
 	if err != nil {
 		return err
 	}
-	if err := _db.Where("id = ?", id).Delete(UserAddress{}).Error; err != nil {
-		return err
-	}
-
-	return nil
+	return _db.Where("id = ?", id).Delete(UserAddress{}).Error
 }
 
 // UpdateByUserId 修改用户地址

@@ -37,11 +37,7 @@ func (r *RolePermissionRepository) DeleteById(id uint) error {
 	if err != nil {
 		return nil
 	}
-	if err := _db.Where("id = ?", id).Delete(RolePermission{}).Error; err != nil {
-		return err
-	}
-
-	return nil
+	return _db.Where("id = ?", id).Delete(RolePermission{}).Error
 }
 
 func (r *RolePermissionRepository) UpdateByRoleId(id uint, permissionKeys string) (*model.RolePermission, error) {

@@ -39,11 +39,7 @@ func (r *UserRoleRepository) DeleteByUserId(userID uint) error {
 	if err != nil {
 		return err
 	}
-	err = _db.Where("user_id = ?", userID).Delete(UserRole{}).Error
-	if err != nil {
-		return err
-	}
-	return nil
+	return _db.Where("user_id = ?", userID).Delete(UserRole{}).Error
 }
 
 func (r *UserRoleRepository) DeleteByRoleId(roleID uint) error {
@@ -51,12 +47,7 @@ func (r *UserRoleRepository) DeleteByRoleId(roleID uint) error {
 	if err != nil {
 		return err
 	}
-	err = _db.Where("role_id = ?", roleID).Delete(UserRole{}).Error
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return _db.Where("role_id = ?", roleID).Delete(UserRole{}).Error
 }
 
 func (r *UserRoleRepository) DeleteByRoleIdAndUserId(userID uint, roleID uint) error {
@@ -64,11 +55,7 @@ func (r *UserRoleRepository) DeleteByRoleIdAndUserId(userID uint, roleID uint) e
 	if err != nil {
 		return nil
 	}
-	err = _db.Where("user_id = ? AND role_id = ?", userID, roleID).Delete(UserRole{}).Error
-	if err != nil {
-		return err
-	}
-	return nil
+	return _db.Where("user_id = ? AND role_id = ?", userID, roleID).Delete(UserRole{}).Error
 }
 
 func (r *UserRoleRepository) GetByRoleID(id uint) *[]UserRole {

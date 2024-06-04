@@ -34,11 +34,7 @@ func (r *OtherRepository) DeleteById(id uint) error {
 	if err != nil {
 		return err
 	}
-	if err := _db.Where("id = ?", id).Delete(Other{}).Error; err != nil {
-		return err
-	}
-
-	return nil
+	return _db.Where("id = ?", id).Delete(Other{}).Error
 }
 
 func (r *OtherRepository) UpdateById(id uint, t *model.Other) (*model.Other, error) {

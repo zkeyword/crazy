@@ -34,11 +34,7 @@ func (r *RoleRepository) DeleteById(id uint) error {
 	if err != nil {
 		return err
 	}
-	if err := _db.Where("id = ?", id).Delete(Role{}).Error; err != nil {
-		return err
-	}
-
-	return nil
+	return _db.Where("id = ?", id).Delete(Role{}).Error
 }
 
 // UpdateById 修改角色

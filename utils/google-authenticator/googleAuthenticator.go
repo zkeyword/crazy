@@ -92,10 +92,10 @@ func (this *GoogleAuth) GetQrcode(user, secret string) string {
 	return fmt.Sprintf("otpauth://totp/%s?secret=%s", user, secret)
 }
 
-// func (this *GoogleAuth) GetQrcodeUrl(user, secret string) string {
-// 	qrcode := this.GetQrcode(user, secret)
-// 	return fmt.Sprintf("http://www.google.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl=%s", qrcode)
-// }
+//	func (this *GoogleAuth) GetQrcodeUrl(user, secret string) string {
+//		qrcode := this.GetQrcode(user, secret)
+//		return fmt.Sprintf("http://www.google.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl=%s", qrcode)
+//	}
 func (this *GoogleAuth) GetQrcodeUrl(user, secret string) string {
 	qrcode := this.GetQrcode(user, secret)
 	width := "200"
@@ -107,7 +107,6 @@ func (this *GoogleAuth) GetQrcodeUrl(user, secret string) string {
 
 func (this *GoogleAuth) VerifyCode(secret, code string) (bool, error) {
 	_code, err := this.GetCode(secret)
-	fmt.Println(_code, code, err)
 	if err != nil {
 		return false, err
 	}

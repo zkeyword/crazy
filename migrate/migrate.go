@@ -10,9 +10,8 @@ import (
 func main() {
 
 	// 启动mysql
-	db.StartMysql(config.DbConfig.Dsn, config.DbConfig.MaxIdle, config.DbConfig.MaxOpen, config.DbConfig.LogMode)
-	con := db.GetMysql()
-	con.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
+	_db, _ := db.StartMysql(config.DbConfig.Dsn, config.DbConfig.MaxIdle, config.DbConfig.MaxOpen, config.DbConfig.LogMode)
+	_db.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
 		AutoMigrate(
 			// sys
 			&model.User{},

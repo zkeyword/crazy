@@ -44,7 +44,7 @@ func NewUserRepository() *UserRepository {
 func (r *UserRepository) Create(t *model.User) (*model.User, error) {
 	_db, err := db.GetMysql()
 	if err != nil {
-		return t, err
+		return nil, err
 	}
 	err = _db.Create(t).Error
 	return t, err
@@ -56,36 +56,30 @@ func (r *UserRepository) DeleteById(id uint) error {
 	if err != nil {
 		return err
 	}
-	err = _db.Where("id = ?", id).Delete(User{}).Error
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return _db.Where("id = ?", id).Delete(User{}).Error
 }
 
 // UpdateById 修改用户
 func (r *UserRepository) UpdateById(id uint, t *model.User) (*model.User, error) {
 	var ret = new(model.User)
-	// data := make(map[string]interface{})
-	// if t.Username != "" {
-	// 	data["username"] = t.Username
-	// }
-	// if t.Username != "" {
-	// 	data["realName"] = t.RealName
-	// }
-	// if t.Username != "" {
-	// 	data["password"] = t.Password
-	// }
-	// data["status"] = t.Status
-	// data["level"] = t.Level
-	// data["parentID"] = t.ParentID
-	// fmt.Println(t.ParentID)
+	data := make(map[string]interface{})
+	if t.Username != "" {
+		data["username"] = t.Username
+	}
+	if t.Username != "" {
+		data["real_name"] = t.RealName
+	}
+	if t.Username != "" {
+		data["password"] = t.Password
+	}
+	data["status"] = t.Status
+	data["level"] = t.Level
+	data["parent_id"] = t.ParentID
 	_db, err := db.GetMysql()
 	if err != nil {
-		return ret, err
+		return nil, err
 	}
-	err = _db.Model(&ret).Where("id=?", id).Updates(t).Error
+	err = _db.Model(&ret).Where("id=?", id).Updates(data).Error
 	if err == nil {
 		ret.ID = id
 	}
@@ -156,15 +150,14 @@ func (r *UserRepository) GetUserRolePermissionByUserId(id uint) *ReturnRolePermi
 	}
 
 	ret := &ReturnRolePermission{}
-	// var ret2 []ReturnRolePermission
-	ret2 := new([]ReturnRolePermission)
+	var ret2 []ReturnRolePermission
 
 	err = _db.Table("user_roles").Where("user_id = ?", id).Find(&ret2).Error
 
 	ret.RoleID = id
 
 	var roleIDs []uint
-	for _, v := range *ret2 {
+	for _, v := range ret2 {
 		roleIDs = append(roleIDs, v.RoleID)
 	}
 
@@ -204,7 +197,7 @@ func (r *UserRepository) GetByUserName(username string) (*model.User, error) {
 	var ret = &model.User{}
 	_db, err := db.GetMysql()
 	if err != nil {
-		return ret, err
+		return nil, err
 	}
 	err = _db.First(ret, "username = ?", username).Error
 	return ret, err

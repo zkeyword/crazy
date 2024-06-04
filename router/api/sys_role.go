@@ -4,7 +4,6 @@ import (
 	"CRAZY/model"
 	sysRoleService "CRAZY/services/sys_role"
 	"CRAZY/utils"
-	"fmt"
 	"html"
 	"strconv"
 
@@ -20,7 +19,6 @@ type RoleForm struct {
 // PostRole 新增角色
 func PostRole(c *gin.Context) {
 	var form RoleForm
-	fmt.Println(c.Request.Form)
 	err := c.ShouldBind(&form)
 	if err == nil {
 		Model := &model.Role{

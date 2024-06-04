@@ -59,7 +59,6 @@ func Login(c *gin.Context) {
 		str := xor.Dec(form.CaptchaID)
 		re := regexp.MustCompile(`^(.*)(\d{13})$`)
 		matches := re.FindStringSubmatch(str)
-		// fmt.Println(form.Time, matches[2], matches[1], form.Code)
 		if !(form.Time == matches[2] && captcha.VerifyString(matches[1], form.Code)) {
 			utils.FailWithMessage("验证码错误", c)
 			return
