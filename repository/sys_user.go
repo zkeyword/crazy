@@ -42,13 +42,22 @@ func NewUserRepository() *UserRepository {
 //		return t, err
 //	}
 func (r *UserRepository) Create(t *model.User) (*model.User, error) {
-	err := db.GetMysql().Create(t).Error
+	_db, err := db.GetMysql()
+	if err != nil {
+		return t, err
+	}
+	err = _db.Create(t).Error
 	return t, err
 }
 
 // DeleteById 删除用户
 func (r *UserRepository) DeleteById(id uint) error {
-	if err := db.GetMysql().Where("id = ?", id).Delete(User{}).Error; err != nil {
+	_db, err := db.GetMysql()
+	if err != nil {
+		return err
+	}
+	err = _db.Where("id = ?", id).Delete(User{}).Error
+	if err != nil {
 		return err
 	}
 
@@ -58,7 +67,25 @@ func (r *UserRepository) DeleteById(id uint) error {
 // UpdateById 修改用户
 func (r *UserRepository) UpdateById(id uint, t *model.User) (*model.User, error) {
 	var ret = new(model.User)
-	err := db.GetMysql().Model(&ret).Where("id=?", id).Updates(t).Error
+	// data := make(map[string]interface{})
+	// if t.Username != "" {
+	// 	data["username"] = t.Username
+	// }
+	// if t.Username != "" {
+	// 	data["realName"] = t.RealName
+	// }
+	// if t.Username != "" {
+	// 	data["password"] = t.Password
+	// }
+	// data["status"] = t.Status
+	// data["level"] = t.Level
+	// data["parentID"] = t.ParentID
+	// fmt.Println(t.ParentID)
+	_db, err := db.GetMysql()
+	if err != nil {
+		return ret, err
+	}
+	err = _db.Model(&ret).Where("id=?", id).Updates(t).Error
 	if err == nil {
 		ret.ID = id
 	}
@@ -75,21 +102,29 @@ func (r *UserRepository) Get(page int, pageSize int, username string) ([]model.U
 	if page < 1 {
 		page = 1
 	}
+	_db, err := db.GetMysql()
+	if err != nil {
+		return users, err
+	}
 	if username != "" {
-		err = db.GetMysql().Where("username like ?", "%"+username+"%").Limit(pageSize).Offset((page - 1) * pageSize).Find(&users).Error
+		err = _db.Where("username like ?", "%"+username+"%").Limit(pageSize).Offset((page - 1) * pageSize).Find(&users).Error
 	} else {
-		err = db.GetMysql().Limit(pageSize).Offset((page - 1) * pageSize).Find(&users).Error
+		err = _db.Limit(pageSize).Offset((page - 1) * pageSize).Find(&users).Error
 	}
 	return users, err
 }
 
-func (r *UserRepository) GetUserCount(username string) int {
+func (r *UserRepository) GetUserCount(username string) int64 {
 	var users []model.User
-	var count int
+	var count int64
+	_db, err := db.GetMysql()
+	if err != nil {
+		return 0
+	}
 	if username != "" {
-		db.GetMysql().Where("username like ?", "%"+username+"%").Find(&users).Select("count(id)").Count(&count)
+		_db.Where("username like ?", "%"+username+"%").Find(&users).Select("count(id)").Count(&count)
 	} else {
-		db.GetMysql().Find(&users).Select("count(id)").Count(&count)
+		_db.Find(&users).Select("count(id)").Count(&count)
 	}
 	return count
 }
@@ -97,7 +132,11 @@ func (r *UserRepository) GetUserCount(username string) int {
 // GetById 获取用户
 func (r *UserRepository) GetById(id uint) (*model.User, error) {
 	var ret = &model.User{}
-	err := db.GetMysql().First(ret, "id = ?", id).Error
+	_db, err := db.GetMysql()
+	if err != nil {
+		return ret, err
+	}
+	err = _db.First(ret, "id = ?", id).Error
 	return ret, err
 }
 
@@ -111,21 +150,27 @@ type ReturnRolePermission struct {
 
 // GetUserRolePermissionByUserId 获取用户角色关联权限
 func (r *UserRepository) GetUserRolePermissionByUserId(id uint) *ReturnRolePermission {
-	ret := &ReturnRolePermission{}
-	var ret2 []ReturnRolePermission
+	_db, err := db.GetMysql()
+	if err != nil {
+		return nil
+	}
 
-	err := db.GetMysql().Table("user_roles").Where("user_id = ?", id).Find(&ret2).Error
+	ret := &ReturnRolePermission{}
+	// var ret2 []ReturnRolePermission
+	ret2 := new([]ReturnRolePermission)
+
+	err = _db.Table("user_roles").Where("user_id = ?", id).Find(&ret2).Error
 
 	ret.RoleID = id
 
 	var roleIDs []uint
-	for _, v := range ret2 {
+	for _, v := range *ret2 {
 		roleIDs = append(roleIDs, v.RoleID)
 	}
 
 	// 获取关联角色
 	var role []Role
-	db.GetMysql().Table("roles").Where("id IN (?)", roleIDs).Find(&role)
+	_db.Table("roles").Where("id IN (?)", roleIDs).Find(&role)
 
 	roleName := make([]string, 0)
 	for _, v := range role {
@@ -135,7 +180,7 @@ func (r *UserRepository) GetUserRolePermissionByUserId(id uint) *ReturnRolePermi
 
 	// 获取关联权限
 	var permission []RolePermission
-	db.GetMysql().Table("role_permissions").Where("id IN (?)", roleIDs).Find(&permission)
+	_db.Table("role_permissions").Where("id IN (?)", roleIDs).Find(&permission)
 
 	ret.Permission = permission
 
@@ -157,6 +202,10 @@ func (r *UserRepository) GetUserRolePermissionByUserId(id uint) *ReturnRolePermi
 // GetByName
 func (r *UserRepository) GetByUserName(username string) (*model.User, error) {
 	var ret = &model.User{}
-	err := db.GetMysql().First(ret, "username = ?", username).Error
+	_db, err := db.GetMysql()
+	if err != nil {
+		return ret, err
+	}
+	err = _db.First(ret, "username = ?", username).Error
 	return ret, err
 }

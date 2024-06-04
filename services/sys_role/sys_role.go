@@ -27,7 +27,7 @@ func getUserRole() *repository.UserRoleRepository {
 type ReturnRoleList struct {
 	Page     int          `json:"page"`
 	PageSize int          `json:"pageSize"`
-	Total    int          `json:"total"`
+	Total    int64        `json:"total"`
 	List     []model.Role `json:"list"`
 }
 

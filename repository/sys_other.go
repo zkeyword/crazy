@@ -21,12 +21,20 @@ func NewOtherRepository() *OtherRepository {
 }
 
 func (r *OtherRepository) Create(t *model.Other) (*model.Other, error) {
-	err := db.GetMysql().Create(t).Error
+	_db, err := db.GetMysql()
+	if err != nil {
+		return nil, err
+	}
+	err = _db.Create(t).Error
 	return t, err
 }
 
 func (r *OtherRepository) DeleteById(id uint) error {
-	if err := db.GetMysql().Where("id = ?", id).Delete(Other{}).Error; err != nil {
+	_db, err := db.GetMysql()
+	if err != nil {
+		return err
+	}
+	if err := _db.Where("id = ?", id).Delete(Other{}).Error; err != nil {
 		return err
 	}
 
@@ -35,7 +43,11 @@ func (r *OtherRepository) DeleteById(id uint) error {
 
 func (r *OtherRepository) UpdateById(id uint, t *model.Other) (*model.Other, error) {
 	var ret = new(model.Other)
-	err := db.GetMysql().Model(&ret).Where("id=?", id).Updates(t).Error
+	_db, err := db.GetMysql()
+	if err != nil {
+		return nil, err
+	}
+	err = _db.Model(&ret).Where("id=?", id).Updates(t).Error
 	if err == nil {
 		ret.ID = id
 	}
@@ -44,12 +56,20 @@ func (r *OtherRepository) UpdateById(id uint, t *model.Other) (*model.Other, err
 
 func (r *OtherRepository) GetById(id uint) (*model.Other, error) {
 	var ret = &model.Other{}
-	err := db.GetMysql().First(ret, "id = ?", id).Error
+	_db, err := db.GetMysql()
+	if err != nil {
+		return nil, err
+	}
+	err = _db.First(ret, "id = ?", id).Error
 	return ret, err
 }
 
 func (r *OtherRepository) Get() ([]model.Other, error) {
 	var Other []model.Other
-	err := db.GetMysql().Find(&Other).Error
+	_db, err := db.GetMysql()
+	if err != nil {
+		return nil, err
+	}
+	err = _db.Find(&Other).Error
 	return Other, err
 }

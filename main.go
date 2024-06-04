@@ -45,7 +45,6 @@ func main() {
 	// utils.ReadFile()
 
 	// 启动mysql
-	defer db.CloseMysql()
 	fmt.Print("Start Mysql...\r")
 	db.StartMysql(config.DbConfig.Dsn, config.DbConfig.MaxIdle, config.DbConfig.MaxOpen, config.DbConfig.LogMode)
 	fmt.Print("Start Mysql Success!!!\n")

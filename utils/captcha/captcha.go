@@ -40,18 +40,14 @@ func GenerateCaptcha() {
 
 	c := base64Captcha.NewCaptcha(param.DriverDigit, store)
 
-	if id, b64s, err := c.Generate(); err != nil {
-		fmt.Println(id, b64s, err)
+	if id, b64s, answer, err := c.Generate(); err != nil {
+		fmt.Println(id, b64s, answer, err)
 	}
 
-	return
 }
 
 // VerifyCaptcha 校验
 func VerifyCaptcha(idKey, verifyValue string) bool {
 	verifyResult := store.Verify(idKey, verifyValue, true)
-	if verifyResult {
-		return true
-	}
-	return false
+	return verifyResult
 }

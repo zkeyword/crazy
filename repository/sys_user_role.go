@@ -26,20 +26,33 @@ func (r *UserRoleRepository) Create(userId uint, username string, roleId uint) (
 	ret.RoleID = roleId
 	ret.UserID = userId
 	ret.Username = username
-	err := db.GetMysql().Create(ret).Error
+	_db, err := db.GetMysql()
+	if err != nil {
+		return ret, err
+	}
+	err = _db.Create(ret).Error
 	return ret, err
 }
 
 func (r *UserRoleRepository) DeleteByUserId(userID uint) error {
-	if err := db.GetMysql().Where("user_id = ?", userID).Delete(UserRole{}).Error; err != nil {
+	_db, err := db.GetMysql()
+	if err != nil {
 		return err
 	}
-
+	err = _db.Where("user_id = ?", userID).Delete(UserRole{}).Error
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func (r *UserRoleRepository) DeleteByRoleId(roleID uint) error {
-	if err := db.GetMysql().Where("role_id = ?", roleID).Delete(UserRole{}).Error; err != nil {
+	_db, err := db.GetMysql()
+	if err != nil {
+		return err
+	}
+	err = _db.Where("role_id = ?", roleID).Delete(UserRole{}).Error
+	if err != nil {
 		return err
 	}
 
@@ -47,29 +60,39 @@ func (r *UserRoleRepository) DeleteByRoleId(roleID uint) error {
 }
 
 func (r *UserRoleRepository) DeleteByRoleIdAndUserId(userID uint, roleID uint) error {
-	if err := db.GetMysql().Where("user_id = ? AND role_id = ?", userID, roleID).Delete(UserRole{}).Error; err != nil {
+	_db, err := db.GetMysql()
+	if err != nil {
+		return nil
+	}
+	err = _db.Where("user_id = ? AND role_id = ?", userID, roleID).Delete(UserRole{}).Error
+	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
 func (r *UserRoleRepository) GetByRoleID(id uint) *[]UserRole {
 	ret := &[]UserRole{}
-
-	if err := db.GetMysql().Find(ret, "role_id = ?", id).Error; err != nil {
+	_db, err := db.GetMysql()
+	if err != nil {
 		return nil
 	}
-
+	err = _db.Find(ret, "role_id = ?", id).Error
+	if err != nil {
+		return nil
+	}
 	return ret
 }
 
 func (r *UserRoleRepository) GetByUserID(id uint) *[]UserRole {
 	ret := &[]UserRole{}
-
-	if err := db.GetMysql().Find(ret, "user_id = ?", id).Error; err != nil {
+	_db, err := db.GetMysql()
+	if err != nil {
 		return nil
 	}
-
+	err = _db.Find(ret, "user_id = ?", id).Error
+	if err != nil {
+		return nil
+	}
 	return ret
 }

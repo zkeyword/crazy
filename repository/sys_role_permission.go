@@ -24,12 +24,20 @@ func (r *RolePermissionRepository) Create(roleID uint, permissionKeys string) (*
 	var ret = new(model.RolePermission)
 	ret.RoleID = roleID
 	ret.PermissionKeys = permissionKeys
-	err := db.GetMysql().Create(ret).Error
+	_db, err := db.GetMysql()
+	if err != nil {
+		return nil, err
+	}
+	err = _db.Create(ret).Error
 	return ret, err
 }
 
 func (r *RolePermissionRepository) DeleteById(id uint) error {
-	if err := db.GetMysql().Where("id = ?", id).Delete(RolePermission{}).Error; err != nil {
+	_db, err := db.GetMysql()
+	if err != nil {
+		return nil
+	}
+	if err := _db.Where("id = ?", id).Delete(RolePermission{}).Error; err != nil {
 		return err
 	}
 
@@ -40,14 +48,21 @@ func (r *RolePermissionRepository) UpdateByRoleId(id uint, permissionKeys string
 	var ret = new(model.RolePermission)
 	data := &RolePermission{}
 	data.PermissionKeys = permissionKeys
-	err := db.GetMysql().Model(&ret).Where("role_id=?", id).Updates(data).Error
+	_db, err := db.GetMysql()
+	if err != nil {
+		return nil, err
+	}
+	err = _db.Model(&ret).Where("role_id=?", id).Updates(data).Error
 	return ret, err
 }
 
 func (r *RolePermissionRepository) GetByRoleID(id uint) *RolePermission {
 	ret := &RolePermission{}
-
-	if err := db.GetMysql().First(ret, "role_id = ?", id).Error; err != nil {
+	_db, err := db.GetMysql()
+	if err != nil {
+		return nil
+	}
+	if err := _db.First(ret, "role_id = ?", id).Error; err != nil {
 		return nil
 	}
 

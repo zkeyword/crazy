@@ -10,7 +10,6 @@ import (
 func main() {
 
 	// 启动mysql
-	defer db.CloseMysql()
 	db.StartMysql(config.DbConfig.Dsn, config.DbConfig.MaxIdle, config.DbConfig.MaxOpen, config.DbConfig.LogMode)
 	con := db.GetMysql()
 	con.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").

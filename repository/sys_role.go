@@ -20,13 +20,21 @@ func NewRoleRepository() *RoleRepository {
 
 // Create 创建角色
 func (r *RoleRepository) Create(t *model.Role) (*model.Role, error) {
-	err := db.GetMysql().Create(t).Error
+	_db, err := db.GetMysql()
+	if err != nil {
+		return nil, err
+	}
+	err = _db.Create(t).Error
 	return t, err
 }
 
 // DeleteById 删除角色
 func (r *RoleRepository) DeleteById(id uint) error {
-	if err := db.GetMysql().Where("id = ?", id).Delete(Role{}).Error; err != nil {
+	_db, err := db.GetMysql()
+	if err != nil {
+		return err
+	}
+	if err := _db.Where("id = ?", id).Delete(Role{}).Error; err != nil {
 		return err
 	}
 
@@ -36,7 +44,11 @@ func (r *RoleRepository) DeleteById(id uint) error {
 // UpdateById 修改角色
 func (r *RoleRepository) UpdateById(id uint, t *model.Role) (*model.Role, error) {
 	var ret = new(model.Role)
-	err := db.GetMysql().Model(&ret).Where("id=?", id).Updates(t).Error
+	_db, err := db.GetMysql()
+	if err != nil {
+		return nil, err
+	}
+	err = _db.Model(&ret).Where("id=?", id).Updates(t).Error
 	if err == nil {
 		t.ID = id
 	}
@@ -46,11 +58,14 @@ func (r *RoleRepository) UpdateById(id uint, t *model.Role) (*model.Role, error)
 // Get 获取角色
 func (r *RoleRepository) GetById(id uint) *Role {
 	ret := &Role{}
-
-	if err := db.GetMysql().First(ret, "id = ?", id).Error; err != nil {
+	_db, err := db.GetMysql()
+	if err != nil {
 		return nil
 	}
-
+	err = _db.First(ret, "id = ?", id).Error
+	if err != nil {
+		return nil
+	}
 	return ret
 }
 
@@ -64,21 +79,29 @@ func (r *RoleRepository) Get(page int, pageSize int, name string) ([]model.Role,
 	if page < 1 {
 		page = 1
 	}
+	_db, err := db.GetMysql()
+	if err != nil {
+		return nil, err
+	}
 	if name != "" {
-		err = db.GetMysql().Where("name like ?", "%"+name+"%").Limit(pageSize).Offset((page - 1) * pageSize).Find(&roles).Error
+		err = _db.Where("name like ?", "%"+name+"%").Limit(pageSize).Offset((page - 1) * pageSize).Find(&roles).Error
 	} else {
-		err = db.GetMysql().Limit(pageSize).Offset((page - 1) * pageSize).Find(&roles).Error
+		err = _db.Limit(pageSize).Offset((page - 1) * pageSize).Find(&roles).Error
 	}
 	return roles, err
 }
 
-func (r *RoleRepository) GetRoleCount(name string) int {
+func (r *RoleRepository) GetRoleCount(name string) int64 {
 	var roles []model.Role
-	var count int
+	var count int64
+	_db, err := db.GetMysql()
+	if err != nil {
+		return 0
+	}
 	if name != "" {
-		db.GetMysql().Where("name like ?", "%"+name+"%").Find(&roles).Select("count(id)").Count(&count)
+		_db.Where("name like ?", "%"+name+"%").Find(&roles).Select("count(id)").Count(&count)
 	} else {
-		db.GetMysql().Find(&roles).Select("count(id)").Count(&count)
+		_db.Find(&roles).Select("count(id)").Count(&count)
 	}
 	return count
 }

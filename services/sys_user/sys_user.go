@@ -22,7 +22,7 @@ func getUserRoleRepo() *repository.UserRoleRepository {
 type ReturnUserList struct {
 	Page     int          `json:"page"`
 	PageSize int          `json:"pageSize"`
-	Total    int          `json:"total"`
+	Total    int64        `json:"total"`
 	List     []model.User `json:"list"`
 }
 
@@ -54,24 +54,29 @@ func GetUserRolePermissionByUserId(id uint) *repository.ReturnRolePermission {
 
 func Create(User *model.User, roleIds string) (*model.User, error) {
 	ret, err := userRepo.Create(User)
-	roleIdArr := strings.Split(roleIds, ",")
-	for _, v := range roleIdArr {
-		userRoleRepo.Create(ret.ID, ret.Username, utils.StrToUInt(v))
+	if err == nil && roleIds != "" {
+		roleIdArr := strings.Split(roleIds, ",")
+		for _, v := range roleIdArr {
+			userRoleRepo.Create(ret.ID, ret.Username, utils.StrToUInt(v))
+		}
 	}
 	return ret, err
 }
 
 func PutUserById(id uint, User *model.User, roleIds string) (*model.User, error) {
 	ret, err := userRepo.UpdateById(id, User)
-	roleIdArr := strings.Split(roleIds, ",")
-	userRoleRepo.DeleteByUserId(id)
-	for _, v := range roleIdArr {
-		userRoleRepo.Create(ret.ID, ret.Username, utils.StrToUInt(v))
+	if err == nil && roleIds != "" {
+		roleIdArr := strings.Split(roleIds, ",")
+		userRoleRepo.DeleteByUserId(id)
+		for _, v := range roleIdArr {
+			userRoleRepo.Create(ret.ID, ret.Username, utils.StrToUInt(v))
+		}
 	}
+
 	return ret, err
 }
 
-func PutUserDisableById(id uint, User *model.User) (*model.User, error) {
+func PutUserStatusById(id uint, User *model.User) (*model.User, error) {
 	ret, err := userRepo.UpdateById(id, User)
 	return ret, err
 }

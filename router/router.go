@@ -59,7 +59,7 @@ func Routers() *gin.Engine {
 		apiRouter.POST("/user", api.PostUser)
 		apiRouter.DELETE("/user/:id", api.DelUserById)
 		apiRouter.PUT("/user/:id", api.PutUserById)
-		apiRouter.PUT("/user/disable/:id", api.PutUserDisableById)
+		apiRouter.PUT("/user/status/:id", api.PutUserStatusById)
 
 		// 角色
 		apiRouter.GET("/role", api.GetRole)

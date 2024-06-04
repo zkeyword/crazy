@@ -16,7 +16,7 @@ type UserForm struct {
 	Username string `form:"username" binding:"required"`
 	Password string `form:"password" binding:"required"`
 	RealName string `form:"realName" binding:"required"`
-	Status   int    `form:"status" binding:"required"`
+	Status   *int   `form:"status" binding:"required,gte=0"`
 	RoleIDs  string `form:"roleIds"`
 }
 
@@ -29,12 +29,12 @@ func PostUser(c *gin.Context) {
 		utils.FailWithMessage("Key: 'UserForm.RoleIDs' Error:Field validation for 'roleIds' failed on the 'lt' 0", c)
 		return
 	}
-	if err == nil {
+	if err == nil && form.Status != nil {
 		Model := &model.User{
 			Username: html.EscapeString(form.Username),
 			Password: xor.Enc(form.Password),
 			RealName: form.RealName,
-			Status:   form.Status,
+			Status:   *form.Status,
 		}
 		res, resErr := sysUserService.Create(Model, form.RoleIDs)
 		if resErr == nil {
@@ -63,7 +63,7 @@ func PutUserById(c *gin.Context) {
 	id := utils.StrToUInt(c.Param("id"))
 	var form UserForm
 	err := c.ShouldBind(&form)
-	if err == nil {
+	if err == nil && form.Status != nil {
 		userRes, _ := sysUserService.GetById(id)
 		var Password = userRes.Password
 		if userRes.Password != form.Password {
@@ -72,6 +72,8 @@ func PutUserById(c *gin.Context) {
 		Model := &model.User{
 			Username: form.Username,
 			Password: Password,
+			RealName: form.RealName,
+			Status:   *form.Status,
 		}
 		res, resErr := sysUserService.PutUserById(id, Model, form.RoleIDs)
 		if resErr == nil {
@@ -85,19 +87,19 @@ func PutUserById(c *gin.Context) {
 }
 
 type UserDisableForm struct {
-	Status string `form:"status" binding:"required"` // TODO: int 0 不能通过 ShouldBind 校验
+	Status *int `form:"status" binding:"required,gte=0"`
 }
 
-// PutUserDisableById 修改用户状态
-func PutUserDisableById(c *gin.Context) {
+// PutUserStatusById 修改用户状态
+func PutUserStatusById(c *gin.Context) {
 	id := utils.StrToUInt(c.Param("id"))
 	var form UserDisableForm
 	err := c.ShouldBind(&form)
-	if err == nil {
+	if err == nil && form.Status != nil {
 		Model := &model.User{
-			Status: utils.StrToInt(form.Status),
+			Status: *form.Status,
 		}
-		res, resErr := sysUserService.PutUserDisableById(id, Model)
+		res, resErr := sysUserService.PutUserStatusById(id, Model)
 		if resErr == nil {
 			utils.OkDetailed(res, "success", c)
 		} else {
