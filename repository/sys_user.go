@@ -142,6 +142,12 @@ type ReturnRolePermission struct {
 	Permission     []RolePermission `json:"permissions"`
 }
 
+type ReturnUserRole struct {
+	ID     uint `json:"id"`
+	RoleID uint `json:"roleIDs"`
+	UserID uint `json:"userID"`
+}
+
 // GetUserRolePermissionByUserId 获取用户角色关联权限
 func (r *UserRepository) GetUserRolePermissionByUserId(id uint) *ReturnRolePermission {
 	_db, err := db.GetMysql()
@@ -150,7 +156,7 @@ func (r *UserRepository) GetUserRolePermissionByUserId(id uint) *ReturnRolePermi
 	}
 
 	ret := &ReturnRolePermission{}
-	var ret2 []ReturnRolePermission
+	var ret2 []ReturnUserRole
 
 	err = _db.Table("user_roles").Where("user_id = ?", id).Find(&ret2).Error
 

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"html"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -112,9 +113,10 @@ func PutUserStatusById(c *gin.Context) {
 
 // GetUser 获取用户列表
 func GetUser(c *gin.Context) {
-	userID, _ := c.Get("userID")
-	userDetailRes := sysUserService.GetUserRolePermissionByUserId(userID.(uint))
-	fmt.Print(userDetailRes, userID.(uint))
+	PermissionKeys, _ := c.Get("permissionKeys")
+	PermissionKeysStr, _ := PermissionKeys.(string)
+	fmt.Println(strings.Split(PermissionKeysStr, ","))
+
 	page, _ := strconv.Atoi(c.Query("page"))
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	username := html.EscapeString(c.Query("username"))
@@ -126,8 +128,7 @@ func GetUser(c *gin.Context) {
 func GetUserById(c *gin.Context) {
 	id := utils.StrToUInt(c.Param("id"))
 	res, _ := sysUserService.GetById(id)
-	userDetailRes := sysUserService.GetUserRolePermissionByUserId(res.ID)
-	fmt.Print(12121, userDetailRes)
+	// userDetailRes := sysUserService.GetUserRolePermissionByUserId(res.ID)
 	utils.OkDetailed(res, "success", c)
 }
 
