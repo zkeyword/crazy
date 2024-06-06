@@ -37,3 +37,16 @@ func Dec(src string) string {
 	}
 	return result
 }
+
+// xorEncryptDecrypt 字符串加密
+func XorEncryptDecrypt(input, key string) string {
+	keyLen := len(key)
+	inputLen := len(input)
+
+	var result []byte
+	for i := 0; i < inputLen; i++ {
+		result = append(result, input[i]^key[i%keyLen])
+	}
+
+	return string(result)
+}

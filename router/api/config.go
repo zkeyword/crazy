@@ -2,32 +2,50 @@ package api
 
 import (
 	"CRAZY/utils"
-	"encoding/json"
-	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
 
-type PersonInfo struct {
-	Name    string   `json:"name"`
-	Age     int32    `json:"age,string"`
-	Sex     bool     `json:"sex"`
-	Hobbies []string `json:"hobbies"`
-}
-
-// GetConfig 测试
-func GetConfig(c *gin.Context) {
-	personInfo := []PersonInfo{{"David", 30, true, []string{"跑步", "读书", "看电影"}}, {"Lee", 27, false, []string{"工作", "读书", "看电影"}}}
-	schoolStr := `{"student":{"name":"jack","age":"20"},"teacher":"lucy"}`
-	var result map[string]json.RawMessage
-	if err := json.Unmarshal([]byte(schoolStr), &result); err != nil {
-		fmt.Printf("json.Unmarshal schoolStr err: %v\n", err)
-		return
+// GetPermissionKeys 获取需要校验的权限
+func GetPermissionKeys(c *gin.Context) {
+	permissionKeys := []string{
+		// 全部，超级管理权限
+		"All",
+		// 用户
+		"GetUser",
+		"GetUserByUsername",
+		"GetUserById",
+		"PostUser",
+		"PutUserById",
+		"PutUserStatusById",
+		// 角色
+		"GetRole",
+		"GetRoleById",
+		"PostRole",
+		"DelRoleById",
+		"PutRoleById",
+		// 权限
+		"GetPermissionById",
+		"GetPermissionTreeById",
+		"PostPermission",
+		"DelPermissionById",
+		"PutPermissionById",
+		// 角色、用户、权限关联
+		"GetRolePermissionByRoleID",
+		"PostRolePermissionByRoleID",
+		"GetRoleUserByUserID",
+		"GetUserRolePermissionByUserId",
+		"GetRoleUserByRoleID",
+		"PostRoleUserByRoleIDAndUserID",
+		"DeleteRoleUserByRoleIDAndUserID",
+		// 其他设置
+		"GetOther",
+		"GetOtherById",
+		"PostOther",
+		"DelOtherById",
+		"PutOtherById",
+		//
+		"GetPermissionKeys",
 	}
-	utils.Result(200, gin.H{
-		"message": "pong",
-		"xx":      []string{"跑步", "读书", "看电影"},
-		"xx2":     personInfo,
-		"xx3":     result,
-	}, "操作成功", c)
+	utils.OkDetailed(permissionKeys, "success", c)
 }

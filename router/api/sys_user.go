@@ -5,10 +5,8 @@ import (
 	sysUserService "CRAZY/services/sys_user"
 	"CRAZY/utils"
 	"CRAZY/utils/xor"
-	"fmt"
 	"html"
 	"strconv"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -113,15 +111,13 @@ func PutUserStatusById(c *gin.Context) {
 
 // GetUser 获取用户列表
 func GetUser(c *gin.Context) {
-	PermissionKeys, _ := c.Get("permissionKeys")
-	PermissionKeysStr, _ := PermissionKeys.(string)
-	fmt.Println(strings.Split(PermissionKeysStr, ","))
-
-	page, _ := strconv.Atoi(c.Query("page"))
-	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
-	username := html.EscapeString(c.Query("username"))
-	res, _ := sysUserService.Get(page, pageSize, username)
-	utils.OkDetailed(res, "success", c)
+	if utils.CheckPermission(c, "GetUser") {
+		page, _ := strconv.Atoi(c.Query("page"))
+		pageSize, _ := strconv.Atoi(c.Query("pageSize"))
+		username := html.EscapeString(c.Query("username"))
+		res, _ := sysUserService.Get(page, pageSize, username)
+		utils.OkDetailed(res, "success", c)
+	}
 }
 
 // GetUserById 获取用户

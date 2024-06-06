@@ -1,7 +1,9 @@
 package utils
 
 import (
+	"errors"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -51,4 +53,22 @@ func FailWithMessage(message string, c *gin.Context) {
 
 func FailWithDetailed(code int, data interface{}, message string, c *gin.Context) {
 	Result(code, data, message, c)
+}
+
+// 根据permissionKeys处理权限
+func CheckPermission(c *gin.Context, permKey string) bool {
+	PermissionKeys, _ := c.Get("permissionKeys")
+	PermissionKeysStr, _ := PermissionKeys.(string)
+	found := false
+	for _, v := range strings.Split(PermissionKeysStr, ",") {
+		if v == "All" || v == permKey {
+			found = true
+			break
+		}
+	}
+	if !found {
+		err := errors.New("not permission")
+		FailWithMessage(err.Error(), c)
+	}
+	return found
 }

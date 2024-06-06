@@ -95,6 +95,8 @@ func Routers() *gin.Engine {
 		apiRouter.POST("/other", api.PostOther)
 		apiRouter.DELETE("/other/:id", api.DelOtherById)
 		apiRouter.PUT("/other/:id", api.PutOtherById)
+
+		apiRouter.GET("/permissionKeys", api.GetPermissionKeys)
 	}
 
 	return r

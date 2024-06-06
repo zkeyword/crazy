@@ -70,7 +70,7 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (*gorm.DB, e
 
 	// permission := &model.Permission{
 	// 	Name:   "全部",
-	// 	Key:    "all",
+	// 	Key:    "All",
 	// 	Status: 1,
 	// }
 
@@ -85,7 +85,7 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (*gorm.DB, e
 
 	// rolePermission := &model.RolePermission{
 	// 	RoleID:         1,
-	// 	PermissionKeys: "all",
+	// 	PermissionKeys: "All",
 	// }
 
 	// db.FirstOrCreate(user)

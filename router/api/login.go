@@ -32,6 +32,7 @@ type ReturnLoginUser struct {
 	UpdatedAt      time.Time `json:"updatedAt"`
 	Token          string    `json:"token"`
 	PermissionKeys string    `json:"permissions"`
+	UserKey        string    `json:"userKey"`
 }
 
 // getToken 获取 JWT token
@@ -42,7 +43,7 @@ func getToken(UserName string, UserID uint, PermissionKeys string) string {
 	claims := middleware.CustomClaims{
 		UserName:       UserName,
 		UserID:         UserID,
-		PermissionKeys: PermissionKeys,
+		PermissionKeys: xor.Enc(PermissionKeys),
 	}
 
 	claims.IssuedAt = time.Now().Unix()    // 签名生效时间
@@ -79,6 +80,7 @@ func Login(c *gin.Context) {
 		}
 
 		userDetailRes := sysUserService.GetUserRolePermissionByUserId(res.ID)
+		userKey := utils.StringWithCharset(5)
 		user := &ReturnLoginUser{
 			ID:             res.ID,
 			Username:       res.Username,
@@ -87,7 +89,8 @@ func Login(c *gin.Context) {
 			ParentID:       res.ParentID,
 			UpdatedAt:      res.UpdatedAt,
 			Token:          getToken(form.Username, res.ID, userDetailRes.PermissionKeys),
-			PermissionKeys: userDetailRes.PermissionKeys,
+			PermissionKeys: xor.XorEncryptDecrypt(userDetailRes.PermissionKeys, userKey),
+			UserKey:        userKey,
 		}
 		utils.OkDetailed(user, "success", c)
 	} else {

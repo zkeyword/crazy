@@ -2,6 +2,7 @@ package utils
 
 import (
 	"html"
+	"math/rand"
 	"net/url"
 	"regexp"
 	"strconv"
@@ -71,10 +72,7 @@ func RemoveRepeated(s []string) []string {
 // 判断字符串是不是时间戳
 func IsTimestamp(s string) bool {
 	_, err := strconv.ParseInt(s, 10, 64)
-	if err == nil {
-		return true
-	}
-	return false
+	return err == nil
 }
 
 // 简单过滤XXS攻击和sql注入
@@ -92,4 +90,13 @@ func SanitizeInput(input string) string {
 	safeSQL = sqlInjectionRegex.ReplaceAllString(safeSQL, "")
 
 	return safeSQL
+}
+
+func StringWithCharset(length int) string {
+	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[rand.Intn(len(charset))]
+	}
+	return string(b)
 }
