@@ -96,6 +96,7 @@ func UpdateById(id uint, Role *model.Role, PermissionKeys string) (*ReturnPolePe
 func DeleteById(id uint) error {
 	err := roleRepo.DeleteById(id)
 	userRoleRepo.DeleteByRoleId(id)
+	rolePermissionRepo.DeleteByRoleId(id)
 	return err
 }
 
@@ -103,7 +104,7 @@ func GetRolePermissionByRoleID(id uint) *repository.RolePermission {
 	return rolePermissionRepo.GetByRoleID(id)
 }
 
-func PostRolePermissionByRoleID(id uint, permissionKeys string) (*model.RolePermission, error) {
+func PostRolePermissionByRoleID(id uint, permissionKeys string) ([]*model.RolePermission, error) {
 	ret, err := rolePermissionRepo.UpdateByRoleId(id, permissionKeys)
 	return ret, err
 }

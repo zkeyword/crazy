@@ -39,7 +39,7 @@ func (r *PermissionRepository) DeleteById(id uint) error {
 	if err != nil {
 		return err
 	}
-	return _db.Where("id = ?", id).Delete(Permission{}).Error
+	return _db.Where("id = ?", id).Or("p_id = ?", id).Delete(Permission{}).Error
 }
 
 // UpdateById 修改权限
