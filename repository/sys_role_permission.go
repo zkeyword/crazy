@@ -49,6 +49,14 @@ func (r *RolePermissionRepository) DeleteByRoleId(id uint) error {
 	return _db.Where("role_id = ?", id).Delete(RolePermission{}).Error
 }
 
+func (r *RolePermissionRepository) DeleteByKey(key string) error {
+	_db, err := db.GetMysql()
+	if err != nil {
+		return nil
+	}
+	return _db.Where("permission_keys = ?", key).Delete(RolePermission{}).Error
+}
+
 func (r *RolePermissionRepository) UpdateByRoleId(id uint, permissionKeys string) ([]*model.RolePermission, error) {
 	r.DeleteByRoleId(id)
 	ret, err := r.Create(id, permissionKeys)

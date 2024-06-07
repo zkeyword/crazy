@@ -21,8 +21,8 @@ func UpdateById(id uint, Permission *model.Permission) (*model.Permission, error
 	return ret, err
 }
 
-func DeleteById(id uint) error {
-	err := repo.DeleteById(id)
+func DeleteById(id uint, key string) error {
+	err := repo.DeleteById(id, key)
 	return err
 }
 

@@ -34,12 +34,15 @@ func (r *PermissionRepository) Create(t *model.Permission) (*model.Permission, e
 }
 
 // DeleteById 删除权限
-func (r *PermissionRepository) DeleteById(id uint) error {
+func (r *PermissionRepository) DeleteById(id uint, key string) error {
 	_db, err := db.GetMysql()
 	if err != nil {
 		return err
 	}
-	return _db.Where("id = ?", id).Or("p_id = ?", id).Delete(Permission{}).Error
+	rolePermissionRepo := &RolePermissionRepository{}
+	rolePermissionRepo.DeleteByKey(key)
+	err = _db.Where("id = ?", id).Or("p_id = ?", id).Delete(Permission{}).Error
+	return err
 }
 
 // UpdateById 修改权限
@@ -49,6 +52,8 @@ func (r *PermissionRepository) UpdateById(id uint, t *model.Permission) (*model.
 	if err != nil {
 		return nil, err
 	}
+	rolePermissionRepo := &RolePermissionRepository{}
+	rolePermissionRepo.DeleteByKey(ret.Key)
 	err = _db.Model(&ret).Where("id=?", id).Updates(t).Error
 	if err == nil {
 		ret.ID = id

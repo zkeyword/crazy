@@ -38,14 +38,24 @@ func PostPermission(c *gin.Context) {
 	}
 }
 
+type DelPermissionForm struct {
+	Key string `form:"key" binding:"required"`
+}
+
 // DelPermissionById 删除权限
 func DelPermissionById(c *gin.Context) {
 	id := utils.StrToUInt(c.Param("id"))
-	resErr := sysPermissionService.DeleteById(id)
-	if resErr == nil {
-		utils.Ok(c)
+	var form DelPermissionForm
+	err := c.ShouldBind(&form)
+	if err == nil {
+		resErr := sysPermissionService.DeleteById(id, form.Key)
+		if resErr == nil {
+			utils.Ok(c)
+		} else {
+			utils.FailWithMessage(resErr.Error(), c)
+		}
 	} else {
-		utils.FailWithMessage(resErr.Error(), c)
+		utils.FailWithMessage(err.Error(), c)
 	}
 }
 
