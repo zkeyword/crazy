@@ -27,8 +27,6 @@ type ReturnLoginUser struct {
 	ID             uint      `json:"id"`
 	Username       string    `json:"username"`
 	Status         int       `json:"status"`
-	Level          int       `json:"level"`
-	ParentID       uint      `json:"parentID"`
 	UpdatedAt      time.Time `json:"updatedAt"`
 	Token          string    `json:"token"`
 	PermissionKeys string    `json:"permissions"`
@@ -85,8 +83,6 @@ func Login(c *gin.Context) {
 			ID:             res.ID,
 			Username:       res.Username,
 			Status:         res.Status,
-			Level:          res.Level,
-			ParentID:       res.ParentID,
 			UpdatedAt:      res.UpdatedAt,
 			Token:          getToken(form.Username, res.ID, userDetailRes.PermissionKeys),
 			PermissionKeys: xor.XorEncryptDecrypt(userDetailRes.PermissionKeys, userKey),
@@ -128,8 +124,6 @@ func Register(c *gin.Context) {
 			ID:        res.ID,
 			Username:  res.Username,
 			Status:    res.Status,
-			Level:     res.Level,
-			ParentID:  res.ParentID,
 			UpdatedAt: res.UpdatedAt,
 			Token:     getToken(form.Username, res.ID, ""),
 		}
@@ -137,4 +131,19 @@ func Register(c *gin.Context) {
 	} else {
 		utils.FailWithMessage(err.Error(), c)
 	}
+}
+
+// Logout 登出
+func Logout(c *gin.Context) {
+	userID, _ := c.Get("userID")
+	id, _ := userID.(uint)
+	Model := &model.User{
+		LoginStatus: -1,
+	}
+	res, resErr := sysUserService.PutUserById(id, Model, "")
+	if resErr != nil {
+		utils.FailWithMessage(resErr.Error(), c)
+		return
+	}
+	utils.OkDetailed(res, "success", c)
 }

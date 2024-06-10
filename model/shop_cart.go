@@ -9,5 +9,5 @@ type ShopCart struct {
 	SpecName      string `json:"specName"`
 	PriceDiscount string `json:"priceDiscount"`
 	PriceNormal   string `json:"priceNormal"`
-	Status        int    `json:"status" gorm:"not null;comment:'状态: 1 - 正常、0 - 禁用'"`
+	Status        int    `json:"status" gorm:"not null;comment:'状态: 1 - 正常、-1 - 禁用'"`
 }

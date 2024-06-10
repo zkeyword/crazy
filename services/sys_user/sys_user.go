@@ -76,11 +76,6 @@ func PutUserById(id uint, User *model.User, roleIds string) (*model.User, error)
 	return ret, err
 }
 
-func PutUserStatusById(id uint, User *model.User) (*model.User, error) {
-	ret, err := userRepo.UpdateById(id, User)
-	return ret, err
-}
-
 func DeleteById(id uint) error {
 	err := userRepo.DeleteById(id)
 	if err == nil {

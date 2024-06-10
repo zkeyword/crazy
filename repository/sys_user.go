@@ -62,28 +62,11 @@ func (r *UserRepository) DeleteById(id uint) error {
 // UpdateById 修改用户
 func (r *UserRepository) UpdateById(id uint, t *model.User) (*model.User, error) {
 	var ret = new(model.User)
-	data := make(map[string]interface{})
-	if t.Username != "" {
-		data["username"] = t.Username
-	}
-	if t.Username != "" {
-		data["real_name"] = t.RealName
-	}
-	if t.Username != "" {
-		data["password"] = t.Password
-	}
-	// 在 GORM 中，Updates 方法默认会忽略零值。这是因为在 Go 中，每种类型都有一个零值，例如，int 的零值是 0，string 的零值是空字符串。因此，当你尝试更新一个值为 0 的字段时，GORM 会认为这是一个零值，并选择忽略它。
-	// 通过结构体变量更新字段值, gorm库会忽略零值字段。就是字段值等于0, nil, “”, false这些值会被忽略掉，不会更新。如果想更新零值，可以使用map类型替代结构体。
-	// 所以这里 Updates 不能使用 t 这个结构体
-	data["status"] = t.Status
-	// 以下两个字段暂时没有用到
-	// data["level"] = t.Level
-	// data["parent_id"] = t.ParentID
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
 	}
-	err = _db.Model(&ret).Where("id=?", id).Updates(data).Error
+	err = _db.Model(&ret).Where("id=?", id).Updates(t).Error
 	if err == nil {
 		ret.ID = id
 	}

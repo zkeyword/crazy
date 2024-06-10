@@ -60,12 +60,11 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (*gorm.DB, e
 	// 	)
 
 	// user := &model.User{
-	// 	Username: "admin",
-	// 	Password: "d36dd63cfd", // admin
-	// 	Status:   1,
-	// 	Level:    0,
-	// 	ParentID: 0,
-	// 	RealName: "ADMIN",
+	// 	Username:    "admin",
+	// 	Password:    "d36dd63cfd", // admin
+	// 	Status:      1,
+	// 	LoginStatus: 1,
+	// 	RealName:    "ADMIN",
 	// }
 
 	// permission := &model.Permission{

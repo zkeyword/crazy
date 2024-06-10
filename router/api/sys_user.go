@@ -21,91 +21,99 @@ type UserForm struct {
 
 // PostUser 新增用户
 func PostUser(c *gin.Context) {
-	var form UserForm
-	err := c.ShouldBind(&form)
-	if form.RoleIDs == "" {
-		// TODO: https://www.cnblogs.com/xinliangcoder/p/11234017.html 自定义验证器
-		utils.FailWithMessage("Key: 'UserForm.RoleIDs' Error:Field validation for 'roleIds' failed on the 'lt' 0", c)
-		return
-	}
-	if err == nil && form.Status != nil {
-		Model := &model.User{
-			Username: html.EscapeString(form.Username),
-			Password: xor.Enc(form.Password),
-			RealName: form.RealName,
-			Status:   *form.Status,
+	if utils.CheckPermission(c, "PostUser") {
+		var form UserForm
+		err := c.ShouldBind(&form)
+		if form.RoleIDs == "" {
+			// TODO: https://www.cnblogs.com/xinliangcoder/p/11234017.html 自定义验证器
+			utils.FailWithMessage("Key: 'UserForm.RoleIDs' Error:Field validation for 'roleIds' failed on the 'lt' 0", c)
+			return
 		}
-		res, resErr := sysUserService.Create(Model, form.RoleIDs)
-		if resErr == nil {
-			utils.OkDetailed(res, "success", c)
+		if err == nil && form.Status != nil {
+			Model := &model.User{
+				Username: html.EscapeString(form.Username),
+				Password: xor.Enc(form.Password),
+				RealName: form.RealName,
+				Status:   *form.Status,
+			}
+			res, resErr := sysUserService.Create(Model, form.RoleIDs)
+			if resErr == nil {
+				utils.OkDetailed(res, "success", c)
+			} else {
+				utils.FailWithMessage(resErr.Error(), c)
+			}
 		} else {
-			utils.FailWithMessage(resErr.Error(), c)
+			utils.FailWithMessage(err.Error(), c)
 		}
-	} else {
-		utils.FailWithMessage(err.Error(), c)
 	}
 }
 
 // DelUserById 删除用户
 func DelUserById(c *gin.Context) {
-	id := utils.StrToUInt(c.Param("id"))
-	resErr := sysUserService.DeleteById(id)
-	if resErr == nil {
-		utils.Ok(c)
-	} else {
-		utils.FailWithMessage(resErr.Error(), c)
+	if utils.CheckPermission(c, "DelUserById") {
+		id := utils.StrToUInt(c.Param("id"))
+		resErr := sysUserService.DeleteById(id)
+		if resErr == nil {
+			utils.Ok(c)
+		} else {
+			utils.FailWithMessage(resErr.Error(), c)
+		}
 	}
 }
 
 // PutUserById 修改用户
 func PutUserById(c *gin.Context) {
-	id := utils.StrToUInt(c.Param("id"))
-	var form UserForm
-	err := c.ShouldBind(&form)
-	if err == nil && form.Status != nil {
-		userRes, _ := sysUserService.GetById(id)
-		var Password = userRes.Password
-		if userRes.Password != form.Password {
-			Password = xor.Enc(form.Password)
-		}
-		Model := &model.User{
-			Username: form.Username,
-			Password: Password,
-			RealName: form.RealName,
-			Status:   *form.Status,
-		}
-		res, resErr := sysUserService.PutUserById(id, Model, form.RoleIDs)
-		if resErr == nil {
-			utils.OkDetailed(res, "success", c)
+	if utils.CheckPermission(c, "PutUserById") {
+		id := utils.StrToUInt(c.Param("id"))
+		var form UserForm
+		err := c.ShouldBind(&form)
+		if err == nil && form.Status != nil {
+			userRes, _ := sysUserService.GetById(id)
+			var Password = userRes.Password
+			if userRes.Password != form.Password {
+				Password = xor.Enc(form.Password)
+			}
+			Model := &model.User{
+				Username: form.Username,
+				Password: Password,
+				RealName: form.RealName,
+				Status:   *form.Status,
+			}
+			res, resErr := sysUserService.PutUserById(id, Model, form.RoleIDs)
+			if resErr == nil {
+				utils.OkDetailed(res, "success", c)
+			} else {
+				utils.FailWithMessage(resErr.Error(), c)
+			}
 		} else {
-			utils.FailWithMessage(resErr.Error(), c)
+			utils.FailWithMessage(err.Error(), c)
 		}
-	} else {
-		utils.FailWithMessage(err.Error(), c)
 	}
 }
 
 type UserDisableForm struct {
-	Status *int `form:"status" binding:"required,gte=0"`
+	Status *int `form:"status" binding:"required"`
 }
 
 // PutUserStatusById 修改用户状态
 func PutUserStatusById(c *gin.Context) {
-	id := utils.StrToUInt(c.Param("id"))
-	var form UserDisableForm
-	err := c.ShouldBind(&form)
-	if err == nil && form.Status != nil {
-		Model := &model.User{
-			Status: *form.Status,
-		}
-		res, resErr := sysUserService.PutUserStatusById(id, Model)
-		if resErr == nil {
-			utils.OkDetailed(res, "success", c)
+	if utils.CheckPermission(c, "PutUserStatusById") {
+		id := utils.StrToUInt(c.Param("id"))
+		var form UserDisableForm
+		err := c.ShouldBind(&form)
+		if err == nil && form.Status != nil {
+			Model := &model.User{
+				Status: *form.Status,
+			}
+			res, resErr := sysUserService.PutUserById(id, Model, "")
+			if resErr == nil {
+				utils.OkDetailed(res, "success", c)
+			} else {
+				utils.FailWithMessage(resErr.Error(), c)
+			}
 		} else {
-			utils.FailWithMessage(resErr.Error(), c)
+			utils.FailWithMessage(err.Error(), c)
 		}
-	} else {
-		utils.FailWithMessage(err.Error(), c)
 	}
 }
 
@@ -122,22 +130,28 @@ func GetUser(c *gin.Context) {
 
 // GetUserById 获取用户
 func GetUserById(c *gin.Context) {
-	id := utils.StrToUInt(c.Param("id"))
-	res, _ := sysUserService.GetById(id)
-	// userDetailRes := sysUserService.GetUserRolePermissionByUserId(res.ID)
-	utils.OkDetailed(res, "success", c)
+	if utils.CheckPermission(c, "GetUserById") {
+		id := utils.StrToUInt(c.Param("id"))
+		res, _ := sysUserService.GetById(id)
+		// userDetailRes := sysUserService.GetUserRolePermissionByUserId(res.ID)
+		utils.OkDetailed(res, "success", c)
+	}
 }
 
 // GetUserByUsername 获取用户
 func GetUserByUsername(c *gin.Context) {
-	username := c.Param("username")
-	res, _ := sysUserService.GetByUserName(html.EscapeString(username))
-	utils.OkDetailed(res, "success", c)
+	if utils.CheckPermission(c, "GetUserByUsername") {
+		username := c.Param("username")
+		res, _ := sysUserService.GetByUserName(html.EscapeString(username))
+		utils.OkDetailed(res, "success", c)
+	}
 }
 
 // GetUserRolePermissionByUserId 获取用户角色权限
 func GetUserRolePermissionByUserId(c *gin.Context) {
-	id := utils.StrToUInt(c.Param("id"))
-	res := sysUserService.GetUserRolePermissionByUserId(id)
-	utils.OkDetailed(res, "success", c)
+	if utils.CheckPermission(c, "GetUserRolePermissionByUserId") {
+		id := utils.StrToUInt(c.Param("id"))
+		res := sysUserService.GetUserRolePermissionByUserId(id)
+		utils.OkDetailed(res, "success", c)
+	}
 }

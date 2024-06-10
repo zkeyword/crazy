@@ -2,15 +2,31 @@ package api
 
 import (
 	"CRAZY/utils"
+	"CRAZY/utils/xor"
 
 	"github.com/gin-gonic/gin"
 )
 
-// GetPermissionKeys 获取需要校验的权限
+type ReturnGetUserPermissionKeys struct {
+	PermissionKeys string `json:"permissions"`
+	UserKey        string `json:"userKey"`
+}
+
+// GetUserPermissionKeys 获取用户权限
+func GetUserPermissionKeys(c *gin.Context) {
+	PermissionKeys, _ := c.Get("permissionKeys")
+	PermissionKeysStr, _ := PermissionKeys.(string)
+	userKey := utils.StringWithCharset(5)
+	userPermissionKeys := &ReturnGetUserPermissionKeys{
+		PermissionKeys: xor.XorEncryptDecrypt(PermissionKeysStr, userKey),
+		UserKey:        userKey,
+	}
+	utils.OkDetailed(userPermissionKeys, "success", c)
+}
+
+// GetPermissionKeys 获取所有权限
 func GetPermissionKeys(c *gin.Context) {
 	permissionKeys := []string{
-		// 全部，超级管理权限
-		"All",
 		// 用户
 		"GetUser",
 		"GetUserByUsername",
