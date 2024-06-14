@@ -73,11 +73,16 @@ func PutUserById(c *gin.Context) {
 			if userRes.Password != form.Password {
 				Password = xor.Enc(form.Password)
 			}
+			LoginStatus := 0 // 为 0 gorm 忽略， Status 为禁用时，设置 LoginStatus 是登出
+			if *form.Status == -1 {
+				LoginStatus = -1
+			}
 			Model := &model.User{
-				Username: form.Username,
-				Password: Password,
-				RealName: form.RealName,
-				Status:   *form.Status,
+				Username:    form.Username,
+				Password:    Password,
+				RealName:    form.RealName,
+				Status:      *form.Status,
+				LoginStatus: LoginStatus,
 			}
 			res, resErr := sysUserService.PutUserById(id, Model, form.RoleIDs)
 			if resErr == nil {
@@ -102,8 +107,13 @@ func PutUserStatusById(c *gin.Context) {
 		var form UserDisableForm
 		err := c.ShouldBind(&form)
 		if err == nil && form.Status != nil {
+			LoginStatus := 0 // 为 0 gorm 忽略， Status 为禁用时，设置 LoginStatus 是登出
+			if *form.Status == -1 {
+				LoginStatus = -1
+			}
 			Model := &model.User{
-				Status: *form.Status,
+				Status:      *form.Status,
+				LoginStatus: LoginStatus,
 			}
 			res, resErr := sysUserService.PutUserById(id, Model, "")
 			if resErr == nil {

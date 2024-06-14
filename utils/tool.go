@@ -92,6 +92,7 @@ func SanitizeInput(input string) string {
 	return safeSQL
 }
 
+// 随机数
 func StringWithCharset(length int) string {
 	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	b := make([]byte, length)

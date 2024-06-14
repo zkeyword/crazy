@@ -1,6 +1,7 @@
 package api
 
 import (
+	sysUserService "CRAZY/services/sys_user"
 	"CRAZY/utils"
 	"CRAZY/utils/xor"
 
@@ -14,6 +15,13 @@ type ReturnGetUserPermissionKeys struct {
 
 // GetUserPermissionKeys 获取用户权限
 func GetUserPermissionKeys(c *gin.Context) {
+	UserID, _ := c.Get("userID")
+	ID, _ := UserID.(uint)
+	res, resErr := sysUserService.GetLoginStatusById(ID)
+	if resErr != nil || res == -1 {
+		utils.FailWithMessage("登录过期", c)
+		return
+	}
 	PermissionKeys, _ := c.Get("permissionKeys")
 	PermissionKeysStr, _ := PermissionKeys.(string)
 	userKey := utils.StringWithCharset(5)

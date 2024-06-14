@@ -64,19 +64,21 @@ func Login(c *gin.Context) {
 			return
 		}
 
-		// 用户是否存在
 		res, resErr := sysUserService.GetByUserName(html.EscapeString(form.Username))
-		if resErr != nil {
-			utils.FailWithMessage(resErr.Error(), c)
+		if resErr != nil || xor.Enc(form.Password) != res.Password {
+			utils.FailWithMessage("用户名或者密码错误", c)
 			return
 		}
 
-		// 校验密码
-		if xor.Enc(form.Password) != res.Password {
-			utils.FailWithMessage("密码错误", c)
+		if res.Status == -1 {
+			utils.FailWithMessage("该账户已被禁用", c)
 			return
 		}
 
+		Model := &model.User{
+			LoginStatus: 1,
+		}
+		sysUserService.PutUserById(res.ID, Model, "")
 		userDetailRes := sysUserService.GetUserRolePermissionByUserId(res.ID)
 		userKey := utils.StringWithCharset(5)
 		user := &ReturnLoginUser{
@@ -110,9 +112,10 @@ func Register(c *gin.Context) {
 
 		// 创建用户并默认999角色
 		Model := &model.User{
-			Username: html.EscapeString(form.Username),
-			Password: xor.Enc(form.Password),
-			Status:   1,
+			Username:    html.EscapeString(form.Username),
+			Password:    xor.Enc(form.Password),
+			Status:      1,
+			LoginStatus: -1,
 		}
 		res, resErr := sysUserService.Create(Model, "999")
 		if resErr != nil {

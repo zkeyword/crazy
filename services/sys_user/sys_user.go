@@ -48,6 +48,10 @@ func GetById(id uint) (*model.User, error) {
 	return userRepo.GetById(id)
 }
 
+func GetLoginStatusById(id uint) (int, error) {
+	return userRepo.GetLoginStatusById(id)
+}
+
 func GetUserRolePermissionByUserId(id uint) *repository.ReturnRolePermission {
 	return userRepo.GetUserRolePermissionByUserId(id)
 }
