@@ -18,8 +18,7 @@ import (
 )
 
 func main() {
-	ENV := os.Getenv("MY_ENV_VAR")
-	fmt.Println("The value of MY_ENV_VAR is:", ENV)
+
 	// fmt.Println("请输入账号:")
 	// reader := bufio.NewReader(os.Stdin)
 	// user, _ := reader.ReadString('\n')
@@ -44,16 +43,23 @@ func main() {
 	// utils.WriteFile()
 	// utils.ReadFile()
 
+	ENV := os.Getenv("MY_ENV_VAR")
+	fmt.Println("The value of MY_ENV_VAR is:", ENV)
+
 	// 启动mysql
-	fmt.Print("Start Mysql...\r")
-	db.StartMysql(config.DbConfig.Dsn, config.DbConfig.MaxIdle, config.DbConfig.MaxOpen, config.DbConfig.LogMode)
-	fmt.Print("Start Mysql Success!!!\n")
+	if ENV == "prod" {
+		db.StartMysql(config.ProdDbConfig.Dsn, config.ProdDbConfig.MaxIdle, config.ProdDbConfig.MaxOpen, config.ProdDbConfig.LogMode)
+	} else {
+		db.StartMysql(config.DbConfig.Dsn, config.DbConfig.MaxIdle, config.DbConfig.MaxOpen, config.DbConfig.LogMode)
+	}
 
 	// 启动redis
 	defer db.CloseRedis()
-	fmt.Print("Start Redis...\r")
-	db.StartRedis(config.RedisDbConfig.Addr, config.RedisDbConfig.Password, config.RedisDbConfig.DB, config.RedisDbConfig.MaxIdle, config.RedisDbConfig.MaxOpen)
-	fmt.Print("Start Redis Success!!!\n")
+	if ENV == "prod" {
+		db.StartRedis(config.ProdRedisDbConfig.Addr, config.ProdRedisDbConfig.Password, config.ProdRedisDbConfig.DB, config.ProdRedisDbConfig.MaxIdle, config.ProdRedisDbConfig.MaxOpen)
+	} else {
+		db.StartRedis(config.RedisDbConfig.Addr, config.RedisDbConfig.Password, config.RedisDbConfig.DB, config.RedisDbConfig.MaxIdle, config.RedisDbConfig.MaxOpen)
+	}
 
 	// 启动sse Subscribe
 	sse.Subscribe()

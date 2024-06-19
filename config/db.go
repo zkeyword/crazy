@@ -16,6 +16,14 @@ var DbConfig DbConf = DbConf{
 	LogMode: true,
 }
 
+// ProdDbConfig  Mysql主库配置
+var ProdDbConfig DbConf = DbConf{
+	Dsn:     "root:123456@tcp(127.0.0.1:3306)/b?charset=utf8mb4&parseTime=true",
+	MaxIdle: 10,
+	MaxOpen: 100,
+	LogMode: true,
+}
+
 // RedisDbConf Redis数据库结构
 type RedisDbConf struct {
 	Addr     string
@@ -27,6 +35,15 @@ type RedisDbConf struct {
 
 // RedisDbConfig Redis 数据库结构
 var RedisDbConfig RedisDbConf = RedisDbConf{
+	Addr:     "127.0.0.1:6379",
+	DB:       0, // use default DB
+	Password: "123456",
+	MaxIdle:  10,
+	MaxOpen:  100,
+}
+
+// ProdRedisDbConfig Redis 数据库结构
+var ProdRedisDbConfig RedisDbConf = RedisDbConf{
 	Addr:     "127.0.0.1:6379",
 	DB:       0, // use default DB
 	Password: "123456",

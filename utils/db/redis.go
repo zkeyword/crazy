@@ -18,9 +18,6 @@ func StartRedis(addr string, password string, db, maxIdle, maxOpen int) (err err
 		Dial: func() (redis.Conn, error) {
 			c, err := redis.Dial("tcp", addr, redis.DialDatabase(db), redis.DialPassword(password))
 			if err != nil {
-				return nil, err
-			}
-			if err != nil {
 				c.Close()
 				return nil, err
 			}
@@ -32,7 +29,7 @@ func StartRedis(addr string, password string, db, maxIdle, maxOpen int) (err err
 	defer conn.Close()
 
 	if r, _ := redis.String(conn.Do("PING")); r != "PONG" {
-		err = errors.New("redis connect failed.")
+		err = errors.New("redis connect failed")
 	}
 
 	return
@@ -53,4 +50,30 @@ func CloseRedis() {
 	if redisPool != nil {
 		redisPool.Close()
 	}
+}
+
+// SetKey 设置key
+func SetKey(key string, value string) error {
+	conn := redisPool.Get()
+	defer conn.Close()
+
+	_, err := conn.Do("SET", key, value)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// GetKey 获取key
+func GetKey(key string) (string, error) {
+	conn := redisPool.Get()
+	defer conn.Close()
+
+	value, err := redis.String(conn.Do("GET", key))
+	if err != nil {
+		return "", err
+	}
+
+	return value, nil
 }
