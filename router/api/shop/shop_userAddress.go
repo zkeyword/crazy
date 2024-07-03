@@ -1,4 +1,4 @@
-package api
+package shop
 
 import (
 	sysUserService "CRAZY/services/sys_user"
