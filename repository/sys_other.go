@@ -29,6 +29,15 @@ func (r *OtherRepository) Create(t *model.Other) (*model.Other, error) {
 	return t, err
 }
 
+func (r *OtherRepository) BatchCreate(t []*model.Other) ([]*model.Other, error) {
+	_db, err := db.GetMysql()
+	if err != nil {
+		return nil, err
+	}
+	err = _db.Create(t).Error
+	return t, err
+}
+
 func (r *OtherRepository) DeleteById(id uint) error {
 	_db, err := db.GetMysql()
 	if err != nil {

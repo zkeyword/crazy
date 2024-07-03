@@ -2,7 +2,6 @@ package main
 
 import (
 	"CRAZY/config"
-	"CRAZY/pkg/sse"
 	"CRAZY/router"
 	"CRAZY/utils/db"
 
@@ -54,15 +53,15 @@ func main() {
 	}
 
 	// 启动redis
-	defer db.CloseRedis()
-	if ENV == "prod" {
-		db.StartRedis(config.ProdRedisDbConfig.Addr, config.ProdRedisDbConfig.Password, config.ProdRedisDbConfig.DB, config.ProdRedisDbConfig.MaxIdle, config.ProdRedisDbConfig.MaxOpen)
-	} else {
-		db.StartRedis(config.RedisDbConfig.Addr, config.RedisDbConfig.Password, config.RedisDbConfig.DB, config.RedisDbConfig.MaxIdle, config.RedisDbConfig.MaxOpen)
-	}
+	// defer db.CloseRedis()
+	// if ENV == "prod" {
+	// 	db.StartRedis(config.ProdRedisDbConfig.Addr, config.ProdRedisDbConfig.Password, config.ProdRedisDbConfig.DB, config.ProdRedisDbConfig.MaxIdle, config.ProdRedisDbConfig.MaxOpen)
+	// } else {
+	// 	db.StartRedis(config.RedisDbConfig.Addr, config.RedisDbConfig.Password, config.RedisDbConfig.DB, config.RedisDbConfig.MaxIdle, config.RedisDbConfig.MaxOpen)
+	// }
 
 	// 启动sse Subscribe
-	sse.Subscribe()
+	// sse.Subscribe()
 
 	// 创建文件日志，按天分割，日志文件仅保留一周
 	w, err := rotatelogs.New(config.LogPath)

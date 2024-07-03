@@ -8,7 +8,7 @@ type DbConf struct {
 	LogMode bool
 }
 
-// DbConfig  Mysql主库配置
+// DbConfig 开发环境 Mysql主库配置
 var DbConfig DbConf = DbConf{
 	Dsn:     "root:123456@tcp(127.0.0.1:3306)/b?charset=utf8mb4&parseTime=true",
 	MaxIdle: 10,
@@ -16,7 +16,7 @@ var DbConfig DbConf = DbConf{
 	LogMode: true,
 }
 
-// ProdDbConfig  Mysql主库配置
+// ProdDbConfig 正式环境 Mysql主库配置
 var ProdDbConfig DbConf = DbConf{
 	Dsn:     "root:123456@tcp(127.0.0.1:3306)/b?charset=utf8mb4&parseTime=true",
 	MaxIdle: 10,
@@ -33,7 +33,7 @@ type RedisDbConf struct {
 	MaxOpen  int
 }
 
-// RedisDbConfig Redis 数据库结构
+// RedisDbConfig 开发环境 Redis 数据库结构
 var RedisDbConfig RedisDbConf = RedisDbConf{
 	Addr:     "127.0.0.1:6379",
 	DB:       0, // use default DB
@@ -42,7 +42,7 @@ var RedisDbConfig RedisDbConf = RedisDbConf{
 	MaxOpen:  100,
 }
 
-// ProdRedisDbConfig Redis 数据库结构
+// ProdRedisDbConfig 正式环境 Redis 数据库结构
 var ProdRedisDbConfig RedisDbConf = RedisDbConf{
 	Addr:     "127.0.0.1:6379",
 	DB:       0, // use default DB

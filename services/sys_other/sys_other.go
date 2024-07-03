@@ -21,6 +21,11 @@ func Create(Other *model.Other) (*model.Other, error) {
 	return ret, err
 }
 
+func BatchCreate(Other []*model.Other) ([]*model.Other, error) {
+	ret, err := repo.BatchCreate(Other)
+	return ret, err
+}
+
 func PutById(id uint, Other *model.Other) (*model.Other, error) {
 	ret, err := repo.UpdateById(id, Other)
 	return ret, err

@@ -50,8 +50,10 @@ func Routers() *gin.Engine {
 	apiRouter := r.Group("/api")
 	apiRouter.Use(middleware.JWTAuth())
 	{
-		apiRouter.POST("/upload", api.Upload)
-		apiRouter.POST("/logout", api.Logout)
+		apiRouter.POST("/common/upload", api.Upload)
+		apiRouter.POST("/common/logout", api.Logout)
+		apiRouter.GET("/common/permissionKeys", api.GetPermissionKeys)
+		apiRouter.GET("/common/userInfo", api.GetUserPermissionKeys)
 
 		// 用户
 		apiRouter.GET("/user", api.GetUser)
@@ -96,9 +98,9 @@ func Routers() *gin.Engine {
 		apiRouter.POST("/other", api.PostOther)
 		apiRouter.DELETE("/other/:id", api.DelOtherById)
 		apiRouter.PUT("/other/:id", api.PutOtherById)
+		apiRouter.GET("/other/export", api.ExportOther)
+		apiRouter.POST("/other/import", api.ImportOther)
 
-		apiRouter.GET("/permissionKeys", api.GetPermissionKeys)
-		apiRouter.GET("/userInfo", api.GetUserPermissionKeys)
 	}
 
 	return r

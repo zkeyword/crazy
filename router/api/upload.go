@@ -23,14 +23,14 @@ type ResponseUpload struct {
 
 // Upload 文件上传 // TODO: 添加OSS方式上传
 func Upload(c *gin.Context) {
-	header, formErr := c.FormFile("file")
-	if formErr == nil {
-		arr := strings.Split(header.Filename, ".")
+	file, err := c.FormFile("file")
+	if err == nil {
+		arr := strings.Split(file.Filename, ".")
 		str := arr[0] + strconv.FormatInt(time.Now().UnixNano(), 10) + "." + arr[1]
 		if !folder.IsDir("./public/tmp/") {
 			folder.CreateDir("./public/tmp/")
 		}
-		err := c.SaveUploadedFile(header, "./public/tmp/"+str)
+		err := c.SaveUploadedFile(file, "./public/tmp/"+str)
 		if err == nil {
 			var res ResponseUpload
 			res.Data = append(res.Data, ResponseImg{Url: str, Alt: "", Href: ""})
