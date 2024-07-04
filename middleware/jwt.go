@@ -13,7 +13,7 @@ import (
 )
 
 // JWTAuth 中间件，检查token
-func JWTAuth() gin.HandlerFunc {
+func JWTAuth(jwtType string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("Authorization")
 		if token == "" {
@@ -35,14 +35,16 @@ func JWTAuth() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		// if claims.UserID == 0 {
-		// 	utils.FailWithMessage("Authorization出错, 清重新登录", c)
-		// 	c.Abort()
-		// 	return
-		// }
-		// 继续交由下一个路由处理,并将解析出的信息传递下去
-		c.Set("userID", claims.UserID)
-		c.Set("permissionKeys", xor.Dec(claims.PermissionKeys))
+		if jwtType == "system" {
+			// if claims.UserID == 0 {
+			// 	utils.FailWithMessage("Authorization出错, 清重新登录", c)
+			// 	c.Abort()
+			// 	return
+			// }
+			// 继续交由下一个路由处理,并将解析出的信息传递下去
+			c.Set("userID", claims.UserID)
+			c.Set("permissionKeys", xor.Dec(claims.PermissionKeys))
+		}
 	}
 }
 

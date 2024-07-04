@@ -36,10 +36,6 @@ func Routers() *gin.Engine {
 	// 首页
 	// r.GET("/", common.GetHTML)
 
-	// 登陆/注册
-	r.POST("/login", system.Login)
-	// r.POST("/register", system.Register)
-
 	// 验证码
 	r.GET("/captcha", common.GetCaptcha)
 	r.POST("/captcha", common.PostCaptcha)
@@ -48,61 +44,73 @@ func Routers() *gin.Engine {
 	// r.GET("/sse", sse.SendEvent)
 	// r.POST("/sse", sse.PublishHandler)
 
+	// 登陆/注册
+	r.POST("/login", system.Login)
+	// r.POST("/register", system.Register)
+
 	// api 部分
-	apiRouter := r.Group("/api")
-	apiRouter.Use(middleware.JWTAuth())
+	systemRouter := r.Group("/system")
+	systemRouter.Use(middleware.JWTAuth("system"))
 	{
-		apiRouter.POST("/common/upload", common.Upload)
-		apiRouter.POST("/common/logout", system.Logout)
-		// TOTO: 修改路由
-		apiRouter.GET("/common/permissionKeys", system.GetPermissionKeys)
-		apiRouter.GET("/common/userInfo", system.GetUserPermissionKeys)
+		systemRouter.POST("/upload", system.Upload)
+		systemRouter.POST("/logout", system.Logout)
+		systemRouter.GET("/permissionKeys", system.GetPermissionKeys)
+		systemRouter.GET("/userInfo", system.GetUserPermissionKeys)
 
 		// 用户
-		apiRouter.GET("/user", system.GetUser)
-		apiRouter.GET("/user/name/:username", system.GetUserByUsername)
-		apiRouter.GET("/user/id/:id", system.GetUserById)
-		apiRouter.POST("/user", system.PostUser)
-		apiRouter.DELETE("/user/:id", system.DelUserById)
-		apiRouter.PUT("/user/:id", system.PutUserById)
-		apiRouter.PUT("/user/status/:id", system.PutUserStatusById)
+		systemRouter.GET("/user", system.GetUser)
+		systemRouter.GET("/user/name/:username", system.GetUserByUsername)
+		systemRouter.GET("/user/id/:id", system.GetUserById)
+		systemRouter.POST("/user", system.PostUser)
+		systemRouter.DELETE("/user/:id", system.DelUserById)
+		systemRouter.PUT("/user/:id", system.PutUserById)
+		systemRouter.PUT("/user/status/:id", system.PutUserStatusById)
 
 		// 角色
-		apiRouter.GET("/role", system.GetRole)
-		apiRouter.GET("/role/:id", system.GetRoleById)
-		apiRouter.POST("/role", system.PostRole)
-		apiRouter.DELETE("/role/:id", system.DelRoleById)
-		apiRouter.PUT("/role/:id", system.PutRoleById)
+		systemRouter.GET("/role", system.GetRole)
+		systemRouter.GET("/role/:id", system.GetRoleById)
+		systemRouter.POST("/role", system.PostRole)
+		systemRouter.DELETE("/role/:id", system.DelRoleById)
+		systemRouter.PUT("/role/:id", system.PutRoleById)
 
 		// 权限
-		apiRouter.GET("/permission/:id", system.GetPermissionById)
-		apiRouter.GET("/permission/:id/tree", system.GetPermissionTreeById)
-		apiRouter.POST("/permission", system.PostPermission)
-		apiRouter.DELETE("/permission/:id", system.DelPermissionById)
-		apiRouter.PUT("/permission/:id", system.PutPermissionById)
+		systemRouter.GET("/permission/:id", system.GetPermissionById)
+		systemRouter.GET("/permission/:id/tree", system.GetPermissionTreeById)
+		systemRouter.POST("/permission", system.PostPermission)
+		systemRouter.DELETE("/permission/:id", system.DelPermissionById)
+		systemRouter.PUT("/permission/:id", system.PutPermissionById)
 
 		// 角色、用户、权限关联
-		apiRouter.GET("/role/:id/permission", system.GetRolePermissionByRoleID)
-		apiRouter.POST("/role/:id/permission", system.PostRolePermissionByRoleID)
+		systemRouter.GET("/role/:id/permission", system.GetRolePermissionByRoleID)
+		systemRouter.POST("/role/:id/permission", system.PostRolePermissionByRoleID)
 
-		apiRouter.GET("/user/:id/role", system.GetRoleUserByUserID)
-		apiRouter.GET("/user/:id/permission", system.GetUserRolePermissionByUserId)
+		systemRouter.GET("/user/:id/role", system.GetRoleUserByUserID)
+		systemRouter.GET("/user/:id/permission", system.GetUserRolePermissionByUserId)
 
-		apiRouter.GET("/role/:id/user", system.GetRoleUserByRoleID)
-		apiRouter.POST("/role/:id/user/:userId", system.PostRoleUserByRoleIDAndUserID)
-		apiRouter.DELETE("/role/:id/user/:userId", system.DeleteRoleUserByRoleIDAndUserID)
+		systemRouter.GET("/role/:id/user", system.GetRoleUserByRoleID)
+		systemRouter.POST("/role/:id/user/:userId", system.PostRoleUserByRoleIDAndUserID)
+		systemRouter.DELETE("/role/:id/user/:userId", system.DeleteRoleUserByRoleIDAndUserID)
 
 		// 用户地址
-		apiRouter.GET("/userAddress", shop.GetUserAddress)
+		systemRouter.GET("/userAddress", shop.GetUserAddress)
 
 		// 其他设置
-		apiRouter.GET("/other", system.GetOther)
-		apiRouter.GET("/other/:id", system.GetOtherById)
-		apiRouter.POST("/other", system.PostOther)
-		apiRouter.DELETE("/other/:id", system.DelOtherById)
-		apiRouter.PUT("/other/:id", system.PutOtherById)
-		apiRouter.GET("/other/export", system.ExportOther)
-		apiRouter.POST("/other/import", system.ImportOther)
+		systemRouter.GET("/other", system.GetOther)
+		systemRouter.GET("/other/:id", system.GetOtherById)
+		systemRouter.POST("/other", system.PostOther)
+		systemRouter.DELETE("/other/:id", system.DelOtherById)
+		systemRouter.PUT("/other/:id", system.PutOtherById)
+		systemRouter.GET("/other/export", system.ExportOther)
+		systemRouter.POST("/other/import", system.ImportOther)
+
+	}
+
+	// shop 部分
+	shopRouter := r.Group("/shop")
+	shopRouter.Use(middleware.JWTAuth("shop"))
+	{
+		// 用户地址
+		shopRouter.GET("/userAddress", shop.GetUserAddress)
 
 	}
 
