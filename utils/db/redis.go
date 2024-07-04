@@ -2,6 +2,7 @@ package db
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/gomodule/redigo/redis"
@@ -28,8 +29,12 @@ func StartRedis(addr string, password string, db, maxIdle, maxOpen int) (err err
 	conn := GetRedis()
 	defer conn.Close()
 
-	if r, _ := redis.String(conn.Do("PING")); r != "PONG" {
-		err = errors.New("redis connect failed")
+	r, err := redis.String(conn.Do("PING"))
+	if err != nil {
+		return fmt.Errorf("redis connect failed: %v", err)
+	}
+	if r != "PONG" {
+		return errors.New("redis connect failed: PING did not return PONG")
 	}
 
 	return

@@ -1,8 +1,10 @@
 package utils
 
 import (
-	"errors"
+	"CRAZY/utils/db"
+	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -57,18 +59,35 @@ func FailWithDetailed(code int, data interface{}, message string, c *gin.Context
 
 // 根据permissionKeys处理权限
 func CheckPermission(c *gin.Context, permKey string) bool {
-	PermissionKeys, _ := c.Get("permissionKeys")
-	PermissionKeysStr, _ := PermissionKeys.(string)
-	found := false
-	for _, v := range strings.Split(PermissionKeysStr, ",") {
-		if v == "All" || v == permKey {
-			found = true
-			break
-		}
+	PermissionKeys, exists := c.Get("permissionKeys")
+	if !exists {
+		FailWithMessage("Permission keys not found", c)
+		return false
 	}
-	if !found {
-		err := errors.New("not permission")
-		FailWithMessage(err.Error(), c)
+
+	PermissionKeysStr, ok := PermissionKeys.(string)
+	if !ok {
+		FailWithMessage("Permission keys are not a string", c)
+		return false
 	}
-	return found
+
+	if !strings.Contains(PermissionKeysStr, "All") && !strings.Contains(PermissionKeysStr, permKey) {
+		FailWithMessage("No permission", c)
+		return false
+	}
+
+	userID, exists := c.Get("userID")
+	if !exists {
+		FailWithMessage("User ID not found", c)
+		return false
+	}
+	userIDUint, _ := userID.(uint)
+	value, err := db.GetKey("UserLoginStatus" + strconv.FormatUint(uint64(userIDUint), 10))
+	fmt.Println(value)
+	if err != nil || value == "-1" {
+		FailWithMessage("Permission expired", c)
+		return false
+	}
+
+	return true
 }

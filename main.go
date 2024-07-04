@@ -53,12 +53,12 @@ func main() {
 	}
 
 	// 启动redis
-	// defer db.CloseRedis()
-	// if ENV == "prod" {
-	// 	db.StartRedis(config.ProdRedisDbConfig.Addr, config.ProdRedisDbConfig.Password, config.ProdRedisDbConfig.DB, config.ProdRedisDbConfig.MaxIdle, config.ProdRedisDbConfig.MaxOpen)
-	// } else {
-	// 	db.StartRedis(config.RedisDbConfig.Addr, config.RedisDbConfig.Password, config.RedisDbConfig.DB, config.RedisDbConfig.MaxIdle, config.RedisDbConfig.MaxOpen)
-	// }
+	defer db.CloseRedis()
+	if ENV == "prod" {
+		db.StartRedis(config.ProdRedisDbConfig.Addr, config.ProdRedisDbConfig.Password, config.ProdRedisDbConfig.DB, config.ProdRedisDbConfig.MaxIdle, config.ProdRedisDbConfig.MaxOpen)
+	} else {
+		db.StartRedis(config.RedisDbConfig.Addr, config.RedisDbConfig.Password, config.RedisDbConfig.DB, config.RedisDbConfig.MaxIdle, config.RedisDbConfig.MaxOpen)
+	}
 
 	// 启动sse Subscribe
 	// sse.Subscribe()

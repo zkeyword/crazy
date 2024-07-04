@@ -6,9 +6,11 @@ import (
 	"CRAZY/model"
 	sysUserService "CRAZY/services/sys_user"
 	"CRAZY/utils"
+	"CRAZY/utils/db"
 	"CRAZY/utils/xor"
 	"html"
 	"regexp"
+	"strconv"
 	"time"
 
 	"github.com/dchest/captcha"
@@ -75,6 +77,8 @@ func Login(c *gin.Context) {
 			return
 		}
 
+		db.SetKey("UserLoginStatus"+strconv.FormatUint(uint64(res.ID), 10), "1")
+
 		Model := &model.User{
 			LoginStatus: 1,
 		}
@@ -140,6 +144,7 @@ func Register(c *gin.Context) {
 func Logout(c *gin.Context) {
 	userID, _ := c.Get("userID")
 	id, _ := userID.(uint)
+	db.SetKey("UserLoginStatus"+strconv.FormatUint(uint64(id), 10), "-1")
 	Model := &model.User{
 		LoginStatus: -1,
 	}

@@ -121,7 +121,7 @@ func (r *UserRepository) GetById(id uint) (*model.User, error) {
 	return ret, err
 }
 
-// GetLoginStatusById 获取用户登录状态
+// GetLoginStatusById 获取用户登录状态 // 使用redis后冗余
 func (r *UserRepository) GetLoginStatusById(id uint) (int, error) {
 	var user model.User
 	_db, err := db.GetMysql()
