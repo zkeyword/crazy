@@ -2,7 +2,7 @@ package system
 
 import (
 	"CRAZY/model"
-	otherService "CRAZY/services/sys_other"
+	otherService "CRAZY/services/sys/sys_other"
 	"CRAZY/utils"
 	"encoding/csv"
 	"fmt"

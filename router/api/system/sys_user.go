@@ -2,7 +2,7 @@ package system
 
 import (
 	"CRAZY/model"
-	sysUserService "CRAZY/services/sys_user"
+	sysUserService "CRAZY/services/sys/sys_user"
 	"CRAZY/utils"
 	"CRAZY/utils/xor"
 	"html"

@@ -4,7 +4,7 @@ import (
 	"CRAZY/config"
 	"CRAZY/middleware"
 	"CRAZY/model"
-	sysUserService "CRAZY/services/sys_user"
+	sysUserService "CRAZY/services/sys/sys_user"
 	"CRAZY/utils"
 	"CRAZY/utils/db"
 	"CRAZY/utils/xor"

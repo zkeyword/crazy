@@ -116,30 +116,38 @@ func Routers() *gin.Engine {
 	}
 
 	// cms 部分
-	cmsRouter := r.Group("/cms")
-	cmsRouter.Use(middleware.JWTAuth("cms"))
+	cmsAdminRouter := r.Group("/cms/admin")
+	cmsAdminRouter.Use(middleware.JWTAuth("cms"))
 	{
 		// 文章
-		cmsRouter.GET("/post", cms.GetPost)
-		cmsRouter.GET("/post/:id", cms.GetPostById)
-		cmsRouter.POST("/post/", cms.PostPost)
-		cmsRouter.DELETE("/post/:id", cms.DelPostById)
-		cmsRouter.PUT("/post/:id", cms.PutPostById)
+		cmsAdminRouter.GET("/post", cms.GetPost)
+		cmsAdminRouter.GET("/post/:id", cms.GetPostById)
+		cmsAdminRouter.POST("/post/", cms.PostPost)
+		cmsAdminRouter.DELETE("/post/:id", cms.DelPostById)
+		cmsAdminRouter.PUT("/post/:id", cms.PutPostById)
 
 		// banner
-		cmsRouter.GET("/banner", cms.GetBanner)
-		cmsRouter.GET("/banner/:id", cms.GetBannerById)
-		cmsRouter.POST("/banner/", cms.PostBanner)
-		cmsRouter.DELETE("/banner/:id", cms.DelBannerById)
-		cmsRouter.PUT("/banner/:id", cms.PutBannerById)
+		cmsAdminRouter.GET("/banner", cms.GetBanner)
+		cmsAdminRouter.GET("/banner/:id", cms.GetBannerById)
+		cmsAdminRouter.POST("/banner/", cms.PostBanner)
+		cmsAdminRouter.DELETE("/banner/:id", cms.DelBannerById)
+		cmsAdminRouter.PUT("/banner/:id", cms.PutBannerById)
 
 		// 类别
-		cmsRouter.GET("/category", cms.GetCategory)
-		cmsRouter.GET("/category/:id", cms.GetCategoryById)
-		cmsRouter.POST("/category/", cms.PostCategory)
-		cmsRouter.DELETE("/category/:id", cms.DelCategoryById)
-		cmsRouter.PUT("/category/:id", cms.PutCategoryById)
+		cmsAdminRouter.GET("/category", cms.GetCategory)
+		cmsAdminRouter.GET("/category/:id", cms.GetCategoryById)
+		cmsAdminRouter.POST("/category/", cms.PostCategory)
+		cmsAdminRouter.DELETE("/category/:id", cms.DelCategoryById)
+		cmsAdminRouter.PUT("/category/:id", cms.PutCategoryById)
+	}
 
+	cmsRouter := r.Group("/cms/api")
+	{
+		cmsRouter.GET("/post", cms.GetPost)
+		cmsRouter.GET("/post/news", cms.GetPostNews)
+		cmsRouter.GET("/post/:id", cms.GetPostById)
+		cmsRouter.GET("/category", cms.GetCategory)
+		cmsRouter.GET("/banner", cms.GetBanner)
 	}
 
 	return r

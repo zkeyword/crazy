@@ -2,7 +2,7 @@ package system
 
 import (
 	"CRAZY/model"
-	sysPermissionService "CRAZY/services/sys_permission"
+	sysPermissionService "CRAZY/services/sys/sys_permission"
 	"CRAZY/utils"
 
 	"github.com/gin-gonic/gin"

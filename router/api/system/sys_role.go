@@ -2,7 +2,7 @@ package system
 
 import (
 	"CRAZY/model"
-	sysRoleService "CRAZY/services/sys_role"
+	sysRoleService "CRAZY/services/sys/sys_role"
 	"CRAZY/utils"
 	"html"
 	"strconv"
