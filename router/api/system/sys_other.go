@@ -1,7 +1,7 @@
 package system
 
 import (
-	"CRAZY/model"
+	"CRAZY/model/system"
 	otherService "CRAZY/services/sys/sys_other"
 	"CRAZY/utils"
 	"encoding/csv"
@@ -24,7 +24,7 @@ func PostOther(c *gin.Context) {
 	var form OtherForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		Model := &model.Other{
+		Model := &system.Other{
 			Key:   html.EscapeString(form.Key),
 			Value: html.EscapeString(form.Value),
 		}
@@ -54,7 +54,7 @@ func PutOtherById(c *gin.Context) {
 	var form OtherForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		Model := &model.Other{
+		Model := &system.Other{
 			Key:   html.EscapeString(form.Key),
 			Value: html.EscapeString(form.Value),
 		}
@@ -112,7 +112,7 @@ func ImportOther(c *gin.Context) {
 	defer f.Close()
 
 	reader := csv.NewReader(f)
-	var others []*model.Other
+	var others []*system.Other
 	index := 0
 	for {
 		record, err := reader.Read()
@@ -131,7 +131,7 @@ func ImportOther(c *gin.Context) {
 
 		// 创建一个新的 Other 对象
 		temp, _ := strconv.Atoi(record[2])
-		other := &model.Other{
+		other := &system.Other{
 			Key:   html.EscapeString(record[0]),
 			Value: html.EscapeString(record[1]),
 			Type:  uint(temp),

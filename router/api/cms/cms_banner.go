@@ -1,7 +1,7 @@
 package cms
 
 import (
-	"CRAZY/model"
+	"CRAZY/model/cms"
 	cmsServices "CRAZY/services/cms"
 	"CRAZY/utils"
 	"html"
@@ -25,7 +25,7 @@ func PostBanner(c *gin.Context) {
 	var form PostBannerForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		Model := &model.Banner{
+		Model := &cms.Banner{
 			Status:      form.Status,
 			Index:       form.Index,
 			Title:       html.EscapeString(form.Title),
@@ -71,7 +71,7 @@ func PutBannerById(c *gin.Context) {
 	var form PostBannerForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		Model := &model.Banner{
+		Model := &cms.Banner{
 			Status:      form.Status,
 			Index:       form.Index,
 			Title:       html.EscapeString(form.Title),

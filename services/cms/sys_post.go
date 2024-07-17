@@ -1,8 +1,8 @@
 package cmsServices
 
 import (
-	"CRAZY/model"
-	"CRAZY/repository"
+	"CRAZY/model/cms"
+	repository "CRAZY/repository/cms"
 	"CRAZY/utils"
 	"strings"
 )
@@ -11,10 +11,10 @@ import (
 type PostService interface {
 	Get(page int, pageSize int, title string, categoryIds string) (*ReturnPostList, error)
 	GetNews() (*ReturnPostList, error)
-	Create(Post *model.Post, categoryIds string) (*model.Post, error)
+	Create(Post *cms.Post, categoryIds string) (*cms.Post, error)
 	DeleteById(id int64) error
-	PutPostById(id int64, Post *model.Post, categoryIds string) (*model.Post, error)
-	GetById(id int64) (*model.Post, error)
+	PutPostById(id int64, Post *cms.Post, categoryIds string) (*cms.Post, error)
+	GetById(id int64) (*cms.Post, error)
 	PostNewsSet(action string, ids []int64) error
 }
 
@@ -24,10 +24,10 @@ type postService struct {
 }
 
 type ReturnPostList struct {
-	Page     int          `json:"page"`
-	PageSize int          `json:"pageSize"`
-	Total    int64        `json:"total"`
-	List     []model.Post `json:"list"`
+	Page     int        `json:"page"`
+	PageSize int        `json:"pageSize"`
+	Total    int64      `json:"total"`
+	List     []cms.Post `json:"list"`
 }
 
 // NewArticleService 实例化ArticleService
@@ -51,7 +51,7 @@ func (s *postService) Get(page int, pageSize int, title string, categoryIds stri
 	return returnValue, err
 }
 
-func (s *postService) Create(Post *model.Post, categoryIds string) (*model.Post, error) {
+func (s *postService) Create(Post *cms.Post, categoryIds string) (*cms.Post, error) {
 	ret, err := s.repo.Create(Post)
 	if err == nil {
 		ids := strings.Split(categoryIds, ",")
@@ -62,7 +62,7 @@ func (s *postService) Create(Post *model.Post, categoryIds string) (*model.Post,
 	return ret, err
 }
 
-func (s *postService) PutPostById(id int64, Post *model.Post, categoryIds string) (*model.Post, error) {
+func (s *postService) PutPostById(id int64, Post *cms.Post, categoryIds string) (*cms.Post, error) {
 	ret, err := s.repo.UpdateById(id, Post)
 	ids := strings.Split(categoryIds, ",")
 	s.relatedRepo.DeleteByPostId(id)
@@ -80,7 +80,7 @@ func (s *postService) DeleteById(id int64) error {
 	return err
 }
 
-func (s *postService) GetById(id int64) (*model.Post, error) {
+func (s *postService) GetById(id int64) (*cms.Post, error) {
 	ret, err := s.repo.GetById(id)
 	return ret, err
 }

@@ -1,8 +1,8 @@
 package sysPermissionService
 
 import (
-	"CRAZY/model"
-	"CRAZY/repository"
+	"CRAZY/model/system"
+	repository "CRAZY/repository/system"
 )
 
 var repo = getRepo()
@@ -11,12 +11,12 @@ func getRepo() *repository.PermissionRepository {
 	return repository.NewPermissionRepository()
 }
 
-func Create(Permission *model.Permission) (*model.Permission, error) {
+func Create(Permission *system.Permission) (*system.Permission, error) {
 	ret, err := repo.Create(Permission)
 	return ret, err
 }
 
-func UpdateById(id uint, Permission *model.Permission) (*model.Permission, error) {
+func UpdateById(id uint, Permission *system.Permission) (*system.Permission, error) {
 	ret, err := repo.UpdateById(id, Permission)
 	return ret, err
 }
@@ -30,7 +30,7 @@ func GetById(id uint) *repository.Permission {
 	return repo.GetById(id)
 }
 
-func Get() []model.Permission {
+func Get() []system.Permission {
 	return repo.Get()
 }
 
@@ -48,7 +48,7 @@ func GetTree(pid uint) []*TreeList {
 	return recursion(pid, ret, true)
 }
 
-func recursion(pid uint, list []model.Permission, isRoot bool) []*TreeList {
+func recursion(pid uint, list []system.Permission, isRoot bool) []*TreeList {
 	treeList := []*TreeList{}
 	for _, v := range list {
 		var isPass bool

@@ -1,8 +1,8 @@
 package cmsServices
 
 import (
-	"CRAZY/model"
-	"CRAZY/repository"
+	"CRAZY/model/cms"
+	repository "CRAZY/repository/cms"
 	"CRAZY/utils"
 	"strings"
 )
@@ -10,10 +10,10 @@ import (
 // BannerService user服务
 type BannerService interface {
 	Get(page int, pageSize int, title string, categoryIds string) (*ReturnBannerList, error)
-	Create(Banner *model.Banner, categoryIds string) (*model.Banner, error)
+	Create(Banner *cms.Banner, categoryIds string) (*cms.Banner, error)
 	DeleteById(id int64) error
-	PutBannerById(id int64, Banner *model.Banner, categoryIds string) (*model.Banner, error)
-	GetById(id int64) (*model.Banner, error)
+	PutBannerById(id int64, Banner *cms.Banner, categoryIds string) (*cms.Banner, error)
+	GetById(id int64) (*cms.Banner, error)
 }
 
 type bannerService struct {
@@ -22,10 +22,10 @@ type bannerService struct {
 }
 
 type ReturnBannerList struct {
-	Page     int            `json:"page"`
-	PageSize int            `json:"pageSize"`
-	Total    int64          `json:"total"`
-	List     []model.Banner `json:"list"`
+	Page     int          `json:"page"`
+	PageSize int          `json:"pageSize"`
+	Total    int64        `json:"total"`
+	List     []cms.Banner `json:"list"`
 }
 
 // NewArticleService 实例化ArticleService
@@ -49,7 +49,7 @@ func (s *bannerService) Get(page int, pageSize int, title string, categoryIds st
 	return returnValue, err
 }
 
-func (s *bannerService) Create(Banner *model.Banner, categoryIds string) (*model.Banner, error) {
+func (s *bannerService) Create(Banner *cms.Banner, categoryIds string) (*cms.Banner, error) {
 	ret, err := s.repo.Create(Banner)
 	if err == nil {
 		ids := strings.Split(categoryIds, ",")
@@ -60,7 +60,7 @@ func (s *bannerService) Create(Banner *model.Banner, categoryIds string) (*model
 	return ret, err
 }
 
-func (s *bannerService) PutBannerById(id int64, Banner *model.Banner, categoryIds string) (*model.Banner, error) {
+func (s *bannerService) PutBannerById(id int64, Banner *cms.Banner, categoryIds string) (*cms.Banner, error) {
 	ret, err := s.repo.UpdateById(id, Banner)
 	ids := strings.Split(categoryIds, ",")
 	s.relatedRepo.DeleteByPostId(id)
@@ -78,7 +78,7 @@ func (s *bannerService) DeleteById(id int64) error {
 	return err
 }
 
-func (s *bannerService) GetById(id int64) (*model.Banner, error) {
+func (s *bannerService) GetById(id int64) (*cms.Banner, error) {
 	ret, err := s.repo.GetById(id)
 	return ret, err
 }

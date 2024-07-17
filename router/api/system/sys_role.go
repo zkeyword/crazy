@@ -1,7 +1,7 @@
 package system
 
 import (
-	"CRAZY/model"
+	"CRAZY/model/system"
 	sysRoleService "CRAZY/services/sys/sys_role"
 	"CRAZY/utils"
 	"html"
@@ -22,7 +22,7 @@ func PostRole(c *gin.Context) {
 		var form RoleForm
 		err := c.ShouldBind(&form)
 		if err == nil {
-			Model := &model.Role{
+			Model := &system.Role{
 				Name: form.Name,
 				Desc: form.Desc,
 			}
@@ -58,7 +58,7 @@ func PutRoleById(c *gin.Context) {
 		var form RoleForm
 		err := c.ShouldBind(&form)
 		if err == nil {
-			Model := &model.Role{
+			Model := &system.Role{
 				Name: form.Name,
 				Desc: form.Desc,
 			}

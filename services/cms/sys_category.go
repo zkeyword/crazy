@@ -1,17 +1,17 @@
 package cmsServices
 
 import (
-	"CRAZY/model"
-	"CRAZY/repository"
+	"CRAZY/model/cms"
+	repository "CRAZY/repository/cms"
 )
 
 // CategoryService user服务
 type CategoryService interface {
 	Get(page int, pageSize int, title string) (*ReturnCategoryList, error)
-	Create(Category *model.Category) (*model.Category, error)
+	Create(Category *cms.Category) (*cms.Category, error)
 	DeleteById(id int64) error
-	PutCategoryById(id int64, Category *model.Category) (*model.Category, error)
-	GetById(id int64) (*model.Category, error)
+	PutCategoryById(id int64, Category *cms.Category) (*cms.Category, error)
+	GetById(id int64) (*cms.Category, error)
 }
 
 type categoryService struct {
@@ -19,10 +19,10 @@ type categoryService struct {
 }
 
 type ReturnCategoryList struct {
-	Page     int              `json:"page"`
-	PageSize int              `json:"pageSize"`
-	Total    int64            `json:"total"`
-	List     []model.Category `json:"list"`
+	Page     int            `json:"page"`
+	PageSize int            `json:"pageSize"`
+	Total    int64          `json:"total"`
+	List     []cms.Category `json:"list"`
 }
 
 // NewArticleService 实例化ArticleService
@@ -46,12 +46,12 @@ func (s *categoryService) Get(page int, pageSize int, title string) (*ReturnCate
 	return returnValue, err
 }
 
-func (s *categoryService) Create(Category *model.Category) (*model.Category, error) {
+func (s *categoryService) Create(Category *cms.Category) (*cms.Category, error) {
 	ret, err := s.repo.Create(Category)
 	return ret, err
 }
 
-func (s *categoryService) PutCategoryById(id int64, Category *model.Category) (*model.Category, error) {
+func (s *categoryService) PutCategoryById(id int64, Category *cms.Category) (*cms.Category, error) {
 	ret, err := s.repo.UpdateById(id, Category)
 	return ret, err
 }
@@ -61,7 +61,7 @@ func (s *categoryService) DeleteById(id int64) error {
 	return err
 }
 
-func (s *categoryService) GetById(id int64) (*model.Category, error) {
+func (s *categoryService) GetById(id int64) (*cms.Category, error) {
 	ret, err := s.repo.GetById(id)
 	return ret, err
 }

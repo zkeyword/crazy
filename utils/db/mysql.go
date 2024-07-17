@@ -1,6 +1,9 @@
 package db
 
 import (
+	"CRAZY/model/cms"
+	"CRAZY/model/shop"
+	"CRAZY/model/system"
 	"errors"
 	"time"
 
@@ -44,22 +47,26 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (*gorm.DB, e
 	_db.SetMaxOpenConns(maxOpen)
 	_db.SetConnMaxLifetime(time.Hour * 8)
 
-	// db.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
-	// 	AutoMigrate(
-	// 		// sys
-	// 		&model.User{},
-	// 		&model.UserRole{},
-	// 		&model.Permission{},
-	// 		&model.Role{},
-	// 		&model.RolePermission{},
-	// 		&model.Other{},
-	// 		&model.UserAddress{},
-	// 		// shop
-	// 		&model.ShopCart{},
-	// 		&model.ShopOrder{},
-	// 	)
+	db.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
+		AutoMigrate(
+			// sys
+			&system.User{},
+			&system.UserRole{},
+			&system.Permission{},
+			&system.Role{},
+			&system.RolePermission{},
+			&system.Other{},
 
-	// user := &model.User{
+			// shop
+			&shop.UserAddress{},
+			&shop.ShopCart{},
+			&shop.ShopOrder{},
+
+			// cms
+			&cms.Post{},
+		)
+
+	// user := &system.User{
 	// 	Username:    "admin",
 	// 	Password:    "d36dd63cfd", // admin
 	// 	Status:      1,
@@ -67,22 +74,22 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (*gorm.DB, e
 	// 	RealName:    "ADMIN",
 	// }
 
-	// permission := &model.Permission{
+	// permission := &system.Permission{
 	// 	Name:   "全部",
 	// 	Key:    "All",
 	// 	Status: 1,
 	// }
 
-	// role := &model.Role{
+	// role := &system.Role{
 	// 	Name: "管理员",
 	// }
 
-	// userRole := &model.UserRole{
+	// userRole := &system.UserRole{
 	// 	UserID: 1,
 	// 	RoleID: 1,
 	// }
 
-	// rolePermission := &model.RolePermission{
+	// rolePermission := &system.RolePermission{
 	// 	RoleID:         1,
 	// 	PermissionKeys: "All",
 	// }

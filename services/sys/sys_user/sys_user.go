@@ -1,8 +1,8 @@
 package sysUserService
 
 import (
-	"CRAZY/model"
-	"CRAZY/repository"
+	"CRAZY/model/system"
+	repository "CRAZY/repository/system"
 	"CRAZY/utils"
 	"strings"
 )
@@ -20,10 +20,10 @@ func getUserRoleRepo() *repository.UserRoleRepository {
 }
 
 type ReturnUserList struct {
-	Page     int          `json:"page"`
-	PageSize int          `json:"pageSize"`
-	Total    int64        `json:"total"`
-	List     []model.User `json:"list"`
+	Page     int           `json:"page"`
+	PageSize int           `json:"pageSize"`
+	Total    int64         `json:"total"`
+	List     []system.User `json:"list"`
 }
 
 func Get(page int, pageSize int, username string) (*ReturnUserList, error) {
@@ -44,7 +44,7 @@ func Get(page int, pageSize int, username string) (*ReturnUserList, error) {
 	return returnValue, err
 }
 
-func GetById(id uint) (*model.User, error) {
+func GetById(id uint) (*system.User, error) {
 	return userRepo.GetById(id)
 }
 
@@ -56,7 +56,7 @@ func GetUserRolePermissionByUserId(id uint) *repository.ReturnRolePermission {
 	return userRepo.GetUserRolePermissionByUserId(id)
 }
 
-func Create(User *model.User, roleIds string) (*model.User, error) {
+func Create(User *system.User, roleIds string) (*system.User, error) {
 	ret, err := userRepo.Create(User)
 	if err == nil && roleIds != "" {
 		roleIdArr := strings.Split(roleIds, ",")
@@ -67,7 +67,7 @@ func Create(User *model.User, roleIds string) (*model.User, error) {
 	return ret, err
 }
 
-func PutUserById(id uint, User *model.User, roleIds string) (*model.User, error) {
+func PutUserById(id uint, User *system.User, roleIds string) (*system.User, error) {
 	ret, err := userRepo.UpdateById(id, User)
 	if err == nil && roleIds != "" {
 		roleIdArr := strings.Split(roleIds, ",")
@@ -88,6 +88,6 @@ func DeleteById(id uint) error {
 	return err
 }
 
-func GetByUserName(username string) (*model.User, error) {
+func GetByUserName(username string) (*system.User, error) {
 	return userRepo.GetByUserName(username)
 }

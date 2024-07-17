@@ -1,8 +1,8 @@
 package otherService
 
 import (
-	"CRAZY/model"
-	"CRAZY/repository"
+	"CRAZY/model/system"
+	repository "CRAZY/repository/system"
 )
 
 var repo = getRepo()
@@ -11,22 +11,22 @@ func getRepo() *repository.OtherRepository {
 	return repository.NewOtherRepository()
 }
 
-func Get() ([]model.Other, error) {
+func Get() ([]system.Other, error) {
 	ret, err := repo.Get()
 	return ret, err
 }
 
-func Create(Other *model.Other) (*model.Other, error) {
+func Create(Other *system.Other) (*system.Other, error) {
 	ret, err := repo.Create(Other)
 	return ret, err
 }
 
-func BatchCreate(Other []*model.Other) ([]*model.Other, error) {
+func BatchCreate(Other []*system.Other) ([]*system.Other, error) {
 	ret, err := repo.BatchCreate(Other)
 	return ret, err
 }
 
-func PutById(id uint, Other *model.Other) (*model.Other, error) {
+func PutById(id uint, Other *system.Other) (*system.Other, error) {
 	ret, err := repo.UpdateById(id, Other)
 	return ret, err
 }
@@ -36,7 +36,7 @@ func DeleteById(id uint) error {
 	return err
 }
 
-func GetById(id uint) (*model.Other, error) {
+func GetById(id uint) (*system.Other, error) {
 	ret, err := repo.GetById(id)
 	return ret, err
 }

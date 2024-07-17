@@ -1,7 +1,7 @@
 package cms
 
 import (
-	"CRAZY/model"
+	"CRAZY/model/cms"
 	cmsServices "CRAZY/services/cms"
 	"CRAZY/utils"
 	"html"
@@ -21,7 +21,7 @@ func PostCategory(c *gin.Context) {
 	var form PostCategoryForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		Model := &model.Category{
+		Model := &cms.Category{
 			Status: form.Status,
 			Index:  form.Index,
 			Title:  html.EscapeString(form.Title),
@@ -63,7 +63,7 @@ func PutCategoryById(c *gin.Context) {
 	var form PostCategoryForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		Model := &model.Category{
+		Model := &cms.Category{
 			Status: form.Status,
 			Index:  form.Index,
 			Title:  html.EscapeString(form.Title),

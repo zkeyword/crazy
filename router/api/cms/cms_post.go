@@ -1,7 +1,7 @@
 package cms
 
 import (
-	"CRAZY/model"
+	"CRAZY/model/cms"
 	cmsServices "CRAZY/services/cms"
 	"CRAZY/utils"
 	"html"
@@ -26,7 +26,7 @@ func PostPost(c *gin.Context) {
 	var form PostPostForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		Model := &model.Post{
+		Model := &cms.Post{
 			Title:       html.EscapeString(form.Title),
 			Thumbnail:   html.EscapeString(form.Thumbnail),
 			Content:     html.EscapeString(form.Content),
@@ -73,7 +73,7 @@ func PutPostById(c *gin.Context) {
 	var form PostPostForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		Model := &model.Post{
+		Model := &cms.Post{
 			Title:       html.EscapeString(form.Title),
 			Thumbnail:   html.EscapeString(form.Thumbnail),
 			Content:     html.EscapeString(form.Content),
