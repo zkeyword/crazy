@@ -13,7 +13,7 @@ import (
 
 var (
 	db      *gorm.DB
-	InitErr = errors.New("not initialized.")
+	ErrInit = errors.New("not initialized")
 )
 
 // StartMysql 初始化mysql
@@ -63,6 +63,10 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (*gorm.DB, e
 			&shop.ShopOrder{},
 
 			// cms
+			&cms.BannerCategory{},
+			&cms.Banner{},
+			&cms.Category{},
+			&cms.PostCategory{},
 			&cms.Post{},
 		)
 
@@ -107,7 +111,7 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (*gorm.DB, e
 // GetMysql 获取mysql连接
 func GetMysql() (*gorm.DB, error) {
 	if db == nil {
-		return nil, InitErr
+		return nil, ErrInit
 	}
 	return db, nil
 }
