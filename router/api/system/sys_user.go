@@ -2,7 +2,7 @@ package system
 
 import (
 	"CRAZY/model/system"
-	sysUserService "CRAZY/services/sys/sys_user"
+	sysUserService "CRAZY/services/system/sys_user"
 	"CRAZY/utils"
 	"CRAZY/utils/xor"
 	"html"
@@ -30,7 +30,7 @@ func PostUser(c *gin.Context) {
 			return
 		}
 		if err == nil && form.Status != nil {
-			Model := &system.User{
+			Model := &system.SystemUser{
 				Username: html.EscapeString(form.Username),
 				Password: xor.Enc(form.Password),
 				RealName: form.RealName,
@@ -77,7 +77,7 @@ func PutUserById(c *gin.Context) {
 			if *form.Status == -1 {
 				LoginStatus = -1
 			}
-			Model := &system.User{
+			Model := &system.SystemUser{
 				Username:    form.Username,
 				Password:    Password,
 				RealName:    form.RealName,
@@ -111,7 +111,7 @@ func PutUserStatusById(c *gin.Context) {
 			if *form.Status == -1 {
 				LoginStatus = -1
 			}
-			Model := &system.User{
+			Model := &system.SystemUser{
 				Status:      *form.Status,
 				LoginStatus: LoginStatus,
 			}

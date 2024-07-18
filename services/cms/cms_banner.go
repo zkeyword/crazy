@@ -10,10 +10,10 @@ import (
 // BannerService user服务
 type BannerService interface {
 	Get(page int, pageSize int, title string, categoryIds string) (*ReturnBannerList, error)
-	Create(Banner *cms.Banner, categoryIds string) (*cms.Banner, error)
+	Create(Banner *cms.CmsBanner, categoryIds string) (*cms.CmsBanner, error)
 	DeleteById(id int64) error
-	PutBannerById(id int64, Banner *cms.Banner, categoryIds string) (*cms.Banner, error)
-	GetById(id int64) (*cms.Banner, error)
+	PutBannerById(id int64, Banner *cms.CmsBanner, categoryIds string) (*cms.CmsBanner, error)
+	GetById(id int64) (*cms.CmsBanner, error)
 }
 
 type bannerService struct {
@@ -22,10 +22,10 @@ type bannerService struct {
 }
 
 type ReturnBannerList struct {
-	Page     int          `json:"page"`
-	PageSize int          `json:"pageSize"`
-	Total    int64        `json:"total"`
-	List     []cms.Banner `json:"list"`
+	Page     int             `json:"page"`
+	PageSize int             `json:"pageSize"`
+	Total    int64           `json:"total"`
+	List     []cms.CmsBanner `json:"list"`
 }
 
 // NewArticleService 实例化ArticleService
@@ -49,7 +49,7 @@ func (s *bannerService) Get(page int, pageSize int, title string, categoryIds st
 	return returnValue, err
 }
 
-func (s *bannerService) Create(Banner *cms.Banner, categoryIds string) (*cms.Banner, error) {
+func (s *bannerService) Create(Banner *cms.CmsBanner, categoryIds string) (*cms.CmsBanner, error) {
 	ret, err := s.repo.Create(Banner)
 	if err == nil {
 		ids := strings.Split(categoryIds, ",")
@@ -60,7 +60,7 @@ func (s *bannerService) Create(Banner *cms.Banner, categoryIds string) (*cms.Ban
 	return ret, err
 }
 
-func (s *bannerService) PutBannerById(id int64, Banner *cms.Banner, categoryIds string) (*cms.Banner, error) {
+func (s *bannerService) PutBannerById(id int64, Banner *cms.CmsBanner, categoryIds string) (*cms.CmsBanner, error) {
 	ret, err := s.repo.UpdateById(id, Banner)
 	ids := strings.Split(categoryIds, ",")
 	s.relatedRepo.DeleteByPostId(id)
@@ -78,7 +78,7 @@ func (s *bannerService) DeleteById(id int64) error {
 	return err
 }
 
-func (s *bannerService) GetById(id int64) (*cms.Banner, error) {
+func (s *bannerService) GetById(id int64) (*cms.CmsBanner, error) {
 	ret, err := s.repo.GetById(id)
 	return ret, err
 }

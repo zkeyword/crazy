@@ -20,8 +20,8 @@ func NewBannerCategoryRepository() *BannerCategoryRepository {
 	return &BannerCategoryRepository{}
 }
 
-func (r *BannerCategoryRepository) Create(BannerID uint, categoryID uint) (*cms.BannerCategory, error) {
-	var ret = new(cms.BannerCategory)
+func (r *BannerCategoryRepository) Create(BannerID uint, categoryID uint) (*cms.CmsBannerCategory, error) {
+	var ret = new(cms.CmsBannerCategory)
 	ret.BannerID = BannerID
 	ret.CategoryID = categoryID
 	_db, err := db.GetMysql()

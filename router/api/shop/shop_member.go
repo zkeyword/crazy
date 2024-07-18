@@ -1,7 +1,7 @@
 package shop
 
 import (
-	sysUserService "CRAZY/services/sys/sys_user"
+	sysUserService "CRAZY/services/system/sys_user"
 	"CRAZY/utils"
 	"html"
 	"strconv"

@@ -5,7 +5,7 @@ import (
 )
 
 // UserAddress 用户地址表
-type UserAddress struct {
+type ShopUserAddress struct {
 	Id        string `gorm:"primary_key;not null" json:"id"`
 	UserId    string `json:"userId"`
 	Receiver  string `json:"receiver"`

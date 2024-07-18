@@ -2,6 +2,7 @@ package main
 
 import (
 	"CRAZY/config"
+	"CRAZY/model/cms"
 	"CRAZY/model/shop"
 	"CRAZY/model/system"
 	"CRAZY/utils/db"
@@ -15,17 +16,24 @@ func main() {
 	_db.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
 		AutoMigrate(
 			// sys
-			&system.User{},
-			&system.UserRole{},
-			&system.Permission{},
-			&system.Role{},
-			&system.RolePermission{},
-			&system.Other{},
+			&system.SystemUser{},
+			&system.SystemUserRole{},
+			&system.SystemPermission{},
+			&system.SystemRole{},
+			&system.SystemRolePermission{},
+			&system.SystemOther{},
 
 			// shop
-			&shop.UserAddress{},
+			&shop.ShopUserAddress{},
 			&shop.ShopCart{},
 			&shop.ShopOrder{},
+
+			// cms
+			&cms.CmsBannerCategory{},
+			&cms.CmsBanner{},
+			&cms.CmsCategory{},
+			&cms.CmsPostCategory{},
+			&cms.CmsPost{},
 		)
 
 	// user := &model.User{

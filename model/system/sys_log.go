@@ -4,8 +4,8 @@ import (
 	"time"
 )
 
-// Log 日志表
-type Log struct {
+// SystemLog 日志表
+type SystemLog struct {
 	ID        uint      `json:"id" gorm:"primary_key;AUTO_INCREMENT"`
 	UserID    string    `json:"userId" gorm:"not null;"`
 	Type      uint      `json:"type" gorm:"unit;not null"`

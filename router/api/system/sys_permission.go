@@ -2,7 +2,7 @@ package system
 
 import (
 	"CRAZY/model/system"
-	sysPermissionService "CRAZY/services/sys/sys_permission"
+	sysPermissionService "CRAZY/services/system/sys_permission"
 	"CRAZY/utils"
 
 	"github.com/gin-gonic/gin"
@@ -22,7 +22,7 @@ func PostPermission(c *gin.Context) {
 		var form PermissionForm
 		err := c.ShouldBind(&form)
 		if err == nil {
-			Model := &system.Permission{
+			Model := &system.SystemPermission{
 				Name:   form.Name,
 				Key:    form.Key,
 				Status: form.Status,
@@ -70,7 +70,7 @@ func PutPermissionById(c *gin.Context) {
 		var form PermissionForm
 		err := c.ShouldBind(&form)
 		if err == nil {
-			Model := &system.Permission{
+			Model := &system.SystemPermission{
 				Name:   form.Name,
 				Key:    form.Key,
 				Status: form.Status,

@@ -21,16 +21,16 @@ func NewRolePermissionRepository() *RolePermissionRepository {
 	return &RolePermissionRepository{}
 }
 
-func (r *RolePermissionRepository) Create(roleID uint, permissionKeys string) ([]*system.RolePermission, error) {
+func (r *RolePermissionRepository) Create(roleID uint, permissionKeys string) ([]*system.SystemRolePermission, error) {
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
 	}
 	keys := strings.Split(permissionKeys, ",")
 
-	var rolePermissions []*system.RolePermission
+	var rolePermissions []*system.SystemRolePermission
 	for _, key := range keys {
-		rolePermission := &system.RolePermission{
+		rolePermission := &system.SystemRolePermission{
 			RoleID:         roleID,
 			PermissionKeys: key,
 		}
@@ -57,7 +57,7 @@ func (r *RolePermissionRepository) DeleteByKey(key string) error {
 	return _db.Where("permission_keys = ?", key).Delete(RolePermission{}).Error
 }
 
-func (r *RolePermissionRepository) UpdateByRoleId(id uint, permissionKeys string) ([]*system.RolePermission, error) {
+func (r *RolePermissionRepository) UpdateByRoleId(id uint, permissionKeys string) ([]*system.SystemRolePermission, error) {
 	r.DeleteByRoleId(id)
 	ret, err := r.Create(id, permissionKeys)
 	return ret, err

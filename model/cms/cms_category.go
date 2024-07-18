@@ -5,7 +5,7 @@ import (
 )
 
 // category 分类表
-type Category struct {
+type CmsCategory struct {
 	ID        uint      `json:"id" gorm:"primary_key;AUTO_INCREMENT"`
 	Status    uint      `json:"status" gorm:"not null"`
 	Index     uint      `json:"index" gorm:"not null"`

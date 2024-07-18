@@ -25,7 +25,7 @@ func PostBanner(c *gin.Context) {
 	var form PostBannerForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		Model := &cms.Banner{
+		Model := &cms.CmsBanner{
 			Status:      form.Status,
 			Index:       form.Index,
 			Title:       html.EscapeString(form.Title),
@@ -71,7 +71,7 @@ func PutBannerById(c *gin.Context) {
 	var form PostBannerForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		Model := &cms.Banner{
+		Model := &cms.CmsBanner{
 			Status:      form.Status,
 			Index:       form.Index,
 			Title:       html.EscapeString(form.Title),

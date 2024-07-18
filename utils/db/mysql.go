@@ -50,27 +50,27 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (*gorm.DB, e
 	db.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
 		AutoMigrate(
 			// sys
-			&system.User{},
-			&system.UserRole{},
-			&system.Permission{},
-			&system.Role{},
-			&system.RolePermission{},
-			&system.Other{},
+			&system.SystemUser{},
+			&system.SystemUserRole{},
+			&system.SystemPermission{},
+			&system.SystemRole{},
+			&system.SystemRolePermission{},
+			&system.SystemOther{},
 
 			// shop
-			&shop.UserAddress{},
+			&shop.ShopUserAddress{},
 			&shop.ShopCart{},
 			&shop.ShopOrder{},
 
 			// cms
-			&cms.BannerCategory{},
-			&cms.Banner{},
-			&cms.Category{},
-			&cms.PostCategory{},
-			&cms.Post{},
+			&cms.CmsBannerCategory{},
+			&cms.CmsBanner{},
+			&cms.CmsCategory{},
+			&cms.CmsPostCategory{},
+			&cms.CmsPost{},
 		)
 
-	// user := &system.User{
+	// user := &system.SystemUser{
 	// 	Username:    "admin",
 	// 	Password:    "d36dd63cfd", // admin
 	// 	Status:      1,
@@ -78,22 +78,22 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (*gorm.DB, e
 	// 	RealName:    "ADMIN",
 	// }
 
-	// permission := &system.Permission{
+	// permission := &system.SystemPermission{
 	// 	Name:   "全部",
 	// 	Key:    "All",
 	// 	Status: 1,
 	// }
 
-	// role := &system.Role{
+	// role := &system.SystemRole{
 	// 	Name: "管理员",
 	// }
 
-	// userRole := &system.UserRole{
+	// userRole := &system.SystemUserRole{
 	// 	UserID: 1,
 	// 	RoleID: 1,
 	// }
 
-	// rolePermission := &system.RolePermission{
+	// rolePermission := &system.SystemRolePermission{
 	// 	RoleID:         1,
 	// 	PermissionKeys: "All",
 	// }

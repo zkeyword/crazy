@@ -24,7 +24,7 @@ func NewUserRepository() *UserRepository {
 
 // Create 创建用户
 //
-//	func (r *UserRepository) Create(t *system.User, RoleId uint) (*system.User, error) {
+//	func (r *UserRepository) Create(t *system.SystemUser, RoleId uint) (*system.SystemUser, error) {
 //		tx := db.GetMysql().Begin()
 //		c := tx.Create(t)
 //		rowsAffected := c.RowsAffected
@@ -41,7 +41,7 @@ func NewUserRepository() *UserRepository {
 //		}
 //		return t, err
 //	}
-func (r *UserRepository) Create(t *system.User) (*system.User, error) {
+func (r *UserRepository) Create(t *system.SystemUser) (*system.SystemUser, error) {
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -60,8 +60,8 @@ func (r *UserRepository) DeleteById(id uint) error {
 }
 
 // UpdateById 修改用户
-func (r *UserRepository) UpdateById(id uint, t *system.User) (*system.User, error) {
-	var ret = new(system.User)
+func (r *UserRepository) UpdateById(id uint, t *system.SystemUser) (*system.SystemUser, error) {
+	var ret = new(system.SystemUser)
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -74,8 +74,8 @@ func (r *UserRepository) UpdateById(id uint, t *system.User) (*system.User, erro
 }
 
 // Get 获取用户列表
-func (r *UserRepository) Get(page int, pageSize int, username string) ([]system.User, error) {
-	var users []system.User
+func (r *UserRepository) Get(page int, pageSize int, username string) ([]system.SystemUser, error) {
+	var users []system.SystemUser
 	var err error
 	if pageSize < 1 {
 		pageSize = 10
@@ -96,7 +96,7 @@ func (r *UserRepository) Get(page int, pageSize int, username string) ([]system.
 }
 
 func (r *UserRepository) GetUserCount(username string) int64 {
-	var users []system.User
+	var users []system.SystemUser
 	var count int64
 	_db, err := db.GetMysql()
 	if err != nil {
@@ -111,8 +111,8 @@ func (r *UserRepository) GetUserCount(username string) int64 {
 }
 
 // GetById 获取用户
-func (r *UserRepository) GetById(id uint) (*system.User, error) {
-	var ret = &system.User{}
+func (r *UserRepository) GetById(id uint) (*system.SystemUser, error) {
+	var ret = &system.SystemUser{}
 	_db, err := db.GetMysql()
 	if err != nil {
 		return ret, err
@@ -123,7 +123,7 @@ func (r *UserRepository) GetById(id uint) (*system.User, error) {
 
 // GetLoginStatusById 获取用户登录状态 // 使用redis后冗余
 func (r *UserRepository) GetLoginStatusById(id uint) (int, error) {
-	var user system.User
+	var user system.SystemUser
 	_db, err := db.GetMysql()
 	if err != nil {
 		return 0, err
@@ -197,8 +197,8 @@ func (r *UserRepository) GetUserRolePermissionByUserId(id uint) *ReturnRolePermi
 }
 
 // GetByName
-func (r *UserRepository) GetByUserName(username string) (*system.User, error) {
-	var ret = &system.User{}
+func (r *UserRepository) GetByUserName(username string) (*system.SystemUser, error) {
+	var ret = &system.SystemUser{}
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err

@@ -20,8 +20,8 @@ func NewPostCategoryRepository() *PostCategoryRepository {
 	return &PostCategoryRepository{}
 }
 
-func (r *PostCategoryRepository) Create(postID uint, categoryID uint) (*cms.PostCategory, error) {
-	var ret = new(cms.PostCategory)
+func (r *PostCategoryRepository) Create(postID uint, categoryID uint) (*cms.CmsPostCategory, error) {
+	var ret = new(cms.CmsPostCategory)
 	ret.PostID = postID
 	ret.CategoryID = categoryID
 	_db, err := db.GetMysql()

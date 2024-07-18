@@ -4,8 +4,8 @@ import (
 	"time"
 )
 
-// User 用户表
-type User struct {
+// SystemUser 用户表
+type SystemUser struct {
 	ID          uint      `json:"id" gorm:"primary_key;AUTO_INCREMENT"`
 	Username    string    `json:"username" gorm:"unique;not null;varchar(50)"`
 	RealName    string    `json:"realName" gorm:"unique;not null;varchar(50)"`

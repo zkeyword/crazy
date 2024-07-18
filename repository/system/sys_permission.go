@@ -24,7 +24,7 @@ func NewPermissionRepository() *PermissionRepository {
 }
 
 // Create 创建权限
-func (r *PermissionRepository) Create(t *system.Permission) (*system.Permission, error) {
+func (r *PermissionRepository) Create(t *system.SystemPermission) (*system.SystemPermission, error) {
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -46,8 +46,8 @@ func (r *PermissionRepository) DeleteById(id uint, key string) error {
 }
 
 // UpdateById 修改权限
-func (r *PermissionRepository) UpdateById(id uint, t *system.Permission) (*system.Permission, error) {
-	var ret = new(system.Permission)
+func (r *PermissionRepository) UpdateById(id uint, t *system.SystemPermission) (*system.SystemPermission, error) {
+	var ret = new(system.SystemPermission)
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -76,8 +76,8 @@ func (r *PermissionRepository) GetById(id uint) *Permission {
 }
 
 // Get 获取权限列表
-func (r *PermissionRepository) Get() []system.Permission {
-	var ret []system.Permission
+func (r *PermissionRepository) Get() []system.SystemPermission {
+	var ret []system.SystemPermission
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil

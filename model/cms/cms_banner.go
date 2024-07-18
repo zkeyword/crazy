@@ -5,7 +5,7 @@ import (
 )
 
 // Banner表
-type Banner struct {
+type CmsBanner struct {
 	ID          uint      `json:"id" gorm:"primary_key;AUTO_INCREMENT"`
 	Status      uint      `json:"status" gorm:"not null"`
 	Index       uint      `json:"index" gorm:"not null"`

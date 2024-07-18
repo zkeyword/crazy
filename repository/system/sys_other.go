@@ -20,7 +20,7 @@ func NewOtherRepository() *OtherRepository {
 	return &OtherRepository{}
 }
 
-func (r *OtherRepository) Create(t *system.Other) (*system.Other, error) {
+func (r *OtherRepository) Create(t *system.SystemOther) (*system.SystemOther, error) {
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -29,7 +29,7 @@ func (r *OtherRepository) Create(t *system.Other) (*system.Other, error) {
 	return t, err
 }
 
-func (r *OtherRepository) BatchCreate(t []*system.Other) ([]*system.Other, error) {
+func (r *OtherRepository) BatchCreate(t []*system.SystemOther) ([]*system.SystemOther, error) {
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -46,8 +46,8 @@ func (r *OtherRepository) DeleteById(id uint) error {
 	return _db.Where("id = ?", id).Delete(Other{}).Error
 }
 
-func (r *OtherRepository) UpdateById(id uint, t *system.Other) (*system.Other, error) {
-	var ret = new(system.Other)
+func (r *OtherRepository) UpdateById(id uint, t *system.SystemOther) (*system.SystemOther, error) {
+	var ret = new(system.SystemOther)
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -59,8 +59,8 @@ func (r *OtherRepository) UpdateById(id uint, t *system.Other) (*system.Other, e
 	return ret, err
 }
 
-func (r *OtherRepository) GetById(id uint) (*system.Other, error) {
-	var ret = &system.Other{}
+func (r *OtherRepository) GetById(id uint) (*system.SystemOther, error) {
+	var ret = &system.SystemOther{}
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -69,8 +69,8 @@ func (r *OtherRepository) GetById(id uint) (*system.Other, error) {
 	return ret, err
 }
 
-func (r *OtherRepository) Get() ([]system.Other, error) {
-	var Other []system.Other
+func (r *OtherRepository) Get() ([]system.SystemOther, error) {
+	var Other []system.SystemOther
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err

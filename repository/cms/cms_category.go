@@ -22,7 +22,7 @@ func NewCategoryRepository() *CategoryRepository {
 }
 
 // Create 创建文章
-func (r *CategoryRepository) Create(t *cms.Category) (*cms.Category, error) {
+func (r *CategoryRepository) Create(t *cms.CmsCategory) (*cms.CmsCategory, error) {
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -41,8 +41,8 @@ func (r *CategoryRepository) DeleteById(id int64) error {
 }
 
 // UpdateById 修改文章
-func (r *CategoryRepository) UpdateById(id int64, t *cms.Category) (*cms.Category, error) {
-	var ret = new(cms.Category)
+func (r *CategoryRepository) UpdateById(id int64, t *cms.CmsCategory) (*cms.CmsCategory, error) {
+	var ret = new(cms.CmsCategory)
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -52,8 +52,8 @@ func (r *CategoryRepository) UpdateById(id int64, t *cms.Category) (*cms.Categor
 }
 
 // GetById 获取文章
-func (r *CategoryRepository) GetById(id int64) (*cms.Category, error) {
-	var ret = &cms.Category{}
+func (r *CategoryRepository) GetById(id int64) (*cms.CmsCategory, error) {
+	var ret = &cms.CmsCategory{}
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -63,8 +63,8 @@ func (r *CategoryRepository) GetById(id int64) (*cms.Category, error) {
 }
 
 // Get 获取文章
-func (r *CategoryRepository) Get(page int, pageSize int, title string) ([]cms.Category, error) {
-	var Category []cms.Category
+func (r *CategoryRepository) Get(page int, pageSize int, title string) ([]cms.CmsCategory, error) {
+	var Category []cms.CmsCategory
 	var err error
 	_db, err := db.GetMysql()
 	if err != nil {
@@ -79,7 +79,7 @@ func (r *CategoryRepository) Get(page int, pageSize int, title string) ([]cms.Ca
 }
 
 func (r *CategoryRepository) GetCategoryCount(title string) int64 {
-	var Category []cms.Category
+	var Category []cms.CmsCategory
 	var count int64
 	_db, err := db.GetMysql()
 	if err != nil {

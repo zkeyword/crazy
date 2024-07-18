@@ -26,7 +26,7 @@ func NewPostRepository() *PostRepository {
 }
 
 // Create 创建文章
-func (r *PostRepository) Create(t *cms.Post) (*cms.Post, error) {
+func (r *PostRepository) Create(t *cms.CmsPost) (*cms.CmsPost, error) {
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -45,8 +45,8 @@ func (r *PostRepository) DeleteById(id int64) error {
 }
 
 // UpdateById 修改文章
-func (r *PostRepository) UpdateById(id int64, t *cms.Post) (*cms.Post, error) {
-	var ret = new(cms.Post)
+func (r *PostRepository) UpdateById(id int64, t *cms.CmsPost) (*cms.CmsPost, error) {
+	var ret = new(cms.CmsPost)
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -56,8 +56,8 @@ func (r *PostRepository) UpdateById(id int64, t *cms.Post) (*cms.Post, error) {
 }
 
 // GetById 获取文章
-func (r *PostRepository) GetById(id int64) (*cms.Post, error) {
-	var ret = &cms.Post{}
+func (r *PostRepository) GetById(id int64) (*cms.CmsPost, error) {
+	var ret = &cms.CmsPost{}
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -67,9 +67,9 @@ func (r *PostRepository) GetById(id int64) (*cms.Post, error) {
 }
 
 // Get 获取文章
-func (r *PostRepository) Get(page int, pageSize int, title string, categoryIds string) ([]cms.Post, error) {
-	var Post []cms.Post
-	var PostCategory []cms.PostCategory
+func (r *PostRepository) Get(page int, pageSize int, title string, categoryIds string) ([]cms.CmsPost, error) {
+	var Post []cms.CmsPost
+	var PostCategory []cms.CmsPostCategory
 	var err error
 	_db, err := db.GetMysql()
 	if err != nil {
@@ -96,7 +96,7 @@ func (r *PostRepository) Get(page int, pageSize int, title string, categoryIds s
 }
 
 func (r *PostRepository) GetPostCount(title string) int64 {
-	var users []cms.Post
+	var users []cms.CmsPost
 	var count int64
 	_db, err := db.GetMysql()
 	if err != nil {
@@ -111,8 +111,8 @@ func (r *PostRepository) GetPostCount(title string) int64 {
 }
 
 // GetNews 获取文章
-func (r *PostRepository) GetNews() ([]cms.Post, error) {
-	var Post []cms.Post
+func (r *PostRepository) GetNews() ([]cms.CmsPost, error) {
+	var Post []cms.CmsPost
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -131,11 +131,11 @@ func (r *PostRepository) PostNewsSet(action string, ids []int64) error {
 		return err
 	}
 	if action == "add" {
-		err = _db.Model(&cms.Post{}).Where("id=?", ids[0]).Update("news_rank", 10).Error
+		err = _db.Model(&cms.CmsPost{}).Where("id=?", ids[0]).Update("news_rank", 10).Error
 	} else {
-		err = _db.Model(&cms.Post{}).Where("news_rank>?", 0).Update("news_rank", 0).Error
+		err = _db.Model(&cms.CmsPost{}).Where("news_rank>?", 0).Update("news_rank", 0).Error
 		for k, v := range ids {
-			err = _db.Model(&cms.Post{}).Where("id=?", v).Update("news_rank", k+1).Error
+			err = _db.Model(&cms.CmsPost{}).Where("id=?", v).Update("news_rank", k+1).Error
 		}
 	}
 	return err

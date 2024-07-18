@@ -11,12 +11,12 @@ func getRepo() *repository.PermissionRepository {
 	return repository.NewPermissionRepository()
 }
 
-func Create(Permission *system.Permission) (*system.Permission, error) {
+func Create(Permission *system.SystemPermission) (*system.SystemPermission, error) {
 	ret, err := repo.Create(Permission)
 	return ret, err
 }
 
-func UpdateById(id uint, Permission *system.Permission) (*system.Permission, error) {
+func UpdateById(id uint, Permission *system.SystemPermission) (*system.SystemPermission, error) {
 	ret, err := repo.UpdateById(id, Permission)
 	return ret, err
 }
@@ -30,7 +30,7 @@ func GetById(id uint) *repository.Permission {
 	return repo.GetById(id)
 }
 
-func Get() []system.Permission {
+func Get() []system.SystemPermission {
 	return repo.Get()
 }
 
@@ -48,7 +48,7 @@ func GetTree(pid uint) []*TreeList {
 	return recursion(pid, ret, true)
 }
 
-func recursion(pid uint, list []system.Permission, isRoot bool) []*TreeList {
+func recursion(pid uint, list []system.SystemPermission, isRoot bool) []*TreeList {
 	treeList := []*TreeList{}
 	for _, v := range list {
 		var isPass bool

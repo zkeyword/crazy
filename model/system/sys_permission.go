@@ -4,8 +4,8 @@ import (
 	"time"
 )
 
-// Permission 权限表
-type Permission struct {
+// SystemPermission 权限表
+type SystemPermission struct {
 	ID        uint      `json:"id" gorm:"primary_key;AUTO_INCREMENT"`
 	Name      string    `json:"name" gorm:"not null;unique;varchar(50)"`
 	Key       string    `json:"key" gorm:"not null;unique;comment:'权限标识'"`

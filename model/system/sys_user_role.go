@@ -4,8 +4,8 @@ import (
 	"time"
 )
 
-// UserRole 用户角色表
-type UserRole struct {
+// SystemUserRole 用户角色表
+type SystemUserRole struct {
 	ID        uint      `json:"id" gorm:"primary_key;AUTO_INCREMENT"`
 	UserID    uint      `json:"userID" gorm:"not null"`
 	RoleID    uint      `json:"roleID" gorm:"not null"`

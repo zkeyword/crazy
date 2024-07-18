@@ -24,7 +24,7 @@ func NewBannerRepository() *BannerRepository {
 }
 
 // Create 创建文章
-func (r *BannerRepository) Create(t *cms.Banner) (*cms.Banner, error) {
+func (r *BannerRepository) Create(t *cms.CmsBanner) (*cms.CmsBanner, error) {
 	_db, err := db.GetMysql()
 	if err != nil {
 		return t, err
@@ -44,8 +44,8 @@ func (r *BannerRepository) DeleteById(id int64) error {
 }
 
 // UpdateById 修改文章
-func (r *BannerRepository) UpdateById(id int64, t *cms.Banner) (*cms.Banner, error) {
-	var ret = new(cms.Banner)
+func (r *BannerRepository) UpdateById(id int64, t *cms.CmsBanner) (*cms.CmsBanner, error) {
+	var ret = new(cms.CmsBanner)
 	_db, err := db.GetMysql()
 	if err != nil {
 		return ret, err
@@ -55,8 +55,8 @@ func (r *BannerRepository) UpdateById(id int64, t *cms.Banner) (*cms.Banner, err
 }
 
 // GetById 获取文章
-func (r *BannerRepository) GetById(id int64) (*cms.Banner, error) {
-	var ret = &cms.Banner{}
+func (r *BannerRepository) GetById(id int64) (*cms.CmsBanner, error) {
+	var ret = &cms.CmsBanner{}
 	_db, err := db.GetMysql()
 	if err != nil {
 		return ret, err
@@ -66,8 +66,8 @@ func (r *BannerRepository) GetById(id int64) (*cms.Banner, error) {
 }
 
 // Get 获取文章
-func (r *BannerRepository) Get(page int, pageSize int, title string) ([]cms.Banner, error) {
-	var Banner []cms.Banner
+func (r *BannerRepository) Get(page int, pageSize int, title string) ([]cms.CmsBanner, error) {
+	var Banner []cms.CmsBanner
 	var err error
 	_db, err := db.GetMysql()
 	if err != nil {
@@ -82,7 +82,7 @@ func (r *BannerRepository) Get(page int, pageSize int, title string) ([]cms.Bann
 }
 
 func (r *BannerRepository) GetBannerCount(title string) int64 {
-	var users []cms.Banner
+	var users []cms.CmsBanner
 	var count int64
 	_db, err := db.GetMysql()
 	if err != nil {

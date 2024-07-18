@@ -4,8 +4,8 @@ import (
 	"time"
 )
 
-// Operation 功能表
-type Operation struct {
+// SystemOperation 功能表
+type SystemOperation struct {
 	ID        uint      `json:"id" gorm:"primary_key;AUTO_INCREMENT"`
 	Name      string    `json:"name" gorm:"not null;unique;varchar(50)"`
 	Key       string    `json:"key" gorm:"not null;unique;comment:'权限标识'"`

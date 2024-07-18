@@ -21,7 +21,7 @@ func PostCategory(c *gin.Context) {
 	var form PostCategoryForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		Model := &cms.Category{
+		Model := &cms.CmsCategory{
 			Status: form.Status,
 			Index:  form.Index,
 			Title:  html.EscapeString(form.Title),
@@ -63,7 +63,7 @@ func PutCategoryById(c *gin.Context) {
 	var form PostCategoryForm
 	err := c.ShouldBind(&form)
 	if err == nil {
-		Model := &cms.Category{
+		Model := &cms.CmsCategory{
 			Status: form.Status,
 			Index:  form.Index,
 			Title:  html.EscapeString(form.Title),

@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type Post struct {
+type CmsPost struct {
 	ID          uint      `json:"id" gorm:"primary_key;AUTO_INCREMENT"`
 	Title       string    `json:"title" gorm:"type:varchar(255);unique;not null;"`
 	Desc        string    `json:"desc" gorm:"type:varchar(255);unique;not null;"`

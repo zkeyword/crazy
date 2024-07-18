@@ -27,7 +27,7 @@ func NewUserAddressRepository() *UserAddressRepository {
 	return &UserAddressRepository{}
 }
 
-func (r *UserAddressRepository) Create(t *shop.UserAddress) (*shop.UserAddress, error) {
+func (r *UserAddressRepository) Create(t *shop.ShopUserAddress) (*shop.ShopUserAddress, error) {
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -46,8 +46,8 @@ func (r *UserAddressRepository) DeleteById(id uint) error {
 }
 
 // UpdateByUserId 修改用户地址
-func (r *UserAddressRepository) UpdateByUserId(id uint, t *shop.UserAddress) (*shop.UserAddress, error) {
-	var ret = new(shop.UserAddress)
+func (r *UserAddressRepository) UpdateByUserId(id uint, t *shop.ShopUserAddress) (*shop.ShopUserAddress, error) {
+	var ret = new(shop.ShopUserAddress)
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -57,8 +57,8 @@ func (r *UserAddressRepository) UpdateByUserId(id uint, t *shop.UserAddress) (*s
 }
 
 // GetByUserId 获取用户地址
-func (r *UserAddressRepository) GetByUserId(id uint, t *shop.UserAddress) (*shop.UserAddress, error) {
-	var ret = new(shop.UserAddress)
+func (r *UserAddressRepository) GetByUserId(id uint, t *shop.ShopUserAddress) (*shop.ShopUserAddress, error) {
+	var ret = new(shop.ShopUserAddress)
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -68,8 +68,8 @@ func (r *UserAddressRepository) GetByUserId(id uint, t *shop.UserAddress) (*shop
 }
 
 // Get 获取用户列表
-func (r *UserAddressRepository) Get(page int, pageSize int, username string) ([]shop.UserAddress, error) {
-	var usersAdress []shop.UserAddress
+func (r *UserAddressRepository) Get(page int, pageSize int, username string) ([]shop.ShopUserAddress, error) {
+	var usersAdress []shop.ShopUserAddress
 	var err error
 	if pageSize < 1 {
 		pageSize = 10

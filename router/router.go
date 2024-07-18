@@ -92,9 +92,6 @@ func Routers() *gin.Engine {
 		systemRouter.POST("/role/:id/user/:userId", system.PostRoleUserByRoleIDAndUserID)
 		systemRouter.DELETE("/role/:id/user/:userId", system.DeleteRoleUserByRoleIDAndUserID)
 
-		// 用户地址
-		systemRouter.GET("/userAddress", shop.GetUserAddress)
-
 		// 其他设置
 		systemRouter.GET("/other", system.GetOther)
 		systemRouter.GET("/other/:id", system.GetOtherById)
@@ -103,7 +100,6 @@ func Routers() *gin.Engine {
 		systemRouter.PUT("/other/:id", system.PutOtherById)
 		systemRouter.GET("/other/export", system.ExportOther)
 		systemRouter.POST("/other/import", system.ImportOther)
-
 	}
 
 	// shop 部分

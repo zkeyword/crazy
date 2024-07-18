@@ -19,7 +19,7 @@ func NewRoleRepository() *RoleRepository {
 }
 
 // Create 创建角色
-func (r *RoleRepository) Create(t *system.Role) (*system.Role, error) {
+func (r *RoleRepository) Create(t *system.SystemRole) (*system.SystemRole, error) {
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -38,8 +38,8 @@ func (r *RoleRepository) DeleteById(id uint) error {
 }
 
 // UpdateById 修改角色
-func (r *RoleRepository) UpdateById(id uint, t *system.Role) (*system.Role, error) {
-	var ret = new(system.Role)
+func (r *RoleRepository) UpdateById(id uint, t *system.SystemRole) (*system.SystemRole, error) {
+	var ret = new(system.SystemRole)
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
@@ -66,8 +66,8 @@ func (r *RoleRepository) GetById(id uint) *Role {
 }
 
 // Get 获取角色列表
-func (r *RoleRepository) Get(page int, pageSize int, name string) ([]system.Role, error) {
-	var roles []system.Role
+func (r *RoleRepository) Get(page int, pageSize int, name string) ([]system.SystemRole, error) {
+	var roles []system.SystemRole
 	var err error
 	if pageSize < 1 {
 		pageSize = 10
@@ -88,7 +88,7 @@ func (r *RoleRepository) Get(page int, pageSize int, name string) ([]system.Role
 }
 
 func (r *RoleRepository) GetRoleCount(name string) int64 {
-	var roles []system.Role
+	var roles []system.SystemRole
 	var count int64
 	_db, err := db.GetMysql()
 	if err != nil {

@@ -11,10 +11,10 @@ import (
 type PostService interface {
 	Get(page int, pageSize int, title string, categoryIds string) (*ReturnPostList, error)
 	GetNews() (*ReturnPostList, error)
-	Create(Post *cms.Post, categoryIds string) (*cms.Post, error)
+	Create(Post *cms.CmsPost, categoryIds string) (*cms.CmsPost, error)
 	DeleteById(id int64) error
-	PutPostById(id int64, Post *cms.Post, categoryIds string) (*cms.Post, error)
-	GetById(id int64) (*cms.Post, error)
+	PutPostById(id int64, Post *cms.CmsPost, categoryIds string) (*cms.CmsPost, error)
+	GetById(id int64) (*cms.CmsPost, error)
 	PostNewsSet(action string, ids []int64) error
 }
 
@@ -24,10 +24,10 @@ type postService struct {
 }
 
 type ReturnPostList struct {
-	Page     int        `json:"page"`
-	PageSize int        `json:"pageSize"`
-	Total    int64      `json:"total"`
-	List     []cms.Post `json:"list"`
+	Page     int           `json:"page"`
+	PageSize int           `json:"pageSize"`
+	Total    int64         `json:"total"`
+	List     []cms.CmsPost `json:"list"`
 }
 
 // NewArticleService 实例化ArticleService
@@ -51,7 +51,7 @@ func (s *postService) Get(page int, pageSize int, title string, categoryIds stri
 	return returnValue, err
 }
 
-func (s *postService) Create(Post *cms.Post, categoryIds string) (*cms.Post, error) {
+func (s *postService) Create(Post *cms.CmsPost, categoryIds string) (*cms.CmsPost, error) {
 	ret, err := s.repo.Create(Post)
 	if err == nil {
 		ids := strings.Split(categoryIds, ",")
@@ -62,7 +62,7 @@ func (s *postService) Create(Post *cms.Post, categoryIds string) (*cms.Post, err
 	return ret, err
 }
 
-func (s *postService) PutPostById(id int64, Post *cms.Post, categoryIds string) (*cms.Post, error) {
+func (s *postService) PutPostById(id int64, Post *cms.CmsPost, categoryIds string) (*cms.CmsPost, error) {
 	ret, err := s.repo.UpdateById(id, Post)
 	ids := strings.Split(categoryIds, ",")
 	s.relatedRepo.DeleteByPostId(id)
@@ -80,7 +80,7 @@ func (s *postService) DeleteById(id int64) error {
 	return err
 }
 
-func (s *postService) GetById(id int64) (*cms.Post, error) {
+func (s *postService) GetById(id int64) (*cms.CmsPost, error) {
 	ret, err := s.repo.GetById(id)
 	return ret, err
 }

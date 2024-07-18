@@ -21,8 +21,8 @@ func NewUserRoleRepository() *UserRoleRepository {
 	return &UserRoleRepository{}
 }
 
-func (r *UserRoleRepository) Create(userId uint, username string, roleId uint) (*system.UserRole, error) {
-	var ret = new(system.UserRole)
+func (r *UserRoleRepository) Create(userId uint, username string, roleId uint) (*system.SystemUserRole, error) {
+	var ret = new(system.SystemUserRole)
 	ret.RoleID = roleId
 	ret.UserID = userId
 	ret.Username = username

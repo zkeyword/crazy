@@ -25,10 +25,10 @@ func getUserRole() *repository.UserRoleRepository {
 }
 
 type ReturnRoleList struct {
-	Page     int           `json:"page"`
-	PageSize int           `json:"pageSize"`
-	Total    int64         `json:"total"`
-	List     []system.Role `json:"list"`
+	Page     int                 `json:"page"`
+	PageSize int                 `json:"pageSize"`
+	Total    int64               `json:"total"`
+	List     []system.SystemRole `json:"list"`
 }
 
 type ReturnPolePermission struct {
@@ -61,7 +61,7 @@ func GetById(id uint) *repository.Role {
 	return roleRepo.GetById(id)
 }
 
-func Create(Role *system.Role, PermissionKeys string) (*ReturnPolePermission, error) {
+func Create(Role *system.SystemRole, PermissionKeys string) (*ReturnPolePermission, error) {
 	ret, err := roleRepo.Create(Role)
 	if err == nil {
 		rolePermissionRepo.Create(ret.ID, PermissionKeys)
@@ -76,7 +76,7 @@ func Create(Role *system.Role, PermissionKeys string) (*ReturnPolePermission, er
 	return returnValue, err
 }
 
-func UpdateById(id uint, Role *system.Role, PermissionKeys string) (*ReturnPolePermission, error) {
+func UpdateById(id uint, Role *system.SystemRole, PermissionKeys string) (*ReturnPolePermission, error) {
 	ret, err := roleRepo.UpdateById(id, Role)
 	if err == nil {
 		rolePermissionRepo.UpdateByRoleId(id, PermissionKeys)
@@ -104,7 +104,7 @@ func GetRolePermissionByRoleID(id uint) *repository.RolePermission {
 	return rolePermissionRepo.GetByRoleID(id)
 }
 
-func PostRolePermissionByRoleID(id uint, permissionKeys string) ([]*system.RolePermission, error) {
+func PostRolePermissionByRoleID(id uint, permissionKeys string) ([]*system.SystemRolePermission, error) {
 	ret, err := rolePermissionRepo.UpdateByRoleId(id, permissionKeys)
 	return ret, err
 }
@@ -117,7 +117,7 @@ func GetRoleUserByUserID(id uint) *[]repository.UserRole {
 	return userRoleRepo.GetByUserID(id)
 }
 
-func PostRoleUser(userID uint, username string, roleId uint) (*system.UserRole, error) {
+func PostRoleUser(userID uint, username string, roleId uint) (*system.SystemUserRole, error) {
 	return userRoleRepo.Create(userID, username, roleId)
 }
 

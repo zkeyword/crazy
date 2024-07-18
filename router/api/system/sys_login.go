@@ -4,7 +4,7 @@ import (
 	"CRAZY/config"
 	"CRAZY/middleware"
 	"CRAZY/model/system"
-	sysUserService "CRAZY/services/sys/sys_user"
+	sysUserService "CRAZY/services/system/sys_user"
 	"CRAZY/utils"
 	"CRAZY/utils/db"
 	"CRAZY/utils/xor"
@@ -79,7 +79,7 @@ func Login(c *gin.Context) {
 
 		db.SetKey("UserLoginStatus"+strconv.FormatUint(uint64(res.ID), 10), "1")
 
-		Model := &system.User{
+		Model := &system.SystemUser{
 			LoginStatus: 1,
 		}
 		sysUserService.PutUserById(res.ID, Model, "")
@@ -115,7 +115,7 @@ func Register(c *gin.Context) {
 		}
 
 		// 创建用户并默认999角色
-		Model := &system.User{
+		Model := &system.SystemUser{
 			Username:    html.EscapeString(form.Username),
 			Password:    xor.Enc(form.Password),
 			Status:      1,
@@ -145,7 +145,7 @@ func Logout(c *gin.Context) {
 	userID, _ := c.Get("userID")
 	id, _ := userID.(uint)
 	db.SetKey("UserLoginStatus"+strconv.FormatUint(uint64(id), 10), "-1")
-	Model := &system.User{
+	Model := &system.SystemUser{
 		LoginStatus: -1,
 	}
 	res, resErr := sysUserService.PutUserById(id, Model, "")
