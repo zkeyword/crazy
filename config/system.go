@@ -24,15 +24,15 @@ var SysTimeLocation, _ = time.LoadLocation("Asia/Chongqing")
 // 设置文件上传大小
 var MaxMultipartMemory int64 = 100 << 20 // 设置最大上传大小为100M
 
-// // System web系统配置结构体
-// type System struct {
+// // Sys web系统配置结构体
+// type Sys struct {
 // 	AppAdmin      string
 // 	UserIDKey     string
 // 	UserStructKey string
 // }
 
-// // SystemConfig web系统配置
-// var SystemConfig = &System{
+// // SysConfig web系统配置
+// var SysConfig = &Sys{
 // 	AppAdmin:      "admin",
 // 	UserIDKey:     "UserID",
 // 	UserStructKey: "User",

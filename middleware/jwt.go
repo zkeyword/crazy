@@ -35,7 +35,7 @@ func JWTAuth(jwtType string) gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		if jwtType == "system" {
+		if jwtType == "sys" {
 			// if claims.UserID == 0 {
 			// 	utils.FailWithMessage("Authorization出错, 清重新登录", c)
 			// 	c.Abort()

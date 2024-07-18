@@ -1,0 +1,93 @@
+package sysUserService
+
+import (
+	"CRAZY/model/sys"
+	repository "CRAZY/repository/sys"
+	"CRAZY/utils"
+	"strings"
+)
+
+var userRepo = getUserRepo()
+
+var userRoleRepo = getUserRoleRepo()
+
+func getUserRepo() *repository.UserRepository {
+	return repository.NewUserRepository()
+}
+
+func getUserRoleRepo() *repository.UserRoleRepository {
+	return repository.NewUserRoleRepository()
+}
+
+type ReturnUserList struct {
+	Page     int           `json:"page"`
+	PageSize int           `json:"pageSize"`
+	Total    int64         `json:"total"`
+	List     []sys.SysUser `json:"list"`
+}
+
+func Get(page int, pageSize int, username string) (*ReturnUserList, error) {
+	if pageSize < 1 {
+		pageSize = 10
+	}
+	if page < 1 {
+		page = 1
+	}
+	ret, err := userRepo.Get(page, pageSize, username)
+	count := userRepo.GetUserCount(username)
+	returnValue := &ReturnUserList{
+		Page:     page,
+		PageSize: pageSize,
+		Total:    count,
+		List:     ret,
+	}
+	return returnValue, err
+}
+
+func GetById(id uint) (*sys.SysUser, error) {
+	return userRepo.GetById(id)
+}
+
+func GetLoginStatusById(id uint) (int, error) {
+	return userRepo.GetLoginStatusById(id)
+}
+
+func GetUserRolePermissionByUserId(id uint) *repository.ReturnRolePermission {
+	return userRepo.GetUserRolePermissionByUserId(id)
+}
+
+func Create(User *sys.SysUser, roleIds string) (*sys.SysUser, error) {
+	ret, err := userRepo.Create(User)
+	if err == nil && roleIds != "" {
+		roleIdArr := strings.Split(roleIds, ",")
+		for _, v := range roleIdArr {
+			userRoleRepo.Create(ret.ID, ret.Username, utils.StrToUInt(v))
+		}
+	}
+	return ret, err
+}
+
+func PutUserById(id uint, User *sys.SysUser, roleIds string) (*sys.SysUser, error) {
+	ret, err := userRepo.UpdateById(id, User)
+	if err == nil && roleIds != "" {
+		roleIdArr := strings.Split(roleIds, ",")
+		userRoleRepo.DeleteByUserId(id)
+		for _, v := range roleIdArr {
+			userRoleRepo.Create(ret.ID, ret.Username, utils.StrToUInt(v))
+		}
+	}
+
+	return ret, err
+}
+
+func DeleteById(id uint) error {
+	err := userRepo.DeleteById(id)
+	if err == nil {
+		userRoleRepo.DeleteByUserId(id)
+	}
+	return err
+}
+
+func GetByUserName(username string) (*sys.SysUser, error) {
+	return userRepo.GetByUserName(username)
+}

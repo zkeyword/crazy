@@ -5,7 +5,7 @@ import (
 	"CRAZY/router/api/cms"
 	"CRAZY/router/api/common"
 	"CRAZY/router/api/shop"
-	"CRAZY/router/api/system"
+	"CRAZY/router/api/sys"
 
 	// "CRAZY/utils/db"
 
@@ -46,60 +46,60 @@ func Routers() *gin.Engine {
 	// r.POST("/sse", sse.PublishHandler)
 
 	// 登陆/注册
-	r.POST("/login", system.Login)
-	// r.POST("/register", system.Register)
+	r.POST("/login", sys.Login)
+	// r.POST("/register", sys.Register)
 
 	// api 部分
-	systemRouter := r.Group("/system")
-	systemRouter.Use(middleware.JWTAuth("system"))
+	SysRouter := r.Group("/sys")
+	SysRouter.Use(middleware.JWTAuth("sys"))
 	{
-		systemRouter.POST("/upload", system.Upload)
-		systemRouter.POST("/logout", system.Logout)
-		systemRouter.GET("/permissionKeys", system.GetPermissionKeys)
-		systemRouter.GET("/userInfo", system.GetUserPermissionKeys)
+		SysRouter.POST("/upload", sys.Upload)
+		SysRouter.POST("/logout", sys.Logout)
+		SysRouter.GET("/permissionKeys", sys.GetPermissionKeys)
+		SysRouter.GET("/userInfo", sys.GetUserPermissionKeys)
 
 		// 用户
-		systemRouter.GET("/user", system.GetUser)
-		systemRouter.GET("/user/name/:username", system.GetUserByUsername)
-		systemRouter.GET("/user/id/:id", system.GetUserById)
-		systemRouter.POST("/user", system.PostUser)
-		systemRouter.DELETE("/user/:id", system.DelUserById)
-		systemRouter.PUT("/user/:id", system.PutUserById)
-		systemRouter.PUT("/user/status/:id", system.PutUserStatusById)
+		SysRouter.GET("/user", sys.GetUser)
+		SysRouter.GET("/user/name/:username", sys.GetUserByUsername)
+		SysRouter.GET("/user/id/:id", sys.GetUserById)
+		SysRouter.POST("/user", sys.PostUser)
+		SysRouter.DELETE("/user/:id", sys.DelUserById)
+		SysRouter.PUT("/user/:id", sys.PutUserById)
+		SysRouter.PUT("/user/status/:id", sys.PutUserStatusById)
 
 		// 角色
-		systemRouter.GET("/role", system.GetRole)
-		systemRouter.GET("/role/:id", system.GetRoleById)
-		systemRouter.POST("/role", system.PostRole)
-		systemRouter.DELETE("/role/:id", system.DelRoleById)
-		systemRouter.PUT("/role/:id", system.PutRoleById)
+		SysRouter.GET("/role", sys.GetRole)
+		SysRouter.GET("/role/:id", sys.GetRoleById)
+		SysRouter.POST("/role", sys.PostRole)
+		SysRouter.DELETE("/role/:id", sys.DelRoleById)
+		SysRouter.PUT("/role/:id", sys.PutRoleById)
 
 		// 权限
-		systemRouter.GET("/permission/:id", system.GetPermissionById)
-		systemRouter.GET("/permission/:id/tree", system.GetPermissionTreeById)
-		systemRouter.POST("/permission", system.PostPermission)
-		systemRouter.DELETE("/permission/:id", system.DelPermissionById)
-		systemRouter.PUT("/permission/:id", system.PutPermissionById)
+		SysRouter.GET("/permission/:id", sys.GetPermissionById)
+		SysRouter.GET("/permission/:id/tree", sys.GetPermissionTreeById)
+		SysRouter.POST("/permission", sys.PostPermission)
+		SysRouter.DELETE("/permission/:id", sys.DelPermissionById)
+		SysRouter.PUT("/permission/:id", sys.PutPermissionById)
 
 		// 角色、用户、权限关联
-		systemRouter.GET("/role/:id/permission", system.GetRolePermissionByRoleID)
-		systemRouter.POST("/role/:id/permission", system.PostRolePermissionByRoleID)
+		SysRouter.GET("/role/:id/permission", sys.GetRolePermissionByRoleID)
+		SysRouter.POST("/role/:id/permission", sys.PostRolePermissionByRoleID)
 
-		systemRouter.GET("/user/:id/role", system.GetRoleUserByUserID)
-		systemRouter.GET("/user/:id/permission", system.GetUserRolePermissionByUserId)
+		SysRouter.GET("/user/:id/role", sys.GetRoleUserByUserID)
+		SysRouter.GET("/user/:id/permission", sys.GetUserRolePermissionByUserId)
 
-		systemRouter.GET("/role/:id/user", system.GetRoleUserByRoleID)
-		systemRouter.POST("/role/:id/user/:userId", system.PostRoleUserByRoleIDAndUserID)
-		systemRouter.DELETE("/role/:id/user/:userId", system.DeleteRoleUserByRoleIDAndUserID)
+		SysRouter.GET("/role/:id/user", sys.GetRoleUserByRoleID)
+		SysRouter.POST("/role/:id/user/:userId", sys.PostRoleUserByRoleIDAndUserID)
+		SysRouter.DELETE("/role/:id/user/:userId", sys.DeleteRoleUserByRoleIDAndUserID)
 
 		// 其他设置
-		systemRouter.GET("/other", system.GetOther)
-		systemRouter.GET("/other/:id", system.GetOtherById)
-		systemRouter.POST("/other", system.PostOther)
-		systemRouter.DELETE("/other/:id", system.DelOtherById)
-		systemRouter.PUT("/other/:id", system.PutOtherById)
-		systemRouter.GET("/other/export", system.ExportOther)
-		systemRouter.POST("/other/import", system.ImportOther)
+		SysRouter.GET("/other", sys.GetOther)
+		SysRouter.GET("/other/:id", sys.GetOtherById)
+		SysRouter.POST("/other", sys.PostOther)
+		SysRouter.DELETE("/other/:id", sys.DelOtherById)
+		SysRouter.PUT("/other/:id", sys.PutOtherById)
+		SysRouter.GET("/other/export", sys.ExportOther)
+		SysRouter.POST("/other/import", sys.ImportOther)
 	}
 
 	// shop 部分

@@ -3,7 +3,7 @@ package db
 import (
 	"CRAZY/model/cms"
 	"CRAZY/model/shop"
-	"CRAZY/model/system"
+	"CRAZY/model/sys"
 	"errors"
 	"time"
 
@@ -50,12 +50,12 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (*gorm.DB, e
 	db.Set("gorm:table_options", "CHARSET=utf8mb4 ENGINE=InnoDB").
 		AutoMigrate(
 			// sys
-			&system.SystemUser{},
-			&system.SystemUserRole{},
-			&system.SystemPermission{},
-			&system.SystemRole{},
-			&system.SystemRolePermission{},
-			&system.SystemOther{},
+			&sys.SysUser{},
+			&sys.SysUserRole{},
+			&sys.SysPermission{},
+			&sys.SysRole{},
+			&sys.SysRolePermission{},
+			&sys.SysOther{},
 
 			// shop
 			&shop.ShopUserAddress{},
@@ -70,7 +70,7 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (*gorm.DB, e
 			&cms.CmsPost{},
 		)
 
-	// user := &system.SystemUser{
+	// user := &sys.SysUser{
 	// 	Username:    "admin",
 	// 	Password:    "d36dd63cfd", // admin
 	// 	Status:      1,
@@ -78,22 +78,22 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (*gorm.DB, e
 	// 	RealName:    "ADMIN",
 	// }
 
-	// permission := &system.SystemPermission{
+	// permission := &sys.SysPermission{
 	// 	Name:   "全部",
 	// 	Key:    "All",
 	// 	Status: 1,
 	// }
 
-	// role := &system.SystemRole{
+	// role := &sys.SysRole{
 	// 	Name: "管理员",
 	// }
 
-	// userRole := &system.SystemUserRole{
+	// userRole := &sys.SysUserRole{
 	// 	UserID: 1,
 	// 	RoleID: 1,
 	// }
 
-	// rolePermission := &system.SystemRolePermission{
+	// rolePermission := &sys.SysRolePermission{
 	// 	RoleID:         1,
 	// 	PermissionKeys: "All",
 	// }
