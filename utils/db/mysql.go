@@ -70,40 +70,40 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (*gorm.DB, e
 			&cms.CmsPost{},
 		)
 
-	// user := &sys.SysUser{
-	// 	Username:    "admin",
-	// 	Password:    "d36dd63cfd", // admin
-	// 	Status:      1,
-	// 	LoginStatus: 1,
-	// 	RealName:    "ADMIN",
-	// }
+	user := &sys.SysUser{
+		Username:    "admin",
+		Password:    "d36dd63cfd", // admin
+		Status:      1,
+		LoginStatus: 1,
+		RealName:    "ADMIN",
+	}
 
-	// permission := &sys.SysPermission{
-	// 	Name:   "全部",
-	// 	Key:    "All",
-	// 	Status: 1,
-	// }
+	permission := &sys.SysPermission{
+		Name:   "全部",
+		Key:    "All",
+		Status: 1,
+	}
 
-	// role := &sys.SysRole{
-	// 	Name: "管理员",
-	// }
+	role := &sys.SysRole{
+		Name: "管理员",
+	}
 
-	// userRole := &sys.SysUserRole{
-	// 	UserID: 1,
-	// 	RoleID: 1,
-	// }
+	userRole := &sys.SysUserRole{
+		UserID: 1,
+		RoleID: 1,
+	}
 
-	// rolePermission := &sys.SysRolePermission{
-	// 	RoleID:         1,
-	// 	PermissionKeys: "All",
-	// }
+	rolePermission := &sys.SysRolePermission{
+		RoleID:         1,
+		PermissionKeys: "All",
+	}
 
-	// db.FirstOrCreate(user)
-	// db.FirstOrCreate(permission)
-	// db.FirstOrCreate(role)
+	db.FirstOrCreate(user)
+	db.FirstOrCreate(permission)
+	db.FirstOrCreate(role)
 
-	// db.FirstOrCreate(userRole)
-	// db.FirstOrCreate(rolePermission)
+	db.FirstOrCreate(userRole)
+	db.FirstOrCreate(rolePermission)
 
 	return db, nil
 }
