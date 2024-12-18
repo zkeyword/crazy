@@ -10,7 +10,7 @@ type CmsPost struct {
 	Desc        string    `json:"desc" gorm:"type:varchar(255);unique;not null;"`
 	Thumbnail   string    `json:"thumbnail" gorm:"type:varchar(255);not null"`
 	Content     string    `json:"content" gorm:"type:text;not null;text"`
-	Status      uint      `json:"status" gorm:"not null"`
+	Status      int       `json:"status" gorm:"not null;comment:'用户状态: 1 - 正常、-1 - 禁用'"`
 	Index       uint      `json:"index" gorm:"unit;not null"`
 	CategoryIds string    `json:"categoryIds" gorm:"type:varchar(50);not null"`
 	NewsRank    int       `json:"news_rank"`

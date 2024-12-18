@@ -3,6 +3,7 @@ package cmsServices
 import (
 	"CRAZY/model/cms"
 	repository "CRAZY/repository/cms"
+	"fmt"
 )
 
 // CategoryService user服务
@@ -36,6 +37,7 @@ func newCategoryService() CategoryService {
 
 func (s *categoryService) Get(page int, pageSize int, title string) (*ReturnCategoryList, error) {
 	ret, err := s.repo.Get(page, pageSize, title)
+	fmt.Println(ret)
 	count := s.repo.GetCategoryCount(title)
 	returnValue := &ReturnCategoryList{
 		Page:     page,

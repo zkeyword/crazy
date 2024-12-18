@@ -11,7 +11,7 @@ import (
 )
 
 type PostCategoryForm struct {
-	Status uint   `form:"status" binding:"required"`
+	Status int    `form:"status" binding:"required"`
 	Title  string `form:"title" binding:"required"`
 	Index  uint   `form:"index" binding:"required"`
 }
@@ -96,7 +96,7 @@ func GetCategoryById(c *gin.Context) {
 	}
 }
 
-// GetUser 获取用户列表
+// GetCategory 获取类别
 func GetCategory(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))

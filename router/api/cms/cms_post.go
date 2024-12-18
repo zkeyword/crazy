@@ -15,7 +15,7 @@ type PostPostForm struct {
 	Thumbnail   string `form:"thumbnail" binding:"required"`
 	Desc        string `form:"desc" binding:"required"`
 	Content     string `form:"content" binding:"required"`
-	Status      uint   `form:"status" binding:"required"`
+	Status      int    `form:"status" binding:"required"`
 	Index       uint   `form:"index" binding:"required"`
 	CategoryIds string `form:"categoryIds" binding:"required"`
 	PublishAt   int    `form:"publishTime" binding:"required"`

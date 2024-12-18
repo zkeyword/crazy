@@ -8,14 +8,6 @@ import (
 type CategoryRepository struct {
 }
 
-// Category 类型
-type Category struct {
-	ID     uint
-	Title  string
-	Status uint
-	Index  uint
-}
-
 // NewUserRepository 实例化 DAO
 func NewCategoryRepository() *CategoryRepository {
 	return &CategoryRepository{}
@@ -37,7 +29,7 @@ func (r *CategoryRepository) DeleteById(id int64) error {
 	if err != nil {
 		return err
 	}
-	return _db.Where("id = ?", id).Delete(Category{}).Error
+	return _db.Where("id = ?", id).Delete(cms.CmsCategory{}).Error
 }
 
 // UpdateById 修改文章

@@ -7,7 +7,7 @@ import (
 // Banner表
 type CmsBanner struct {
 	ID          uint      `json:"id" gorm:"primary_key;AUTO_INCREMENT"`
-	Status      uint      `json:"status" gorm:"not null"`
+	Status      int       `json:"status" gorm:"not null;comment:'用户状态: 1 - 正常、-1 - 禁用'"`
 	Index       uint      `json:"index" gorm:"not null"`
 	Type        uint      `json:"type" gorm:"not null"`
 	Title       string    `json:"title" gorm:"type:varchar(255);unique;not null;"`

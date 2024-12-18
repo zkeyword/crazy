@@ -156,7 +156,7 @@ func (r *UserRepository) GetUserRolePermissionByUserId(id uint) *ReturnRolePermi
 	ret := &ReturnRolePermission{}
 	var ret2 []ReturnUserRole
 
-	err = _db.Table("user_roles").Where("user_id = ?", id).Find(&ret2).Error
+	err = _db.Table("sys_user_roles").Where("user_id = ?", id).Find(&ret2).Error
 
 	ret.RoleID = id
 
@@ -167,7 +167,7 @@ func (r *UserRepository) GetUserRolePermissionByUserId(id uint) *ReturnRolePermi
 
 	// 获取关联角色
 	var role []Role
-	_db.Table("roles").Where("id IN (?)", roleIDs).Find(&role)
+	_db.Table("sys_roles").Where("id IN (?)", roleIDs).Find(&role)
 
 	roleName := make([]string, 0)
 	for _, v := range role {
@@ -177,7 +177,7 @@ func (r *UserRepository) GetUserRolePermissionByUserId(id uint) *ReturnRolePermi
 
 	// 获取关联权限
 	var permission []RolePermission
-	_db.Table("role_permissions").Where("role_id IN (?)", roleIDs).Find(&permission)
+	_db.Table("sys_role_permissions").Where("role_id IN (?)", roleIDs).Find(&permission)
 
 	ret.Permission = permission
 

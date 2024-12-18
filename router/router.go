@@ -118,21 +118,21 @@ func Routers() *gin.Engine {
 		// 文章
 		cmsAdminRouter.GET("/post", cms.GetPost)
 		cmsAdminRouter.GET("/post/:id", cms.GetPostById)
-		cmsAdminRouter.POST("/post/", cms.PostPost)
+		cmsAdminRouter.POST("/post", cms.PostPost)
 		cmsAdminRouter.DELETE("/post/:id", cms.DelPostById)
 		cmsAdminRouter.PUT("/post/:id", cms.PutPostById)
 
 		// banner
 		cmsAdminRouter.GET("/banner", cms.GetBanner)
 		cmsAdminRouter.GET("/banner/:id", cms.GetBannerById)
-		cmsAdminRouter.POST("/banner/", cms.PostBanner)
+		cmsAdminRouter.POST("/banner", cms.PostBanner)
 		cmsAdminRouter.DELETE("/banner/:id", cms.DelBannerById)
 		cmsAdminRouter.PUT("/banner/:id", cms.PutBannerById)
 
 		// 类别
 		cmsAdminRouter.GET("/category", cms.GetCategory)
 		cmsAdminRouter.GET("/category/:id", cms.GetCategoryById)
-		cmsAdminRouter.POST("/category/", cms.PostCategory)
+		cmsAdminRouter.POST("/category", cms.PostCategory)
 		cmsAdminRouter.DELETE("/category/:id", cms.DelCategoryById)
 		cmsAdminRouter.PUT("/category/:id", cms.PutCategoryById)
 	}
@@ -140,7 +140,6 @@ func Routers() *gin.Engine {
 	cmsRouter := r.Group("/cms/api")
 	{
 		cmsRouter.GET("/post", cms.GetPost)
-		cmsRouter.GET("/post/news", cms.GetPostNews)
 		cmsRouter.GET("/post/:id", cms.GetPostById)
 		cmsRouter.GET("/category", cms.GetCategory)
 		cmsRouter.GET("/banner", cms.GetBanner)

@@ -11,7 +11,7 @@ import (
 )
 
 type PostBannerForm struct {
-	Status      uint   `form:"status" binding:"required"`
+	Status      int    `form:"status" binding:"required"`
 	Index       uint   `form:"index" binding:"required"`
 	Title       string `form:"title" binding:"required"`
 	Desc        string `form:"desc" binding:"required"`
