@@ -29,7 +29,7 @@ func Routers() *gin.Engine {
 	// r.Use(sessions.Sessions("session", store))
 
 	// 设置静态目录
-	// r.Static("/public", "./public")
+	r.Static("/public", "./public")
 
 	// 设置模板
 	// r.LoadHTMLGlob("views/**/*")

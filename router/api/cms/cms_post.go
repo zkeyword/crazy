@@ -6,19 +6,20 @@ import (
 	"CRAZY/utils"
 	"html"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 type PostPostForm struct {
-	Title       string `form:"title" binding:"required"`
-	Thumbnail   string `form:"thumbnail" binding:"required"`
-	Desc        string `form:"desc" binding:"required"`
-	Content     string `form:"content" binding:"required"`
-	Status      int    `form:"status" binding:"required"`
-	Index       uint   `form:"index" binding:"required"`
-	CategoryIds string `form:"categoryIds" binding:"required"`
-	PublishAt   int    `form:"publishTime" binding:"required"`
+	Title       string    `form:"title" binding:"required"`
+	Thumbnail   string    `form:"thumbnail" binding:"required"`
+	Desc        string    `form:"desc" binding:"required"`
+	Content     string    `form:"content" binding:"required"`
+	Status      int       `form:"status" binding:"required"`
+	Index       uint      `form:"index" binding:"required"`
+	CategoryIds string    `form:"categoryIds" binding:"required"`
+	PublishAt   time.Time `form:"publishAt" binding:"required"`
 }
 
 // PostPost 新增文章
