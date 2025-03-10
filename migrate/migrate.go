@@ -29,7 +29,6 @@ func main() {
 			&shop.ShopOrder{},
 
 			// cms
-			&cms.CmsBannerCategory{},
 			&cms.CmsBanner{},
 			&cms.CmsCategory{},
 			&cms.CmsPostCategory{},

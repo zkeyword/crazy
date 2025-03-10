@@ -63,7 +63,6 @@ func StartMysql(dsn string, maxIdle int, maxOpen int, LogMode bool) (*gorm.DB, e
 			&shop.ShopOrder{},
 
 			// cms
-			&cms.CmsBannerCategory{},
 			&cms.CmsBanner{},
 			&cms.CmsCategory{},
 			&cms.CmsPostCategory{},

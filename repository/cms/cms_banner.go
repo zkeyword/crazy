@@ -23,7 +23,7 @@ func NewBannerRepository() *BannerRepository {
 	return &BannerRepository{}
 }
 
-// Create 创建文章
+// Create 创建banner
 func (r *BannerRepository) Create(t *cms.CmsBanner) (*cms.CmsBanner, error) {
 	_db, err := db.GetMysql()
 	if err != nil {
@@ -43,7 +43,7 @@ func (r *BannerRepository) DeleteById(id int64) error {
 	return _db.Where("id = ?", id).Delete(Banner{}).Error
 }
 
-// UpdateById 修改文章
+// UpdateById 修改banner
 func (r *BannerRepository) UpdateById(id int64, t *cms.CmsBanner) (*cms.CmsBanner, error) {
 	var ret = new(cms.CmsBanner)
 	_db, err := db.GetMysql()
@@ -54,7 +54,7 @@ func (r *BannerRepository) UpdateById(id int64, t *cms.CmsBanner) (*cms.CmsBanne
 	return ret, err
 }
 
-// GetById 获取文章
+// GetById 获取banner
 func (r *BannerRepository) GetById(id int64) (*cms.CmsBanner, error) {
 	var ret = &cms.CmsBanner{}
 	_db, err := db.GetMysql()
@@ -65,7 +65,7 @@ func (r *BannerRepository) GetById(id int64) (*cms.CmsBanner, error) {
 	return ret, err
 }
 
-// Get 获取文章
+// Get 获取banner
 func (r *BannerRepository) Get(page int, pageSize int, title string) ([]cms.CmsBanner, error) {
 	var Banner []cms.CmsBanner
 	var err error

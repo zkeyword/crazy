@@ -3,22 +3,19 @@ package cmsServices
 import (
 	"CRAZY/model/cms"
 	repository "CRAZY/repository/cms"
-	"CRAZY/utils"
-	"strings"
 )
 
 // BannerService user服务
 type BannerService interface {
-	Get(page int, pageSize int, title string, categoryIds string) (*ReturnBannerList, error)
-	Create(Banner *cms.CmsBanner, categoryIds string) (*cms.CmsBanner, error)
+	Get(page int, pageSize int, title string) (*ReturnBannerList, error)
+	Create(Banner *cms.CmsBanner) (*cms.CmsBanner, error)
 	DeleteById(id int64) error
-	PutBannerById(id int64, Banner *cms.CmsBanner, categoryIds string) (*cms.CmsBanner, error)
+	PutBannerById(id int64, Banner *cms.CmsBanner) (*cms.CmsBanner, error)
 	GetById(id int64) (*cms.CmsBanner, error)
 }
 
 type bannerService struct {
-	repo        *repository.BannerRepository
-	relatedRepo *repository.BannerCategoryRepository
+	repo *repository.BannerRepository
 }
 
 type ReturnBannerList struct {
@@ -37,7 +34,7 @@ func newBannerService() BannerService {
 	}
 }
 
-func (s *bannerService) Get(page int, pageSize int, title string, categoryIds string) (*ReturnBannerList, error) {
+func (s *bannerService) Get(page int, pageSize int, title string) (*ReturnBannerList, error) {
 	ret, err := s.repo.Get(page, pageSize, title)
 	count := s.repo.GetBannerCount(title)
 	returnValue := &ReturnBannerList{
@@ -49,32 +46,18 @@ func (s *bannerService) Get(page int, pageSize int, title string, categoryIds st
 	return returnValue, err
 }
 
-func (s *bannerService) Create(Banner *cms.CmsBanner, categoryIds string) (*cms.CmsBanner, error) {
+func (s *bannerService) Create(Banner *cms.CmsBanner) (*cms.CmsBanner, error) {
 	ret, err := s.repo.Create(Banner)
-	if err == nil {
-		ids := strings.Split(categoryIds, ",")
-		for _, v := range ids {
-			s.relatedRepo.Create(ret.ID, utils.StrToUInt(v))
-		}
-	}
 	return ret, err
 }
 
-func (s *bannerService) PutBannerById(id int64, Banner *cms.CmsBanner, categoryIds string) (*cms.CmsBanner, error) {
+func (s *bannerService) PutBannerById(id int64, Banner *cms.CmsBanner) (*cms.CmsBanner, error) {
 	ret, err := s.repo.UpdateById(id, Banner)
-	ids := strings.Split(categoryIds, ",")
-	s.relatedRepo.DeleteByPostId(id)
-	for _, v := range ids {
-		s.relatedRepo.Create(ret.ID, utils.StrToUInt(v))
-	}
 	return ret, err
 }
 
 func (s *bannerService) DeleteById(id int64) error {
 	err := s.repo.DeleteById(id)
-	if err == nil {
-		s.relatedRepo.DeleteByPostId(id)
-	}
 	return err
 }
 
