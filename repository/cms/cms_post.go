@@ -41,7 +41,7 @@ func (r *PostRepository) DeleteById(id int64) error {
 	if err != nil {
 		return err
 	}
-	return _db.Where("id = ?", id).Delete(Post{}).Error
+	return _db.Where("id = ?", id).Delete(cms.CmsPost{}).Error
 }
 
 // UpdateById 修改文章
@@ -76,7 +76,7 @@ func (r *PostRepository) Get(page int, pageSize int, title string, categoryIds s
 		return nil, err
 	}
 	if title != "" {
-		err = _db.Order("`index` DESC, `updated_at` ASC").Where("title like ?", "%"+title+"%").Limit(pageSize).Offset((page - 1) * 10).Find(&Post).Error
+		err = _db.Order("`index` DESC, `updated_at` DESC").Where("title like ?", "%"+title+"%").Limit(pageSize).Offset((page - 1) * 10).Find(&Post).Error
 	} else {
 		ids := strings.Split(categoryIds, ",")
 		if categoryIds != "" && len(ids) > 0 {
@@ -86,10 +86,10 @@ func (r *PostRepository) Get(page int, pageSize int, title string, categoryIds s
 				for _, v := range PostCategory {
 					postIDs = append(postIDs, v.PostID)
 				}
-				err = _db.Order("`index` DESC, `updated_at` ASC").Limit(pageSize).Offset((page-1)*10).Where("id IN (?)", postIDs).Find(&Post).Error
+				err = _db.Order("`index` DESC, `updated_at` DESC").Limit(pageSize).Offset((page-1)*10).Where("id IN (?)", postIDs).Find(&Post).Error
 			}
 		} else {
-			err = _db.Order("`index` DESC, `updated_at` ASC").Limit(pageSize).Offset((page - 1) * 10).Find(&Post).Error
+			err = _db.Order("`index` DESC, `updated_at` DESC").Limit(pageSize).Offset((page - 1) * 10).Find(&Post).Error
 		}
 	}
 	return Post, err
