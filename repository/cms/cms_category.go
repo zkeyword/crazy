@@ -78,9 +78,9 @@ func (r *CategoryRepository) GetCategoryCount(title string) int64 {
 		return 0
 	}
 	if title != "" {
-		_db.Where("title like ?", "%"+title+"%").Find(&Category).Select("count(id)").Count(&count)
+		_db.Where("title like ?", "%"+title+"%").Model(&Category).Select("count(id)").Count(&count)
 	} else {
-		_db.Find(&Category).Select("count(id)").Count(&count)
+		_db.Model(&Category).Select("count(id)").Count(&count)
 	}
 	return count
 }

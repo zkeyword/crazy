@@ -103,9 +103,9 @@ func (r *PostRepository) GetPostCount(title string) int64 {
 		return 0
 	}
 	if title != "" {
-		_db.Where("title like ?", "%"+title+"%").Find(&users).Select("count(id)").Count(&count)
+		_db.Where("title like ?", "%"+title+"%").Model(&users).Select("count(id)").Count(&count)
 	} else {
-		_db.Find(&users).Select("count(id)").Count(&count)
+		_db.Model(&users).Select("count(id)").Count(&count)
 	}
 	return count
 }

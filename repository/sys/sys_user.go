@@ -103,9 +103,9 @@ func (r *UserRepository) GetUserCount(username string) int64 {
 		return 0
 	}
 	if username != "" {
-		_db.Where("username like ?", "%"+username+"%").Find(&users).Select("count(id)").Count(&count)
+		_db.Where("username like ?", "%"+username+"%").Model(&users).Select("count(id)").Count(&count)
 	} else {
-		_db.Find(&users).Select("count(id)").Count(&count)
+		_db.Model(&users).Select("count(id)").Count(&count)
 	}
 	return count
 }

@@ -95,9 +95,9 @@ func (r *RoleRepository) GetRoleCount(name string) int64 {
 		return 0
 	}
 	if name != "" {
-		_db.Where("name like ?", "%"+name+"%").Find(&roles).Select("count(id)").Count(&count)
+		_db.Where("name like ?", "%"+name+"%").Model(&roles).Select("count(id)").Count(&count)
 	} else {
-		_db.Find(&roles).Select("count(id)").Count(&count)
+		_db.Model(&roles).Select("count(id)").Count(&count)
 	}
 	return count
 }

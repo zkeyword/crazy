@@ -8,16 +8,6 @@ import (
 type BannerRepository struct {
 }
 
-// Banner 类型
-type Banner struct {
-	ID        uint
-	Title     string
-	Thumbnail string
-	Content   string
-	Type      uint
-	Index     uint
-}
-
 // NewUserRepository 实例化 DAO
 func NewBannerRepository() *BannerRepository {
 	return &BannerRepository{}
@@ -40,7 +30,7 @@ func (r *BannerRepository) DeleteById(id int64) error {
 		return err
 	}
 
-	return _db.Where("id = ?", id).Delete(Banner{}).Error
+	return _db.Where("id = ?", id).Delete(&cms.CmsBanner{}).Error
 }
 
 // UpdateById 修改banner
@@ -82,16 +72,16 @@ func (r *BannerRepository) Get(page int, pageSize int, title string) ([]cms.CmsB
 }
 
 func (r *BannerRepository) GetBannerCount(title string) int64 {
-	var users []cms.CmsBanner
+	var banners []cms.CmsBanner
 	var count int64
 	_db, err := db.GetMysql()
 	if err != nil {
 		return 0
 	}
 	if title != "" {
-		_db.Where("title like ?", "%"+title+"%").Find(&users).Select("count(id)").Count(&count)
+		_db.Where("title like ?", "%"+title+"%").Model(&banners).Select("count(id)").Count(&count)
 	} else {
-		_db.Find(&users).Select("count(id)").Count(&count)
+		_db.Model(&banners).Select("count(id)").Count(&count)
 	}
 	return count
 }
