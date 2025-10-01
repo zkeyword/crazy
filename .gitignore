@@ -3,4 +3,4 @@
 main
 public/tmp/*
 tmp
-log
+logs

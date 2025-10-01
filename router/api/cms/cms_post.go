@@ -4,7 +4,11 @@ import (
 	"CRAZY/model/cms"
 	cmsServices "CRAZY/services/cms"
 	"CRAZY/utils"
+	"fmt"
 	"html"
+	"io"
+	"net/http"
+	"os"
 	"strconv"
 	"time"
 
@@ -118,7 +122,7 @@ func GetPost(c *gin.Context) {
 	title := html.EscapeString(c.Query("title"))
 	categoryIds := html.EscapeString(c.Query("categoryIds"))
 	res, _ := cmsServices.NewPostService.Get(page, pageSize, title, categoryIds)
-	utils.OkDetailed(res, "success", c)
+	utils.OkDetailed2(res, "success", c)
 }
 
 func GetPostNews(c *gin.Context) {
@@ -150,5 +154,149 @@ func PostNewsSet(c *gin.Context) {
 		utils.OkDetailed("", "success", c)
 	} else {
 		utils.FailWithMessage(err.Error(), c)
+	}
+}
+
+func GetPostAssetReport(c *gin.Context) {
+	// 打开文件
+	file, err := os.Open("router/json/asset_report.json")
+	if err != nil {
+		utils.FailWithMessage(fmt.Sprintf("Open file failed: %s", err.Error()), c)
+		return
+	}
+	defer file.Close()
+
+	// 流式传输文件内容
+	c.Header("Content-Type", "application/json")
+	c.Status(http.StatusOK)
+	if _, err := io.Copy(c.Writer, file); err != nil {
+		utils.FailWithMessage(fmt.Sprintf("Stream file failed: %s", err.Error()), c)
+		return
+	}
+}
+
+func GetPostAssetReport2(c *gin.Context) {
+	// 打开文件
+	file, err := os.Open("router/json/change_amount.json")
+	if err != nil {
+		utils.FailWithMessage(fmt.Sprintf("Open file failed: %s", err.Error()), c)
+		return
+	}
+	defer file.Close()
+
+	// 流式传输文件内容
+	c.Header("Content-Type", "application/json")
+	c.Status(http.StatusOK)
+	if _, err := io.Copy(c.Writer, file); err != nil {
+		utils.FailWithMessage(fmt.Sprintf("Stream file failed: %s", err.Error()), c)
+		return
+	}
+}
+
+func GetPostAssetReport3(c *gin.Context) {
+	// 打开文件
+	file, err := os.Open("router/json/c.json")
+	if err != nil {
+		utils.FailWithMessage(fmt.Sprintf("Open file failed: %s", err.Error()), c)
+		return
+	}
+	defer file.Close()
+
+	// 流式传输文件内容
+	c.Header("Content-Type", "application/json")
+	c.Status(http.StatusOK)
+	if _, err := io.Copy(c.Writer, file); err != nil {
+		utils.FailWithMessage(fmt.Sprintf("Stream file failed: %s", err.Error()), c)
+		return
+	}
+}
+
+func GetPostAssetReport4(c *gin.Context) {
+	// 打开文件
+	file, err := os.Open("router/json/a.json")
+	if err != nil {
+		utils.FailWithMessage(fmt.Sprintf("Open file failed: %s", err.Error()), c)
+		return
+	}
+	defer file.Close()
+
+	// 流式传输文件内容
+	c.Header("Content-Type", "application/json")
+	c.Status(http.StatusOK)
+	if _, err := io.Copy(c.Writer, file); err != nil {
+		utils.FailWithMessage(fmt.Sprintf("Stream file failed: %s", err.Error()), c)
+		return
+	}
+}
+
+func GetTokens(c *gin.Context) {
+	// 打开文件
+	file, err := os.Open("router/json/t.json")
+	if err != nil {
+		utils.FailWithMessage(fmt.Sprintf("Open file failed: %s", err.Error()), c)
+		return
+	}
+	defer file.Close()
+
+	// 流式传输文件内容
+	c.Header("Content-Type", "application/json")
+	c.Status(http.StatusOK)
+	if _, err := io.Copy(c.Writer, file); err != nil {
+		utils.FailWithMessage(fmt.Sprintf("Stream file failed: %s", err.Error()), c)
+		return
+	}
+}
+
+func GetTokens2(c *gin.Context) {
+	// 打开文件
+	file, err := os.Open("router/json/t2.json")
+	if err != nil {
+		utils.FailWithMessage(fmt.Sprintf("Open file failed: %s", err.Error()), c)
+		return
+	}
+	defer file.Close()
+
+	// 流式传输文件内容
+	c.Header("Content-Type", "application/json")
+	c.Status(http.StatusOK)
+	if _, err := io.Copy(c.Writer, file); err != nil {
+		utils.FailWithMessage(fmt.Sprintf("Stream file failed: %s", err.Error()), c)
+		return
+	}
+}
+
+func GetTokens3(c *gin.Context) {
+	// 打开文件
+	file, err := os.Open("router/json/t3.json")
+	if err != nil {
+		utils.FailWithMessage(fmt.Sprintf("Open file failed: %s", err.Error()), c)
+		return
+	}
+	defer file.Close()
+
+	// 流式传输文件内容
+	c.Header("Content-Type", "application/json")
+	c.Status(http.StatusOK)
+	if _, err := io.Copy(c.Writer, file); err != nil {
+		utils.FailWithMessage(fmt.Sprintf("Stream file failed: %s", err.Error()), c)
+		return
+	}
+}
+
+func GetTokens4(c *gin.Context) {
+	// 打开文件
+	file, err := os.Open("router/json/t4.json")
+	if err != nil {
+		utils.FailWithMessage(fmt.Sprintf("Open file failed: %s", err.Error()), c)
+		return
+	}
+	defer file.Close()
+
+	// 流式传输文件内容
+	c.Header("Content-Type", "application/json")
+	c.Status(http.StatusOK)
+	if _, err := io.Copy(c.Writer, file); err != nil {
+		utils.FailWithMessage(fmt.Sprintf("Stream file failed: %s", err.Error()), c)
+		return
 	}
 }

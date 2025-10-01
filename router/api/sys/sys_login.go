@@ -8,6 +8,7 @@ import (
 	"CRAZY/utils"
 	"CRAZY/utils/db"
 	"CRAZY/utils/xor"
+	"fmt"
 	"html"
 	"regexp"
 	"strconv"
@@ -15,6 +16,7 @@ import (
 
 	"github.com/dchest/captcha"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type LoginUserForm struct {
@@ -37,9 +39,7 @@ type ReturnLoginUser struct {
 
 // getToken 获取 JWT token
 func getToken(UserName string, UserID uint, PermissionKeys string) string {
-	j := &middleware.JWT{
-		SigningKey: []byte("crazy"),
-	}
+	j := middleware.NewJWT()
 	claims := middleware.CustomClaims{
 		UserName:       UserName,
 		UserID:         UserID,
@@ -48,6 +48,7 @@ func getToken(UserName string, UserID uint, PermissionKeys string) string {
 
 	claims.IssuedAt = time.Now().Unix()    // 签名生效时间
 	claims.ExpiresAt = config.JWTExpiresAt // 过期时间 30D
+	claims.Id = uuid.NewString()           // 唯一标识
 	token, _ := j.CreateToken(claims)
 	return token
 }
@@ -77,12 +78,10 @@ func Login(c *gin.Context) {
 			return
 		}
 
-		db.SetKey("UserLoginStatus"+strconv.FormatUint(uint64(res.ID), 10), "1")
-
-		Model := &sys.SysUser{
-			LoginStatus: 1,
-		}
-		sysUserService.PutUserById(res.ID, Model, "")
+		// Model := &sys.SysUser{
+		// 	LoginStatus: 1,
+		// }
+		// sysUserService.PutUserById(res.ID, Model, "")
 		userDetailRes := sysUserService.GetUserRolePermissionByUserId(res.ID)
 		userKey := utils.StringWithCharset(5)
 		user := &ReturnLoginUser{
@@ -140,18 +139,59 @@ func Register(c *gin.Context) {
 	}
 }
 
-// Logout 登出
 func Logout(c *gin.Context) {
-	userID, _ := c.Get("userID")
-	id, _ := userID.(uint)
-	db.SetKey("UserLoginStatus"+strconv.FormatUint(uint64(id), 10), "-1")
-	Model := &sys.SysUser{
-		LoginStatus: -1,
-	}
-	res, resErr := sysUserService.PutUserById(id, Model, "")
-	if resErr != nil {
-		utils.FailWithMessage(resErr.Error(), c)
+	tokenVal, exists := c.Get("jwtToken")
+	if !exists {
+		utils.FailWithMessage("未获取到有效登录凭证", c)
 		return
+	}
+
+	token, ok := tokenVal.(string)
+	if !ok {
+		utils.FailWithMessage("token 格式异常", c)
+		return
+	}
+
+	j := middleware.NewJWT()
+	claims, err := j.ParseTokenForRefresh(token)
+	if err != nil {
+		utils.OkDetailed("退出成功", "success", c)
+		return
+	}
+
+	remaining := claims.ExpiresAt - time.Now().Unix()
+	ttl := int(remaining)
+	if ttl <= 0 {
+		ttl = 60
+	}
+	blacklistKey := "auth:blacklist:jti:" + claims.Id
+	_ = db.SetKeyEx(blacklistKey, "1", ttl)
+
+	utils.OkDetailed("退出成功！", "success", c)
+}
+
+func LogoutAll(c *gin.Context) {
+	userID := c.GetUint("userID")
+
+	now := time.Now().Unix()
+	globalLogoutKey := fmt.Sprintf("auth:user:global_logout:%d", userID)
+	_ = db.SetKeyEx(globalLogoutKey, strconv.FormatInt(now, 10), 7*24*3600)
+
+	utils.OkDetailed("所有设备已退出", "success", c)
+}
+
+type ReturnRefreshToken struct {
+	Token string `json:"token"`
+}
+
+// Refresh 刷新 token
+func Refresh(c *gin.Context) {
+	j := middleware.NewJWT()
+	jwtToken, _ := c.Get("jwtToken")
+	jwtTokenStr, _ := jwtToken.(string)
+	refreshToken, _ := j.RefreshToken(jwtTokenStr)
+	res := &ReturnRefreshToken{
+		Token: refreshToken,
 	}
 	utils.OkDetailed(res, "success", c)
 }

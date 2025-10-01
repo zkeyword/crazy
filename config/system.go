@@ -39,3 +39,4 @@ var MaxMultipartMemory int64 = 100 << 20 // 设置最大上传大小为100M
 // }
 
 var JWTExpiresAt = time.Now().Add(24 * 30 * time.Hour).Unix()
+var JWTSignKey = "CRAZY"

@@ -68,23 +68,34 @@ func (r *RoleRepository) GetById(id uint) *Role {
 // Get 获取角色列表
 func (r *RoleRepository) Get(page int, pageSize int, name string) ([]sys.SysRole, error) {
 	var roles []sys.SysRole
-	var err error
+
+	// 默认值处理
 	if pageSize < 1 {
 		pageSize = 10
 	}
 	if page < 1 {
 		page = 1
 	}
+
+	// 获取数据库连接
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil, err
 	}
+
+	// 构建查询
+	query := _db.Model(&sys.SysRole{})
 	if name != "" {
-		err = _db.Where("name like ?", "%"+name+"%").Limit(pageSize).Offset((page - 1) * pageSize).Find(&roles).Error
-	} else {
-		err = _db.Limit(pageSize).Offset((page - 1) * pageSize).Find(&roles).Error
+		query = query.Where("name LIKE ?", "%"+name+"%")
 	}
-	return roles, err
+
+	// 分页查询
+	err = query.Order("id ASC").Limit(pageSize).Offset((page - 1) * pageSize).Find(&roles).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return roles, nil
 }
 
 func (r *RoleRepository) GetRoleCount(name string) int64 {

@@ -51,10 +51,12 @@ func Routers() *gin.Engine {
 
 	// api 部分
 	SysRouter := r.Group("/sys")
-	SysRouter.Use(middleware.JWTAuth("sys"))
+	SysRouter.Use(middleware.JWTAuth())
 	{
-		SysRouter.POST("/upload", sys.Upload)
+		SysRouter.POST("/refresh", sys.Refresh)
 		SysRouter.POST("/logout", sys.Logout)
+		SysRouter.POST("/logoutAll", sys.LogoutAll)
+		SysRouter.POST("/upload", sys.Upload)
 		SysRouter.GET("/permissionKeys", sys.GetPermissionKeys)
 		SysRouter.GET("/userInfo", sys.GetUserPermissionKeys)
 
@@ -104,7 +106,7 @@ func Routers() *gin.Engine {
 
 	// shop 部分
 	shopRouter := r.Group("/shop")
-	shopRouter.Use(middleware.JWTAuth("shop"))
+	shopRouter.Use(middleware.JWTAuth())
 	{
 		// 用户地址
 		shopRouter.GET("/userAddress", shop.GetUserAddress)
@@ -113,7 +115,7 @@ func Routers() *gin.Engine {
 
 	// cms 部分
 	cmsAdminRouter := r.Group("/cms/admin")
-	cmsAdminRouter.Use(middleware.JWTAuth("cms"))
+	cmsAdminRouter.Use(middleware.JWTAuth())
 	{
 		// 文章
 		cmsAdminRouter.GET("/post", cms.GetPost)

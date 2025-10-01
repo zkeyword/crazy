@@ -13,7 +13,7 @@ var DbConfig DbConf = DbConf{
 	Dsn:     "root:123456@tcp(127.0.0.1:3306)/c?charset=utf8mb4&parseTime=true",
 	MaxIdle: 10,
 	MaxOpen: 100,
-	LogMode: true,
+	LogMode: false,
 }
 
 // ProdDbConfig 正式环境 Mysql主库配置
@@ -21,7 +21,7 @@ var ProdDbConfig DbConf = DbConf{
 	Dsn:     "root:123456@tcp(127.0.0.1:3306)/c?charset=utf8mb4&parseTime=true",
 	MaxIdle: 10,
 	MaxOpen: 100,
-	LogMode: true,
+	LogMode: false,
 }
 
 // RedisDbConf Redis数据库结构

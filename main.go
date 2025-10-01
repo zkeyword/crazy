@@ -52,7 +52,7 @@ func main() {
 		db.StartMysql(config.DbConfig.Dsn, config.DbConfig.MaxIdle, config.DbConfig.MaxOpen, config.DbConfig.LogMode)
 	}
 
-	// 启动redis
+	// // 启动redis
 	defer db.CloseRedis()
 	if ENV == "prod" {
 		db.StartRedis(config.ProdRedisDbConfig.Addr, config.ProdRedisDbConfig.Password, config.ProdRedisDbConfig.DB, config.ProdRedisDbConfig.MaxIdle, config.ProdRedisDbConfig.MaxOpen)

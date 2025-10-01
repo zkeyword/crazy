@@ -27,7 +27,7 @@ type ReturnPostList struct {
 	Page     int           `json:"page"`
 	PageSize int           `json:"pageSize"`
 	Total    int64         `json:"total"`
-	List     []cms.CmsPost `json:"list"`
+	List     []cms.CmsPost `json:"data"`
 }
 
 // NewArticleService 实例化ArticleService

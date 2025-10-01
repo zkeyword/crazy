@@ -2,9 +2,7 @@ package sys
 
 import (
 	"CRAZY/utils"
-	"CRAZY/utils/db"
 	"CRAZY/utils/xor"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,15 +14,6 @@ type ReturnGetUserPermissionKeys struct {
 
 // GetUserPermissionKeys 获取用户权限
 func GetUserPermissionKeys(c *gin.Context) {
-	UserID, _ := c.Get("userID")
-	ID, _ := UserID.(uint)
-	res, resErr := db.GetKey("UserLoginStatus" + strconv.FormatUint(uint64(ID), 10))
-	// res, resErr := sysUserService.GetLoginStatusById(ID)
-	if resErr != nil || res == "-1" {
-		utils.FailWithMessage("登录过期", c)
-		return
-	}
-
 	PermissionKeys, _ := c.Get("permissionKeys")
 	PermissionKeysStr, _ := PermissionKeys.(string)
 	userKey := utils.StringWithCharset(5)

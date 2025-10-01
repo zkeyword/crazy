@@ -89,7 +89,7 @@ func (r *PostRepository) Get(page int, pageSize int, title string, categoryIds s
 				err = _db.Order("`index` DESC, `updated_at` DESC").Limit(pageSize).Offset((page-1)*10).Where("id IN (?)", postIDs).Find(&Post).Error
 			}
 		} else {
-			err = _db.Order("`index` DESC, `updated_at` DESC").Limit(pageSize).Offset((page - 1) * 10).Find(&Post).Error
+			err = _db.Order("`index` DESC, `updated_at` DESC").Offset((page - 1) * 10).Find(&Post).Error
 		}
 	}
 	return Post, err
