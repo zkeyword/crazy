@@ -8,7 +8,7 @@ import (
 type RoleRepository struct {
 }
 
-type Role struct {
+type SysRole struct {
 	ID   uint   `json:"id"`
 	Name string `json:"name"`
 	Desc string `json:"desc"`
@@ -34,7 +34,7 @@ func (r *RoleRepository) DeleteById(id uint) error {
 	if err != nil {
 		return err
 	}
-	return _db.Where("id = ?", id).Delete(Role{}).Error
+	return _db.Where("id = ?", id).Delete(SysRole{}).Error
 }
 
 // UpdateById 修改角色
@@ -52,8 +52,8 @@ func (r *RoleRepository) UpdateById(id uint, t *sys.SysRole) (*sys.SysRole, erro
 }
 
 // Get 获取角色
-func (r *RoleRepository) GetById(id uint) *Role {
-	ret := &Role{}
+func (r *RoleRepository) GetById(id uint) *SysRole {
+	ret := &SysRole{}
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil

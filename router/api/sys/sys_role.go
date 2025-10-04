@@ -18,7 +18,7 @@ type RoleForm struct {
 
 // PostRole 新增角色
 func PostRole(c *gin.Context) {
-	if utils.CheckPermission(c, "PostRole") {
+	if utils.CheckPermission(c, "role:add") {
 		var form RoleForm
 		err := c.ShouldBind(&form)
 		if err == nil {
@@ -40,7 +40,7 @@ func PostRole(c *gin.Context) {
 
 // DelRoleById 删除角色
 func DelRoleById(c *gin.Context) {
-	if utils.CheckPermission(c, "DelRoleById") {
+	if utils.CheckPermission(c, "role:del") {
 		id := utils.StrToUInt(c.Param("id"))
 		resErr := sysRoleService.DeleteById(id)
 		if resErr == nil {
@@ -53,7 +53,7 @@ func DelRoleById(c *gin.Context) {
 
 // PutRoleById 修改角色
 func PutRoleById(c *gin.Context) {
-	if utils.CheckPermission(c, "PutRoleById") {
+	if utils.CheckPermission(c, "role:edit:byId") {
 		id := utils.StrToUInt(c.Param("id"))
 		var form RoleForm
 		err := c.ShouldBind(&form)
@@ -76,7 +76,7 @@ func PutRoleById(c *gin.Context) {
 
 // GetRoleById 获取角色
 func GetRoleById(c *gin.Context) {
-	if utils.CheckPermission(c, "GetRoleById") {
+	if utils.CheckPermission(c, "role:view:ById") {
 		id := utils.StrToUInt(c.Param("id"))
 		res := sysRoleService.GetById(id)
 		utils.OkDetailed(res, "success", c)
@@ -85,7 +85,7 @@ func GetRoleById(c *gin.Context) {
 
 // GetRole 获取角色
 func GetRole(c *gin.Context) {
-	if utils.CheckPermission(c, "GetRole") {
+	if utils.CheckPermission(c, "role:lis") {
 		page, _ := strconv.Atoi(c.Query("page"))
 		pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 		name := html.EscapeString(c.Query("name"))

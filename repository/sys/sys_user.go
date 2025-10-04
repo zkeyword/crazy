@@ -133,11 +133,11 @@ func (r *UserRepository) GetLoginStatusById(id uint) (int, error) {
 }
 
 type ReturnRolePermission struct {
-	ID             uint             `json:"id"`
-	RoleID         uint             `json:"roleIDs"`
-	PermissionKeys string           `json:"permissionKeys"`
-	RoleName       []string         `json:"roles"`
-	Permission     []RolePermission `json:"permissions"`
+	ID             uint                `json:"id"`
+	RoleID         uint                `json:"roleIDs"`
+	PermissionKeys string              `json:"permissionKeys"`
+	RoleName       []string            `json:"roles"`
+	Permission     []SysRolePermission `json:"permissions"`
 }
 
 type ReturnUserRole struct {
@@ -166,7 +166,7 @@ func (r *UserRepository) GetUserRolePermissionByUserId(id uint) *ReturnRolePermi
 	}
 
 	// 获取关联角色
-	var role []Role
+	var role []SysRole
 	_db.Table("sys_roles").Where("id IN (?)", roleIDs).Find(&role)
 
 	roleName := make([]string, 0)
@@ -176,7 +176,7 @@ func (r *UserRepository) GetUserRolePermissionByUserId(id uint) *ReturnRolePermi
 	ret.RoleName = roleName
 
 	// 获取关联权限
-	var permission []RolePermission
+	var permission []SysRolePermission
 	_db.Table("sys_role_permissions").Where("role_id IN (?)", roleIDs).Find(&permission)
 
 	ret.Permission = permission

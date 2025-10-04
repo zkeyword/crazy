@@ -9,7 +9,7 @@ type UserRoleRepository struct {
 }
 
 // User 类型
-type UserRole struct {
+type SysUserRole struct {
 	ID       uint   `json:"id"`
 	UserID   uint   `json:"userID"`
 	RoleID   uint   `json:"roleID"`
@@ -39,7 +39,7 @@ func (r *UserRoleRepository) DeleteByUserId(userID uint) error {
 	if err != nil {
 		return err
 	}
-	return _db.Where("user_id = ?", userID).Delete(UserRole{}).Error
+	return _db.Where("user_id = ?", userID).Delete(SysUserRole{}).Error
 }
 
 func (r *UserRoleRepository) DeleteByRoleId(roleID uint) error {
@@ -47,7 +47,7 @@ func (r *UserRoleRepository) DeleteByRoleId(roleID uint) error {
 	if err != nil {
 		return err
 	}
-	return _db.Where("role_id = ?", roleID).Delete(UserRole{}).Error
+	return _db.Where("role_id = ?", roleID).Delete(SysUserRole{}).Error
 }
 
 func (r *UserRoleRepository) DeleteByRoleIdAndUserId(userID uint, roleID uint) error {
@@ -55,11 +55,11 @@ func (r *UserRoleRepository) DeleteByRoleIdAndUserId(userID uint, roleID uint) e
 	if err != nil {
 		return nil
 	}
-	return _db.Where("user_id = ? AND role_id = ?", userID, roleID).Delete(UserRole{}).Error
+	return _db.Where("user_id = ? AND role_id = ?", userID, roleID).Delete(SysUserRole{}).Error
 }
 
-func (r *UserRoleRepository) GetByRoleID(id uint) *[]UserRole {
-	ret := &[]UserRole{}
+func (r *UserRoleRepository) GetByRoleID(id uint) *[]SysUserRole {
+	ret := &[]SysUserRole{}
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil
@@ -71,8 +71,8 @@ func (r *UserRoleRepository) GetByRoleID(id uint) *[]UserRole {
 	return ret
 }
 
-func (r *UserRoleRepository) GetByUserID(id uint) *[]UserRole {
-	ret := &[]UserRole{}
+func (r *UserRoleRepository) GetByUserID(id uint) *[]SysUserRole {
+	ret := &[]SysUserRole{}
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil

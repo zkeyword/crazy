@@ -57,7 +57,7 @@ func Get(page int, pageSize int, name string) (*ReturnRoleList, error) {
 	return returnValue, err
 }
 
-func GetById(id uint) *repository.Role {
+func GetById(id uint) *repository.SysRole {
 	return roleRepo.GetById(id)
 }
 
@@ -100,7 +100,7 @@ func DeleteById(id uint) error {
 	return err
 }
 
-func GetRolePermissionByRoleID(id uint) *repository.RolePermission {
+func GetRolePermissionByRoleID(id uint) *repository.SysRolePermission {
 	return rolePermissionRepo.GetByRoleID(id)
 }
 
@@ -109,11 +109,11 @@ func PostRolePermissionByRoleID(id uint, permissionKeys string) ([]*sys.SysRoleP
 	return ret, err
 }
 
-func GetRoleUserByRoleID(id uint) *[]repository.UserRole {
+func GetRoleUserByRoleID(id uint) *[]repository.SysUserRole {
 	return userRoleRepo.GetByRoleID(id)
 }
 
-func GetRoleUserByUserID(id uint) *[]repository.UserRole {
+func GetRoleUserByUserID(id uint) *[]repository.SysUserRole {
 	return userRoleRepo.GetByUserID(id)
 }
 

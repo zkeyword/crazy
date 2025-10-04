@@ -10,7 +10,7 @@ type RolePermissionRepository struct {
 }
 
 // RolePermission 类型
-type RolePermission struct {
+type SysRolePermission struct {
 	ID             uint   `json:"id"`
 	PermissionKeys string `json:"permissionKeys"`
 	RoleId         uint   `json:"roleId"`
@@ -46,7 +46,7 @@ func (r *RolePermissionRepository) DeleteByRoleId(id uint) error {
 	if err != nil {
 		return nil
 	}
-	return _db.Where("role_id = ?", id).Delete(RolePermission{}).Error
+	return _db.Where("role_id = ?", id).Delete(SysRolePermission{}).Error
 }
 
 func (r *RolePermissionRepository) DeleteByKey(key string) error {
@@ -54,7 +54,7 @@ func (r *RolePermissionRepository) DeleteByKey(key string) error {
 	if err != nil {
 		return nil
 	}
-	return _db.Where("permission_keys = ?", key).Delete(RolePermission{}).Error
+	return _db.Where("permission_keys = ?", key).Delete(SysRolePermission{}).Error
 }
 
 func (r *RolePermissionRepository) UpdateByRoleId(id uint, permissionKeys string) ([]*sys.SysRolePermission, error) {
@@ -63,9 +63,9 @@ func (r *RolePermissionRepository) UpdateByRoleId(id uint, permissionKeys string
 	return ret, err
 }
 
-func (r *RolePermissionRepository) GetByRoleID(id uint) *RolePermission {
-	var ret = &RolePermission{}
-	rets := &[]RolePermission{}
+func (r *RolePermissionRepository) GetByRoleID(id uint) *SysRolePermission {
+	var ret = &SysRolePermission{}
+	rets := &[]SysRolePermission{}
 	_db, err := db.GetMysql()
 	if err != nil {
 		return nil

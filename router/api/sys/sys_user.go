@@ -21,7 +21,7 @@ type UserForm struct {
 
 // PostUser 新增用户
 func PostUser(c *gin.Context) {
-	if utils.CheckPermission(c, "PostUser") {
+	if utils.CheckPermission(c, "user:add") {
 		var form UserForm
 		err := c.ShouldBind(&form)
 		if form.RoleIDs == "" {
@@ -50,7 +50,7 @@ func PostUser(c *gin.Context) {
 
 // DelUserById 删除用户
 func DelUserById(c *gin.Context) {
-	if utils.CheckPermission(c, "DelUserById") {
+	if utils.CheckPermission(c, "user:del") {
 		id := utils.StrToUInt(c.Param("id"))
 		resErr := sysUserService.DeleteById(id)
 		if resErr == nil {
@@ -63,7 +63,7 @@ func DelUserById(c *gin.Context) {
 
 // PutUserById 修改用户
 func PutUserById(c *gin.Context) {
-	if utils.CheckPermission(c, "PutUserById") {
+	if utils.CheckPermission(c, "user:edit:byId") {
 		id := utils.StrToUInt(c.Param("id"))
 		var form UserForm
 		err := c.ShouldBind(&form)
@@ -102,7 +102,7 @@ type UserDisableForm struct {
 
 // PutUserStatusById 修改用户状态
 func PutUserStatusById(c *gin.Context) {
-	if utils.CheckPermission(c, "PutUserStatusById") {
+	if utils.CheckPermission(c, "user:edit:status:byId") {
 		id := utils.StrToUInt(c.Param("id"))
 		var form UserDisableForm
 		err := c.ShouldBind(&form)
@@ -129,7 +129,7 @@ func PutUserStatusById(c *gin.Context) {
 
 // GetUser 获取用户列表
 func GetUser(c *gin.Context) {
-	if utils.CheckPermission(c, "GetUser") {
+	if utils.CheckPermission(c, "user:list") {
 		page, _ := strconv.Atoi(c.Query("page"))
 		pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 		username := html.EscapeString(c.Query("username"))
@@ -140,7 +140,7 @@ func GetUser(c *gin.Context) {
 
 // GetUserById 获取用户
 func GetUserById(c *gin.Context) {
-	if utils.CheckPermission(c, "GetUserById") {
+	if utils.CheckPermission(c, "user:view:byId") {
 		id := utils.StrToUInt(c.Param("id"))
 		res, _ := sysUserService.GetById(id)
 		// userDetailRes := sysUserService.GetUserRolePermissionByUserId(res.ID)
@@ -150,7 +150,7 @@ func GetUserById(c *gin.Context) {
 
 // GetUserByUsername 获取用户
 func GetUserByUsername(c *gin.Context) {
-	if utils.CheckPermission(c, "GetUserByUsername") {
+	if utils.CheckPermission(c, "user:view:byName") {
 		username := c.Param("username")
 		res, _ := sysUserService.GetByUserName(html.EscapeString(username))
 		utils.OkDetailed(res, "success", c)
