@@ -6,6 +6,7 @@ import (
 	"CRAZY/router/api/common"
 	"CRAZY/router/api/shop"
 	"CRAZY/router/api/sys"
+	"net/http"
 
 	// "CRAZY/utils/db"
 
@@ -17,7 +18,7 @@ import (
 )
 
 // Routers 总路由
-func Routers() *gin.Engine {
+func Routers(viewsFS http.FileSystem) *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
@@ -33,9 +34,10 @@ func Routers() *gin.Engine {
 
 	// 设置模板
 	// r.LoadHTMLGlob("views/**/*")
+	r.LoadHTMLFS(viewsFS, "views/**/*")
 
 	// 首页
-	// r.GET("/", common.GetHTML)
+	r.GET("/", common.GetHTML)
 
 	// 验证码
 	r.GET("/captcha", common.GetCaptcha)

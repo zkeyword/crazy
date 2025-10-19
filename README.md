@@ -101,3 +101,16 @@ https://zhuanlan.zhihu.com/p/26733683
     详情
     购物车
     订单
+
+## 清理无用包
+    go mod tidy
+
+## 升级依赖
+    #!/usr/bin/env bash
+    set -e
+    go env -w GOPROXY=https://goproxy.cn,direct
+    go get -u ./...
+    go mod tidy
+    go test ./...
+    go build ./...
+    echo "All deps upgraded & verified."

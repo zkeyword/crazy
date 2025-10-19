@@ -11,7 +11,7 @@ type UserRepository struct {
 }
 
 // User 类型
-type User struct {
+type SysUser struct {
 	ID       uint   `json:"id"`
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -56,7 +56,7 @@ func (r *UserRepository) DeleteById(id uint) error {
 	if err != nil {
 		return err
 	}
-	return _db.Where("id = ?", id).Delete(User{}).Error
+	return _db.Where("id = ?", id).Delete(SysUser{}).Error
 }
 
 // UpdateById 修改用户

@@ -4,6 +4,7 @@ import (
 	"CRAZY/config"
 	"CRAZY/router"
 	"CRAZY/utils/db"
+	"embed"
 
 	"fmt"
 	"log"
@@ -15,6 +16,9 @@ import (
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/sirupsen/logrus"
 )
+
+//go:embed views/**/*
+var viewsFS embed.FS
 
 func main() {
 
@@ -74,7 +78,7 @@ func main() {
 
 	// 设置gin
 	gin.SetMode(config.ServerMode)
-	r := router.Routers()
+	r := router.Routers(http.FS(viewsFS)) // ← 关键：用 http.FS 包装
 	r.MaxMultipartMemory = config.MaxMultipartMemory
 
 	server := &http.Server{
